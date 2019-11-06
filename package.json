@@ -1,0 +1,19 @@
+{
+  "name": "urtc-sdk",
+  "version": "1.1.0",
+  "description": "UCloud WebRTC javascript SDK",
+  "main": "lib/index.js",
+  "keywords": [
+    "UCloud",
+    "URTC",
+    "Web",
+    "WebRTC",
+    "javascript",
+    "sdk"
+  ],
+  "files": [
+    "lib/index.js"
+  ],
+  "author": "urtc",
+  "homepaage": "https://docs.ucloud.cn/video/urtc/overview"
+}
