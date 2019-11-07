@@ -6,6 +6,7 @@ UCloudRTC 包含以下方法、类或对象：
 * [getDevices 方法](#getdevices)
 * [getSupportProfileNames 方法](#getsupportprofilenames)
 * [version 属性](#version)
+* [genToken 方法](#genToken)
 * [Logger 对象](#logger)
 * [setServers 方法](#setservers)
 
@@ -51,14 +52,14 @@ Client 类包含以下方法：
 用于创建一个 URTC Client 对象，示例代码：
 
 ```
-new Client(AppId, AppKey, Options);
+new Client(AppId, Token, Options);
 ```
 
 #### 参数说明
 
 - AppId: string 类型, 必传，可从 UCloud 控制台查看
 
-- AppKey: string 类型, 必传，可从 UCloud 控制台查看
+- Token: string 类型, 必传，需按规则生成，测试阶段，可使用 [genToken](#genToken) 临时生成
 
 - Options: object 类型, 选传，类型说明如下
 
@@ -774,7 +775,27 @@ version 属性用于显示当前 sdk 的版本
 
 ---
 
-## 五、Logger 对象 <a name='logger'></a>
+## 五、genToken 方法 <a name='genToken'></a>
+
+genToken 方法仅用于试用 URTC 产品时替代服务器生成 sdk 所需 token 的方法，正式使用 URTC 产品时，需要搭建后台服务按规则生成 token
+
+```
+const token = genToken(AppId, AppKey, RoomId, UserId);
+```
+
+#### 参数说明
+
+- AppId: string 类型, 必传，可从 UCloud 控制台查看
+
+- AppKey: string 类型, 必传，可从 UCloud 控制台查看（请注意此 AppKey 不可暴露给其他人）
+
+- RoomId: string 类型, 必传，将要加入的房间的 ID
+
+- UserId: string 类型，必传，将要加入的用户的 ID
+
+---
+
+## 六、Logger 对象 <a name='logger'></a>
 
 Logger 对象用于调试时打印内部日志，包含以下方法：
 
@@ -812,7 +833,7 @@ Logger.debug(a, ...)  // 可传任意数量的任意类型的变量作为参数
 
 ---
 
-## 六、setServers 方法 <a name='setservers'></a>
+## 七、setServers 方法 <a name='setservers'></a>
 
 可配置 URTC 服务的域名，用于私有化部署，目前有房间服务器和日志服务器的两种域名可进行配置，示例代码：
 
