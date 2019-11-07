@@ -818,7 +818,7 @@ Logger.debug(a, ...)  // 可传任意数量的任意类型的变量作为参数
 
 ```
 setServers({
-  base: "https://env1.urtc.com",  // base 为 URTC 房间服务的访问域名
+  api: "https://env1.urtc.com",   // api 为 URTC 房间服务的访问域名
   log: "https://env1.urtclog.com" // log 为 URTC 日志服务器的访问域名
 })
 ```
