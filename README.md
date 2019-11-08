@@ -10,9 +10,13 @@ UCloudRTC 包含以下方法、类或对象：
 * [Logger 对象](#logger)
 * [setServers 方法](#setservers)
 
+> 注： 想要了解使用此 SDK 的简单步骤，请查看 [使用说明](./Manual.md) 
+
 ---
 
-## 一、Client 类 <a name='client'></a>
+<a name='client'></a>
+
+## 一、Client 类
 
 Client 类包含以下方法：
 
@@ -47,7 +51,9 @@ Client 类包含以下方法：
 * [getVideoStats 方法](#client-getvideostats)
 * [getNetworkStats 方法](#client-getnetworkstats)
 
-### 1. 构建函数 <a name="client-constructor"></a>
+<a name="client-constructor"></a>
+
+### 1. 构建函数
 
 用于创建一个 URTC Client 对象，示例代码：
 
@@ -71,7 +77,9 @@ new Client(AppId, Token, Options);
 }
 ```
 
-### 2. joinRoom 方法 <a name="client-joinroom"></a>
+<a name="client-joinroom"></a>
+
+### 2. joinRoom 方法
 
 加入房间，示例代码：
 
@@ -94,6 +102,9 @@ function onSuccess(User) {}
 函数参数 User 为返回值，Object 类型，为用户信息。User 类型说明如下
 
 <a name='user'></a>
+
+User:
+
 ```
 {
   uid: string   // 为用户ID
@@ -107,7 +118,9 @@ function(Err) {}
 ```
 Err 为错误信息
 
-### 3. leaveRoom 方法 <a name="client-leaveroom"></a>
+<a name="client-leaveroom"></a>
+
+### 3. leaveRoom 方法
 
 离开房间，示例代码：
 
@@ -132,7 +145,9 @@ function(Err) {}
 ```
 Err 为错误信息
 
-### 4. publish 方法 <a name="client-publish"></a>
+<a name="client-publish"></a>
+
+### 4. publish 方法
 
 发布本地流，示例代码：
 
@@ -163,6 +178,9 @@ function onSuccess(Stream) {}
 函数参数 Stream 为返回值，Object 类型，为流信息。Stream 类型说明如下
 
 <a name='stream'></a>
+
+Stream:
+
 ```
 {
   sid: string                     // 流ID
@@ -172,7 +190,7 @@ function onSuccess(Stream) {}
   audio: boolean                  // 是否包含视频
   muteAudio: boolean              // 音频是否静音
   muteVideo: boolean              // 视频是否静音
-  mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLVideoElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
+  mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
 }
 ```
 
@@ -183,7 +201,9 @@ function(Err) {}
 ```
 Err 为错误信息
 
-### 5. unpublish 方法 <a name="client-unpublish"></a>
+<a name="client-unpublish"></a>
+
+### 5. unpublish 方法
 
 取消发布本地流，示例代码：
 
@@ -208,7 +228,9 @@ function(Err) {}
 ```
 Err 为错误信息
 
-### 6. subscribe 方法 <a name="client-subscribe"></a>
+<a name="client-subscribe"></a>
+
+### 6. subscribe 方法
 
 订阅远端流，，示例代码：
 
@@ -235,7 +257,9 @@ function(Err) {}
 Err 为错误信息
 
 
-### 7. unsubscribe 方法 <a name="client-unsubscribe"></a>
+<a name="client-unsubscribe"></a>
+
+### 7. unsubscribe 方法
 
 取消订阅远端流，示例代码：
 
@@ -262,7 +286,9 @@ function(Err) {}
 Err 为错误信息
 
 
-### 8. on 方法 <a name="client-on"></a>
+<a name="client-on"></a>
+
+### 8. on 方法
 
 给事件绑定监听函数，示例代码：
 
@@ -279,7 +305,10 @@ client.on(EventType, Listener)
   - 当事件类型为 'user-added' | 'user-removed' 时，可用 `function Listener(User) {}` 类型的函数，其中函数的参数类型见 [User](#user)
   - 当事件类型为 'stream-added'|'stream-removed'| 'stream-published' | 'stream-subscribed' | 'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' 时，可用 `function Listener(Stream) {}` 类型的函数，其中函数的参数类型见 [Stream](#stream)
 
-### 9. off 方法 <a name="client-off"></a>
+
+<a name="client-off"></a>
+
+### 9. off 方法
 
 解除绑定事件的监听函数，示例代码：
 
@@ -292,7 +321,9 @@ client.off(EventType, Listener)
 - EventType: 参见 on 方法
 - Listener: 为调用 on 方法时绑定的监听函数
 
-### 10. muteAudio 方法 <a name="client-muteaudio"></a>
+<a name="client-muteaudio"></a>
+
+### 10. muteAudio 方法
 
 关闭本地流的音频，示例代码：
 
@@ -305,7 +336,9 @@ const result = client.muteAudio()
 - result: boolean 类型，成功时为 true，失败时为 false
 
 
-### 11. unmuteAudio 方法 <a name="client-unmuteaudio"></a>
+<a name="client-unmuteaudio"></a>
+
+### 11. unmuteAudio 方法
 
 启用本地流的音频，示例代码：
 
@@ -317,7 +350,10 @@ const result = client.unmuteAudio()
 
 - result: boolean 类型，成功时为 true，失败时为 false
 
-### 12. muteVideo 方法 <a name="client-mutevideo"></a>
+
+<a name="client-mutevideo"></a>
+
+### 12. muteVideo 方法
 
 关闭本地流的视频，示例代码：
 
@@ -330,7 +366,9 @@ const result = client.muteVideo()
 - result: boolean 类型，成功时为 true，失败时为 false
 
 
-### 13. unmuteVideo 方法 <a name="client-unmutevideo"></a>
+<a name="client-unmutevideo"></a>
+
+### 13. unmuteVideo 方法
 
 启用本地流的视频，示例代码：
 
@@ -342,7 +380,10 @@ const result = client.unmuteVideo()
 
 - result: boolean 类型，成功时为 true，失败时为 false
 
-### 14. startRecording 方法 <a name="client-startrecording"></a>
+
+<a name="client-startrecording"></a>
+
+### 14. startRecording 方法
 
 开始录制音视频，示例代码：
 
@@ -381,7 +422,10 @@ function(Err) {}
 ```
 Err 为错误信息
 
-### 15. stopRecording 方法 <a name="client-stoprecording"></a>
+
+<a name="client-stoprecording"></a>
+
+### 15. stopRecording 方法
 
 停止录制音视频，示例代码：
 
@@ -404,7 +448,9 @@ function(Err) {}
 Err 为错误信息
 
 
-### 16. getUser 方法 <a name="client-getuser"></a>
+<a name="client-getuser"></a>
+
+### 16. getUser 方法
 
 获取本地用户的信息，示例代码：
 
@@ -416,7 +462,10 @@ const result = client.getUser()
 
 - result: User 类型，类型说明见 [User](#user)
 
-### 17. getUsers 方法 <a name="client-getusers"></a>
+
+<a name="client-getusers"></a>
+
+### 17. getUsers 方法
 
 获取当前加入房间的远端用户的信息，示例代码：
 
@@ -429,7 +478,9 @@ const result = client.getUsers()
 - result: User 类型的数组，User 类型说明见 [User](#user)
 
 
-### 18. getStream 方法 <a name="client-getstream"></a>
+<a name="client-getstream"></a>
+
+### 18. getStream 方法
 
 获取本地发布流的信息，示例代码：
 
@@ -442,7 +493,9 @@ const result = client.getStream()
 - result: Stream 类型，Stream 类型说明见 [Stream](#stream)
 
 
-### 19. getStreams 方法 <a name="client-getstreams"></a>
+<a name="client-getstreams"></a>
+
+### 19. getStreams 方法
 
 获取订阅流（远端流）的信息，示例代码：
 
@@ -455,7 +508,9 @@ const result = client.getStreams()
 - result: Stream 类型的数组，Stream 类型说明见 [Stream](#stream)
 
 
-### 20. getLocalMediaStream 方法 <a name="client-getlocalmediastream"></a>
+<a name="client-getlocalmediastream"></a>
+
+### 20. getLocalMediaStream 方法
 
 获取本地流对应的媒体流，示例代码：
 ```
@@ -467,7 +522,9 @@ const result = client.getLocalMediaStream()
 - result: MediaStream 类型，类型说明见 [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream)
 
 
-### 21. getRemoteMediaStream 方法 <a name="client-unpugetremotemediastreamblish"></a> 
+<a name="client-unpugetremotemediastreamblish"></a> 
+
+### 21. getRemoteMediaStream 方法
 
 获取订阅流（远端流）对应的媒体流，示例代码：
 ```
@@ -479,7 +536,9 @@ const result = client.getLocalMediaStream()
 - result: MediaStream 类型，类型说明见 [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream)
 
 
-### 22. getMicrophones 方法 <a name="client-getmicrophones"></a>
+<a name="client-getmicrophones"></a>
+
+### 22. getMicrophones 方法
 
 获取麦克风设备，示例代码：
 
@@ -504,7 +563,10 @@ function(Err) {}
 ```
 Err 为错误信息
 
-### 23. getCameras 方法 <a name="client-getcameras"></a>
+
+<a name="client-getcameras"></a>
+
+### 23. getCameras 方法
 
 获取摄像头设备，示例代码：
 
@@ -529,7 +591,10 @@ function(Err) {}
 ```
 Err 为错误信息
 
-### 24. getLoudspeakers 方法 <a name="client-getloudspeakers"></a>
+
+<a name="client-getloudspeakers"></a>
+
+### 24. getLoudspeakers 方法
 
 获取音响/声音输出设备，示例代码：
 
@@ -555,7 +620,9 @@ function(Err) {}
 Err 为错误信息
 
 
-### 25. setVideoProfile 方法 <a name="client-setvideoprofile"></a>
+<a name="client-setvideoprofile"></a>
+
+### 25. setVideoProfile 方法
 
 设置视频的 profile，限制 client 使用的视频大小、帧率、带宽等，示例代码：
 
@@ -577,7 +644,9 @@ function(Err) {}
 Err 为错误信息
 
 
-### 26. switchDevice 方法 <a name="client-switchdevice"></a>
+<a name="client-switchdevice"></a>
+
+### 26. switchDevice 方法
 
 当本地流已经发布，可通过此方法来改变当前正在使用的音频或视频采集设备，示例代码：
 
@@ -601,7 +670,9 @@ function(Err) {}
 Err 为错误信息
 
 
-### 27. getAudioVolume 方法 <a name="client-getaudiovolume"></a>
+<a name="client-getaudiovolume"></a>
+
+### 27. getAudioVolume 方法
 
 获取流的音量大小，返回值范围 [0,100]，示例代码：
 
@@ -613,7 +684,10 @@ client.getAudioVolume(StreamId)
 
 - StreamId: string 类型，可选，本地或远端流的 ID 即 [Stream](#stream) 的 sid 属性值，当不传时，默认获取本地流的音量大小
 
-### 28. getAudioStats 方法 <a name="client-getaudiostats"></a>
+
+<a name="client-getaudiostats"></a>
+
+### 28. getAudioStats 方法
 
 获取流的音频状态，示例代码：
 
@@ -648,7 +722,9 @@ function(Err) {}
 Err 为错误信息
 
 
-### 29. getVideoStats 方法 <a name="client-getvideostats"></a>
+<a name="client-getvideostats"></a>
+
+### 29. getVideoStats 方法
 
 获取流的视频状态，示例代码：
 
@@ -685,7 +761,9 @@ function(Err) {}
 Err 为错误信息
 
 
-### 30. getNetworkStats 方法 <a name="client-getnetworkstats"></a>
+<a name="client-getnetworkstats"></a>
+
+### 30. getNetworkStats 方法
 
 获取流的网络状态，示例代码：
 
@@ -718,7 +796,9 @@ Err 为错误信息
 
 ----
 
-## 二、getDevices 方法 <a name='getdevices'></a>
+<a name='getdevices'></a>
+
+## 二、getDevices 方法
 
 用于获取当前浏览器可访问的音视频设备的设备信息，包括麦克风、摄像头、视频输出设备
 
@@ -746,7 +826,9 @@ Err 为错误信息
 
 ----
 
-## 三、getSupportProfileNames 方法 <a name='getsupportprofilenames'></a>
+<a name='getsupportprofilenames'></a>
+
+## 三、getSupportProfileNames 方法
 
 用于获取当前 SDK 支持的视频质量的名称
 
@@ -769,13 +851,17 @@ profileNames: String 类型的数组，如当前可用的 ["240\*180", "480\*360
 
 ---
 
-## 四、version 属性 <a name='version'></a>
+<a name='version'></a>
+
+## 四、version 属性
 
 version 属性用于显示当前 sdk 的版本
 
 ---
 
-## generateToken 方法 <a name='generateToken'></a>
+<a name='generateToken'></a>
+
+## generateToken 方法
 
 generateToken 方法仅用于试用 URTC 产品时替代服务器生成 sdk 所需 token 的方法，正式使用 URTC 产品时，需要搭建后台服务按规则生成 token
 
@@ -795,7 +881,9 @@ const token = generateToken(AppId, AppKey, RoomId, UserId);
 
 ---
 
-## 六、Logger 对象 <a name='logger'></a>
+<a name='logger'></a>
+
+## 六、Logger 对象
 
 Logger 对象用于调试时打印内部日志，包含以下方法：
 
@@ -805,7 +893,9 @@ Logger 对象用于调试时打印内部日志，包含以下方法：
 * [warn 方法](#logger-warn)
 * [error 方法](#logger-error)
 
-### 1. setLogLevel 方法 <a name='logger-setloglevel'></a>
+<a name='logger-setloglevel'></a>
+
+### 1. setLogLevel 方法
 
 用于设置 Logger 打印日志的级别
 
@@ -817,7 +907,9 @@ Logger.setLogLevel(Level)
 
 Level: 必传，有 "debug" | "info" | "warn" | "error" 四个日志级别，默认为 "error" 级别
 
-### 2. debug 方法 <a name='logger-debug'></a>
+<a name='logger-debug'></a>
+
+### 2. debug 方法
 
 用于调试代码时，打印 debug 日志
 
@@ -825,15 +917,25 @@ Level: 必传，有 "debug" | "info" | "warn" | "error" 四个日志级别，默
 Logger.debug(a, ...)  // 可传任意数量的任意类型的变量作为参数
 ```
 
-### 3. info 方法 <a name='logger-info'></a>
-### 4. warn 方法 <a name='logger-warn'></a>
-### 5. error 方法 <a name='logger-error'></a>
+<a name='logger-info'></a>
+
+### 3. info 方法
+
+<a name='logger-warn'></a>
+
+### 4. warn 方法
+
+<a name='logger-error'></a>
+
+### 5. error 方法
 
 以上三种方法分别打印对应级别的日志，使用方法与 debug 方法相同
 
 ---
 
-## 七、setServers 方法 <a name='setservers'></a>
+<a name='setservers'></a>
+
+## 七、setServers 方法
 
 可配置 URTC 服务的域名，用于私有化部署，目前有房间服务器和日志服务器的两种域名可进行配置，示例代码：
 
