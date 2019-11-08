@@ -6,7 +6,7 @@ UCloudRTC 包含以下方法、类或对象：
 * [getDevices 方法](#getdevices)
 * [getSupportProfileNames 方法](#getsupportprofilenames)
 * [version 属性](#version)
-* [genToken 方法](#genToken)
+* [generateToken 方法](#generateToken)
 * [Logger 对象](#logger)
 * [setServers 方法](#setservers)
 
@@ -59,7 +59,7 @@ new Client(AppId, Token, Options);
 
 - AppId: string 类型, 必传，可从 UCloud 控制台查看
 
-- Token: string 类型, 必传，需按规则生成，测试阶段，可使用 [genToken](#genToken) 临时生成
+- Token: string 类型, 必传，需按规则生成，测试阶段，可使用 [generateToken](#generateToken) 临时生成
 
 - Options: object 类型, 选传，类型说明如下
 
@@ -148,7 +148,7 @@ client.publish(Options, onSuccess, onFailure)
 {
   audio: boolean          // 必填，指定是否使用麦克风设备
   video: boolean          // 必填，指定是否使用摄像头设备
-  screen: boolean         // 必填，Boolean 类型，指定是否为桌面共享，注：暂未开放，默认为 false
+  screen: boolean         // 必填，指定是否为桌面共享，注意，video 和 screen 不可同时为 true
   microphoneId?: string   // 选填，指定使用的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将使用默认麦克风设备
   cameraId?: string       // 选填，指定使用的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将使用默认的摄像头设备
 }
@@ -775,12 +775,12 @@ version 属性用于显示当前 sdk 的版本
 
 ---
 
-## 五、genToken 方法 <a name='genToken'></a>
+## generateToken 方法 <a name='generateToken'></a>
 
-genToken 方法仅用于试用 URTC 产品时替代服务器生成 sdk 所需 token 的方法，正式使用 URTC 产品时，需要搭建后台服务按规则生成 token
+generateToken 方法仅用于试用 URTC 产品时替代服务器生成 sdk 所需 token 的方法，正式使用 URTC 产品时，需要搭建后台服务按规则生成 token
 
 ```
-const token = genToken(AppId, AppKey, RoomId, UserId);
+const token = generateToken(AppId, AppKey, RoomId, UserId);
 ```
 
 #### 参数说明
