@@ -96,20 +96,12 @@ client.joinRoom(RoomId, UserId, onSuccess, onFailure)
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
 ```
-function onSuccess(User) {}
+function onSuccess(Users, Streams) {}
 ```
 
-函数参数 User 为返回值，Object 类型，为用户信息。User 类型说明如下
+函数参数 Users 为返回值，User 类型的数组，代表当前房间内已有的其他用户的信息，User 类型说明见 [User](#user)；函数参数 Streams 为返回值，Stream 类型的数组，代表当前房间内其他用户正在发布的流。Stream 类型说明见 [Stream](#stream)
 
-<a name='user'></a>
-
-User:
-
-```
-{
-  uid: string   // 为用户ID
-}
-```
+> 注：当加入房间成功后，当前房间内已有的其他用户的信息以及正在发布的流，都会分别由 `user-added` 和 `stream-added` 事件再进行通知。如需订阅正在发布的流，建议在 `stream-added` 事件函数中统一处理，此处 `onSuccess` 函数的参数 `Users` 和 `Streams` 数据仅用于展示。
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
@@ -133,10 +125,8 @@ client.leaveRoom(onSuccess, onFailure)
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
 ```
-function onSuccess(User) {}
+function onSuccess() {}
 ```
-
-函数参数 User 为返回值，类型说明见 [User](#user)
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
@@ -152,7 +142,7 @@ Err 为错误信息
 发布本地流，示例代码：
 
 ```
-client.publish(Options, onSuccess, onFailure)
+client.publish(Options, onFailure)
 ```
 
 #### 参数说明
@@ -166,31 +156,6 @@ client.publish(Options, onSuccess, onFailure)
   screen: boolean         // 必填，指定是否为桌面共享，注意，video 和 screen 不可同时为 true
   microphoneId?: string   // 选填，指定使用的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将使用默认麦克风设备
   cameraId?: string       // 选填，指定使用的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将使用默认的摄像头设备
-}
-```
-
-- onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
-
-```
-function onSuccess(Stream) {}
-```
-
-函数参数 Stream 为返回值，Object 类型，为流信息。Stream 类型说明如下
-
-<a name='stream'></a>
-
-Stream:
-
-```
-{
-  sid: string                     // 流ID
-  uid: string                     // 对应的用户的ID
-  type: 'publish'|'subscribe'     // 流类型，分别为 publish 和 subscribe 两种，
-  video: boolean                  // 是否包含音频
-  audio: boolean                  // 是否包含视频
-  muteAudio: boolean              // 音频是否静音
-  muteVideo: boolean              // 视频是否静音
-  mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
 }
 ```
 
@@ -212,7 +177,6 @@ client.unpublish(onSuccess, onFailure)
 ```
 
 #### 参数说明
-
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
 ```
@@ -235,19 +199,12 @@ Err 为错误信息
 订阅远端流，，示例代码：
 
 ```
-client.subscribe(StreamId, onSuccess, onFailure)
+client.subscribe(StreamId, onFailure)
 ```
 
 #### 参数说明
 
 - StreamId: string 类型，必传，为需要订阅的远端流的 sid
-- onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
-
-```
-function onSuccess(Stream) {}
-```
-
-函数参数 Stream 为返回值，Object 类型，为流信息，类型说明见 [Stream](#stream)
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
@@ -270,6 +227,7 @@ client.unsubscribe(StreamId, onSuccess, onFailure)
 #### 参数说明
 
 - StreamId: string 类型，必传，为需要订阅的远端流的 sid
+
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
 ```
@@ -397,7 +355,7 @@ client.startRecording(RecordOptions, onSuccess, onFailure)
 
 ```
 {
-  waterMarkPosition: 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom'    // 必填，指定水印的位置，前面四种类型分别对应 左上，左下，右上，右下
+  waterMarkPosition: 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom'    // 必填，指定水印的位置，前面四种类型分别对应 左上，左下，右上，右下，注：水印功能暂未开放，请随意填一个有效值
   bucket: string  // 存储的 bucket, URTC 使用 UCloud 的 UFile 产品进行在存储，相关信息见控制台操作文档
   region: string  // 存储服务所在的地域
 }
@@ -460,7 +418,17 @@ const result = client.getUser()
 
 #### 返回值说明
 
-- result: User 类型，类型说明见 [User](#user)
+- result: User 类型，类型说明如下
+
+<a name='user'></a>
+
+User:
+
+```
+{
+  uid: string   // 为用户ID
+}
+```
 
 
 <a name="client-getusers"></a>
@@ -490,7 +458,24 @@ const result = client.getStream()
 
 #### 返回值说明
 
-- result: Stream 类型，Stream 类型说明见 [Stream](#stream)
+- result: Stream 类型，Stream 类型说明如下
+
+<a name='stream'></a>
+
+Stream:
+
+```
+{
+  sid: string                     // 流ID
+  uid: string                     // 对应的用户的ID
+  type: 'publish'|'subscribe'     // 流类型，分别为 publish 和 subscribe 两种，
+  video: boolean                  // 是否包含音频
+  audio: boolean                  // 是否包含视频
+  muteAudio: boolean              // 音频是否静音
+  muteVideo: boolean              // 视频是否静音
+  mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
+}
+```
 
 
 <a name="client-getstreams"></a>
