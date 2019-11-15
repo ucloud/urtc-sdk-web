@@ -361,11 +361,13 @@ client.startRecording(RecordOptions, onSuccess, onFailure)
 }
 ```
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
+
 ```
 function onSuccess(Record) {}
 ```
 
 函数参数 Record 为返回值，Object 类型，为流信息，类型说明如下
+
 ```
 {
   FileName: string  // 录制到的文件的名称
@@ -394,6 +396,7 @@ client.stopRecording(onSuccess, onFailure)
 #### 参数说明
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
+
 ```
 function onSuccess() {}
 ```
@@ -497,7 +500,8 @@ const result = client.getStreams()
 
 ### 20. getLocalMediaStream 方法
 
-获取本地流对应的媒体流，示例代码：
+获取本地流对应的媒体流后，可通过 HtmlMediaElement（如：[video](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video)）进行播放，示例代码：
+
 ```
 const result = client.getLocalMediaStream()
 ```
@@ -507,14 +511,19 @@ const result = client.getLocalMediaStream()
 - result: MediaStream 类型，类型说明见 [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream)
 
 
-<a name="client-unpugetremotemediastreamblish"></a> 
+<a name="client-getremotemediastream"></a>
 
 ### 21. getRemoteMediaStream 方法
 
 获取订阅流（远端流）对应的媒体流，示例代码：
+
 ```
-const result = client.getLocalMediaStream()
+const result = client.getRemoteMediaStream(StreamId)
 ```
+
+#### 参数说明
+
+- StreamId: string 类型，必传，流的 ID
 
 #### 返回值说明
 
@@ -534,6 +543,7 @@ client.getMicrophones(onSuccess, onFailure)
 #### 参数说明
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
+
 ```
 function onSuccess(MediaDeviceInfos) {}
 ```
@@ -562,6 +572,7 @@ client.getCameras(onSuccess, onFailure)
 #### 参数说明
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
+
 ```
 function onSuccess(MediaDeviceInfos) {}
 ```
@@ -590,6 +601,7 @@ client.getLoudspeakers(onSuccess, onFailure)
 #### 参数说明
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
+
 ```
 function onSuccess(MediaDeviceInfos) {}
 ```
@@ -618,9 +630,11 @@ client.setVideoProfile(Profile, onSuccess, onFailure)
 #### 参数说明
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
+
 ```
 function onSuccess() {}
 ```
+
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```
@@ -644,6 +658,7 @@ client.switchDevice(DeviceType, DeviceId, onSuccess, onFailure)
 - DeviceId: string 类型，设备ID，可通过 sdk 的 getDevices 方法或 client 的 getMicrophones 和 getCameras 方法获取
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
+
 ```
 function onSuccess() {}
 ```
@@ -690,6 +705,7 @@ client.getAudioStats(StreamId, onSuccess, onFailure)
 function onSuccess(AudioStats) {}
 ```
 函数参数 AudioStats 为返回值，为 object 类型，类型说明如下：
+
 ```
 {
   br: number        // 码率
@@ -727,6 +743,7 @@ client.getVideoStats(StreamId, onSuccess, onFailure)
 function onSuccess(VideoStats) {}
 ```
 函数参数 VideoStats 为返回值，为 object 类型，类型说明如下：
+
 ```
 {
   br: number        // 码率
@@ -766,6 +783,7 @@ client.getNetworkStats(StreamId, onSuccess, onFailure)
 function onSuccess(NetworkStats) {}
 ```
 函数参数 NetworkStats 为返回值，为 object 类型，类型说明如下：
+
 ```
 {
   rtt: number   //  往返时延，单位 ms
@@ -826,7 +844,7 @@ const profileNames = getSupportProfileNames();
 profileNames: String 类型的数组，如当前可用的 ["240\*180", "480\*360", "640\*360", "640\*480", "1280\*720", "1920\*1080"]
 
 名称 | 视频宽高 | 帧率 | 视频最大带宽
--|-|-|-
+:-: | :-: | :-: | :-:
 "240\*180" | 240\*180 | 20 | 200
 "480\*360" | 480\*360 | 20 | 300
 "640\*360" | 640\*360 | 20 | 400
