@@ -139,7 +139,7 @@ Err 为错误信息
 
 ### 4. publish 方法
 
-发布本地流，示例代码：
+发布本地流，更改publish时，同一个client需要先调用unpublish()方法解除当前publish，示例代码：
 
 ```
 client.publish(Options, onFailure)
@@ -153,11 +153,14 @@ client.publish(Options, onFailure)
 {
   audio: boolean          // 必填，指定是否使用麦克风设备
   video: boolean          // 必填，指定是否使用摄像头设备
-  screen: boolean         // 必填，指定是否为桌面共享，注意，video 和 screen 不可同时为 true
+  screen: boolean         // 必填，指定是否为屏幕共享，注意，video 和 screen 不可同时为 true
   microphoneId?: string   // 选填，指定使用的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将使用默认麦克风设备
   cameraId?: string       // 选填，指定使用的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将使用默认的摄像头设备
+  extensionId?: string    // 选填，指定使用的 Chrome 插件的 extensionId，可使72版本以下的 Chrome 浏览器进行屏幕共享。
 }
 ```
+
+> 对于屏幕共享各浏览器兼容性，请参见 [getDisplayMedia](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia) 。特别地，使用 Chrome 浏览器屏幕共享 Tab（浏览器标签）页时，有分享 Tab 页中音频功能（分享弹出框左下脚勾选，Chrome 74 版本以上可不用安装插件）。若用户选择屏幕共享的为一个 Tab 页，且发布时 audio 的值为 false，那么 SDK 将使用 Tab 页中的音频进行推送，否则 SDK 将仍旧推送麦克风的音频或不推送音频。
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
@@ -621,7 +624,7 @@ Err 为错误信息
 
 ### 25. setVideoProfile 方法
 
-设置视频的 profile，限制 client 使用的视频大小、帧率、带宽等，示例代码：
+设置视频的 profile（通过getSupportProfileNames获取到视频质量的值）限制 client 使用的视频大小、帧率、带宽等，setVideoProfile须在publish之前设置。示例代码：
 
 ```
 client.setVideoProfile(Profile, onSuccess, onFailure)
@@ -806,7 +809,7 @@ Err 为错误信息
 用于获取当前浏览器可访问的音视频设备的设备信息，包括麦克风、摄像头、视频输出设备
 
 ```
-getDevices(onSuccess, onFailure)
+UCloudRTC.getDevices(onSuccess, onFailure)
 ```
 
 #### 参数说明
@@ -836,7 +839,7 @@ Err 为错误信息
 用于获取当前 SDK 支持的视频质量的名称
 
 ```
-const profileNames = getSupportProfileNames();
+const profileNames = UCloudRTC.getSupportProfileNames();
 ```
 
 #### 返回值说明
@@ -869,7 +872,7 @@ version 属性用于显示当前 sdk 的版本
 generateToken 方法仅用于试用 URTC 产品时替代服务器生成 sdk 所需 token 的方法，正式使用 URTC 产品时，需要搭建后台服务按规则生成 token
 
 ```
-const token = generateToken(AppId, AppKey, RoomId, UserId);
+const token = UCloudRTC.generateToken(AppId, AppKey, RoomId, UserId);
 ```
 
 #### 参数说明
@@ -943,7 +946,7 @@ Logger.debug(a, ...)  // 可传任意数量的任意类型的变量作为参数
 可配置 URTC 服务的域名，用于私有化部署，目前有房间服务器和日志服务器的两种域名可进行配置，示例代码：
 
 ```
-setServers({
+UCloudRTC.setServers({
   api: "https://env1.urtc.com",   // api 为 URTC 房间服务的访问域名
   log: "https://env1.urtclog.com" // log 为 URTC 日志服务器的访问域名
 })

@@ -4,9 +4,9 @@
 
 有两种方式：
 
-- 使用 npm 安装，并将 sdk 使用 ES6 语法作为模块引入
+- 使用 npm 安装，并将 sdk 使用 ES6 语法作为模块引入，具体步骤：
 
-1) 使用 [npm](https://www.npmjs.com/) 或 [Yarn](https://yarnpkg.com/) 安装 sdk:
+1）使用 [npm](https://www.npmjs.com/) 或 [Yarn](https://yarnpkg.com/) 安装 sdk:
 
 ```
 npm install --save urtc-sdk
@@ -18,7 +18,7 @@ npm install --save urtc-sdk
 yarn add urtc-sdk
 ```
 
-2) 项目中引入并创建 client
+2）项目中引入并创建 client
 
 ```
 import { Client } from 'urtc-sdk';
@@ -26,14 +26,13 @@ import { Client } from 'urtc-sdk';
 const client = new Client(appId, token); // 默认为连麦模式（小班课），若为直播模式（大班课）时，需要传入第三个参数 { type: 'live' }，更多配置见 sdk API 说明
 ```
 
-- 直接在页面中用 script 标签将 sdk 引入，此时会有全局对象 UCloudRTC
+- 直接在页面中用 script 标签将 sdk 引入，此时会有全局对象 UCloudRTC，具体步骤：
 
-1) 直接将 sdk 中 lib 目录下的 index.js 使用 script 标签引入
+1）直接将 sdk 中 lib 目录下的 index.js 使用 script 标签引入
 
 ```
 <script type="text/javascript" src="index.js"><script>
 ```
-
 
 2）使用全局对象 UCloudRTC 创建 client
 
