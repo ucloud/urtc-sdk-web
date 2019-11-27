@@ -186,7 +186,7 @@ client.unpublish(onSuccess, onFailure)
 function onSuccess(Stream) {}
 ```
 
-函数参数 Stream 为返回值，Object 类型，为流信息，类型说明见 [Stream](#stream)
+函数参数 Stream 为返回值，object 类型，为流信息，类型说明见 [Stream](#stream)
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
@@ -237,7 +237,7 @@ client.unsubscribe(StreamId, onSuccess, onFailure)
 function onSuccess(Stream) {}
 ```
 
-函数参数 Stream 为返回值，Object 类型，为流信息，类型说明见 [Stream](#stream)
+函数参数 Stream 为返回值，object 类型，为流信息，类型说明见 [Stream](#stream)
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
@@ -358,18 +358,31 @@ client.startRecording(RecordOptions, onSuccess, onFailure)
 
 ```
 {
-  waterMarkPosition: 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom'    // 必填，指定水印的位置，前面四种类型分别对应 左上，左下，右上，右下，注：水印功能暂未开放，请随意填一个有效值
-  bucket: string  // 存储的 bucket, URTC 使用 UCloud 的 UFile 产品进行在存储，相关信息见控制台操作文档
-  region: string  // 存储服务所在的地域
+  bucket: string  // 必传，存储的 bucket, URTC 使用 UCloud 的 UFile 产品进行在存储，相关信息见控制台操作文档
+  region: string  // 必传，存储服务所在的地域
+  waterMark: WaterMarkOptions // 选传，水印的相关配置，不需要添加水印时，不用填写
 }
 ```
+
+WaterMarkOptions: object 类型，选传，添加的水印相关配置，类型说明如下
+
+```
+{
+  position: 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom' // 选传，指定水印的位置，前面四种类型分别对应 左上，左下，右上，右下，默认 'left-top'
+  type: 'time' | 'image' | 'text' // 选传，水印类型，分别对应时间水印、图片水印、文字水印，默认为 'time'
+  remarks:  string,   // 选传，水印备注，当为时间水印时，传空字符串，当为图片水印时，此处需为图片的 URL（此时必传），当为文字水印时，此处需为水印文字
+  template: number,   // 选传，1-9 对应的模板，默认为 1
+  isAverage: boolean, // 选传，是否均分，默认为 true
+}
+```
+
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
 ```
 function onSuccess(Record) {}
 ```
 
-函数参数 Record 为返回值，Object 类型，为流信息，类型说明如下
+函数参数 Record 为返回值，object 类型，为流信息，类型说明如下
 
 ```
 {
