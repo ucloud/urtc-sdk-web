@@ -50,6 +50,13 @@ Client 类包含以下方法：
 * [getAudioStats 方法](#client-getaudiostats)
 * [getVideoStats 方法](#client-getvideostats)
 * [getNetworkStats 方法](#client-getnetworkstats)
+* [preloadEffect 方法](#client-preloadEffect)
+* [unloadEffect 方法](#client-unloadEffect)
+* [playEffect 方法](#client-playEffect)
+* [pauseEffect 方法](#client-pauseEffect)
+* [resumeEffect 方法](#client-resumeEffect)
+* [stopEffect 方法](#client-stopEffect)
+* [setEffectVolume 方法](#client-setEffectVolume)
 
 <a name="client-constructor"></a>
 
@@ -139,11 +146,13 @@ Err 为错误信息
 
 ### 4. publish 方法
 
-发布本地流，更改publish时，同一个client需要先调用unpublish()方法解除当前publish，示例代码：
+发布本地流，示例代码：
 
 ```
 client.publish(Options, onFailure)
 ```
+
+> 注：同一时间不可发布两次，若要再次发布，须 unpublish ，解除当前的 publish 状态，再进行发布。
 
 #### 参数说明
 
@@ -153,14 +162,17 @@ client.publish(Options, onFailure)
 {
   audio: boolean          // 必填，指定是否使用麦克风设备
   video: boolean          // 必填，指定是否使用摄像头设备
-  screen: boolean         // 必填，指定是否为屏幕共享，注意，video 和 screen 不可同时为 true
+  screen: boolean         // 必填，指定是否为屏幕共享，audio, video, screen 不可同时为 true，更不可同时为 false
   microphoneId?: string   // 选填，指定使用的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将使用默认麦克风设备
   cameraId?: string       // 选填，指定使用的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将使用默认的摄像头设备
-  extensionId?: string    // 选填，指定使用的 Chrome 插件的 extensionId，可使72版本以下的 Chrome 浏览器进行屏幕共享。
+  extensionId?: string    // 选填，指定使用的 Chrome 插件的 extensionId，可使 72 以下版本的 Chrome 浏览器进行屏幕共享。
 }
 ```
 
-> 对于屏幕共享各浏览器兼容性，请参见 [getDisplayMedia](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia) 。特别地，使用 Chrome 浏览器屏幕共享 Tab（浏览器标签）页时，有分享 Tab 页中音频功能（分享弹出框左下脚勾选，Chrome 74 版本以上可不用安装插件）。若用户选择屏幕共享的为一个 Tab 页，且发布时 audio 的值为 false，那么 SDK 将使用 Tab 页中的音频进行推送，否则 SDK 将仍旧推送麦克风的音频或不推送音频。
+> 对于屏幕共享各浏览器兼容性，请参见 [getDisplayMedia](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia) 。
+> 特别地，使用 Chrome 浏览器屏幕共享 Tab（浏览器标签）页时，有分享 Tab 页中音频功能（分享弹出框左下脚勾选，Chrome 74 及以上版本可不用安装插件）。
+>
+> 此外，可使用 audio, video, screen 的配置组合来满足不同场景，如 audio = true, video = false, screen = true 时，可发布麦克风的音频以及屏幕共享的视频流；audio = false，video = true, screen = true 时，可发布屏幕共享中的音频（当屏幕共享有音频时）以及摄像头采集的视频流；audio = false, video = false, screen = true 时，可发布屏幕共享中的音频以及视频（当屏幕共享有音频时）流。
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
@@ -286,11 +298,17 @@ client.off(EventType, Listener)
 
 ### 10. muteAudio 方法
 
-关闭本地流的音频，示例代码：
+关闭流的音频，示例代码：
 
 ```
-const result = client.muteAudio()
+const result = client.muteAudio(StreamId)
 ```
+
+#### 参数说明
+
+- StreamId: string 类型，选传，指流的 ID
+
+> 注：StreamId 不传时，为 mute 发布流的音频，并会通知到其他用户；传时，为 mute 订阅流的音频，此时只是影响到本地订阅的流的音频，并不是指远端流推送或不推送音频。
 
 #### 返回值说明
 
@@ -301,11 +319,17 @@ const result = client.muteAudio()
 
 ### 11. unmuteAudio 方法
 
-启用本地流的音频，示例代码：
+启用流的音频，示例代码：
 
 ```
-const result = client.unmuteAudio()
+const result = client.unmuteAudio(StreamId)
 ```
+
+#### 参数说明
+
+- StreamId: string 类型，选传，指流的 ID
+
+> 注：StreamId 不传时，为 unmute 发布流的音频，并会通知到其他用户；传时，为 unmute 订阅流的音频，此时只是影响到本地订阅的流的音频，并不是指远端流推送或不推送音频。
 
 #### 返回值说明
 
@@ -316,11 +340,15 @@ const result = client.unmuteAudio()
 
 ### 12. muteVideo 方法
 
-关闭本地流的视频，示例代码：
+关闭流的视频，示例代码：
 
 ```
-const result = client.muteVideo()
+const result = client.muteVideo(StreamId)
 ```
+
+- StreamId: string 类型，选传，指流的 ID
+
+> 注：StreamId 不传时，为 mute 发布流的视频，并会通知到其他用户；传时，为 mute 订阅流的视频，此时只是影响到本地订阅的流的视频，并不是指远端流推送或不推送视频。
 
 #### 返回值说明
 
@@ -331,11 +359,15 @@ const result = client.muteVideo()
 
 ### 13. unmuteVideo 方法
 
-启用本地流的视频，示例代码：
+启用流的视频，示例代码：
 
 ```
-const result = client.unmuteVideo()
+const result = client.unmuteVideo(StreamId)
 ```
+
+- StreamId: string 类型，选传，指流的 ID
+
+> 注：StreamId 不传时，为 unmute 发布流的视频，并会通知到其他用户；传时，为 unmute 订阅流的视频，此时只是影响到本地订阅的流的视频，并不是指远端流推送或不推送视频。
 
 #### 返回值说明
 
@@ -375,6 +407,8 @@ WaterMarkOptions: object 类型，选传，添加的水印相关配置，类型�
   isAverage: boolean, // 选传，是否均分，默认为 true
 }
 ```
+
+> 注：关于 template, 请参见详细的模板说明 [录制混流风格](https://github.com/UCloudDocs/urtc/blob/master/cloudRecord/RecordLaylout.md)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -477,7 +511,7 @@ const result = client.getStream()
 
 #### 返回值说明
 
-- result: Stream 类型，Stream 类型说明如下
+- result: Stream 类型或 undefined（未发布时），Stream 类型说明如下
 
 <a name='stream'></a>
 
@@ -552,6 +586,8 @@ const result = client.getRemoteMediaStream(StreamId)
 
 获取麦克风设备，示例代码：
 
+> 注：若站点未经过用户授权浏览器使用麦克风设备，会弹出提示要求用户进行授权
+
 ```
 client.getMicrophones(onSuccess, onFailure)
 ```
@@ -581,6 +617,8 @@ Err 为错误信息
 
 获取摄像头设备，示例代码：
 
+> 注：若站点未经过用户授权浏览器使用摄像头设备，会弹出提示要求用户进行授权
+
 ```
 client.getCameras(onSuccess, onFailure)
 ```
@@ -609,6 +647,8 @@ Err 为错误信息
 ### 24. getLoudspeakers 方法
 
 获取音响/声音输出设备，示例代码：
+
+> 注：若站点未经过用户授权浏览器使用音频设备，会弹出提示要求用户进行授权
 
 ```
 client.getLoudspeakers(onSuccess, onFailure)
@@ -813,13 +853,194 @@ function(Err) {}
 ```
 Err 为错误信息
 
+<a name="client-preloadEffect"></a>
+
+### 31. preloadEffect 方法
+
+预加载音效资源，示例代码：
+
+```
+client.preloadEffect(EffectId, FilePath, callback)
+```
+
+#### 参数说明
+
+- EffectId: number 类型，必传，指音效资源 ID，须唯一，用于区分不同的音效资源
+
+- FilePath: string 类型，必传，指音效文件的路径，当为网络文件时，请传相应的 URL（注意跨域访问问题），此外，音效文件不应过大，否则可能会影响通信的流畅性
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+<a name="client-unloadEffect"></a>
+
+### 32. unloadEffect 方法
+
+卸载音效资源，示例代码：：
+
+```
+client.unloadEffect(EffectId)
+```
+
+#### 参数说明
+
+- EffectId: number 类型，必传，指音效资源 ID，须唯一，用于区分不同的音效资源
+
+<a name="client-playEffect"></a>
+
+### 33. playEffect 方法
+
+播放音效，示例代码：
+
+```
+client.playEffect(EffectOptions, callback)
+```
+
+#### 参数说明
+
+<a name='effectoptions'></a>
+
+- EffectOptions: object 类型，必传，详细类型说明如下
+
+```
+{
+  effectId: number    // 必填，音效资源 ID
+  filePath?: string   // 选填，音效文件的路径，当音效文件已经使用 preloadEffect 进行预加载后，可不填此项
+  loop?: boolean      // 选填，是否循环播放音效，默认不循环
+  playTime?: number   // 选填，音效从 playTime 秒处开始播放，默认为0，即从头开始
+  replace?: boolean   // 选填，是否替换当前音轨，即只使用音效，不混音，默认不替换
+}
+```
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+<a name="client-pauseEffect"></a>
+
+### 34. pauseEffect 方法
+
+暂停播放音效，示例代码：
+
+```
+client.pauseEffect(Options, callback)
+```
+
+#### 参数说明
+
+- Options: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  effectId: number    // 必填，音效资源 ID
+}
+```
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+<a name="client-resumeEffect"></a>
+
+### 35. resumeEffect 方法
+
+恢复播放音效，示例代码：
+
+```
+client.resumeEffect(Options, callback)
+```
+
+#### 参数说明
+
+- Options: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  effectId: number    // 必填，音效资源 ID
+}
+```
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+
+<a name="client-stopEffect"></a>
+
+### 36. stopEffect 方法
+
+停止播放音效，示例代码：
+
+```
+client.stopEffect(Options, callback)
+```
+
+#### 参数说明
+
+- Options: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  effectId: number    // 必填，音效资源 ID
+}
+```
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+<a name="client-setEffectVolume"></a>
+
+### 37. setEffectVolume 方法
+
+设置正在播放的音效的音量大小，示例代码：
+
+```
+client.setEffectVolume(Options, callback)
+```
+
+#### 参数说明
+
+- Options: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  effectId: number    // 必填，音效资源 ID
+  volume: number      // 必填，音量大小，取值范围 [0, 100]
+}
+```
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
 ----
 
 <a name='getdevices'></a>
 
 ## 二、getDevices 方法
 
-用于获取当前浏览器可访问的音视频设备的设备信息，包括麦克风、摄像头、视频输出设备
+用于获取当前浏览器可访问的音视频设备的设备信息，包括麦克风、摄像头、音频输出设备
+
+> 注：若站点未经过用户授权浏览器使用麦克风、摄像头、音频输出设备，会弹出提示要求用户进行授权
 
 ```
 UCloudRTC.getDevices(onSuccess, onFailure)
