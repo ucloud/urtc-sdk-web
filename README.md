@@ -46,17 +46,20 @@ Client 类包含以下方法：
 * [getLoudspeakers 方法](#client-getloudspeakers)
 * [setVideoProfile 方法](#client-setvideoprofile)
 * [switchDevice 方法](#client-switchdevice)
+* [switchScreen 方法](#client-switchscreen)
+* [switchImage 方法](#client-switchimage)
 * [getAudioVolume 方法](#client-getaudiovolume)
 * [getAudioStats 方法](#client-getaudiostats)
 * [getVideoStats 方法](#client-getvideostats)
 * [getNetworkStats 方法](#client-getnetworkstats)
-* [preloadEffect 方法](#client-preloadEffect)
-* [unloadEffect 方法](#client-unloadEffect)
-* [playEffect 方法](#client-playEffect)
-* [pauseEffect 方法](#client-pauseEffect)
-* [resumeEffect 方法](#client-resumeEffect)
-* [stopEffect 方法](#client-stopEffect)
-* [setEffectVolume 方法](#client-setEffectVolume)
+* [preloadEffect 方法](#client-preloadeffect)
+* [unloadEffect 方法](#client-unloadeffect)
+* [playEffect 方法](#client-playeffect)
+* [pauseEffect 方法](#client-pauseeffect)
+* [resumeEffect 方法](#client-resumeeffect)
+* [stopEffect 方法](#client-stopeffect)
+* [setEffectVolume 方法](#client-seteffectvolume)
+* [snapshot 方法](#client-snapshot)
 
 <a name="client-constructor"></a>
 
@@ -703,7 +706,7 @@ Err 为错误信息
 
 ### 26. switchDevice 方法
 
-当本地流已经发布，可通过此方法来改变当前正在使用的音频或视频采集设备，示例代码：
+当本地流已经发布，可通过此方法在不中断当前发布的情况下，用指定的音视频设备采集的音视频流代替正在发布的音视频流，示例代码：
 
 ```
 client.switchDevice(DeviceType, DeviceId, onSuccess, onFailure)
@@ -726,9 +729,58 @@ function(Err) {}
 Err 为错误信息
 
 
+<a name="client-switchscreen"></a>
+
+### 27. switchScreen 方法
+
+当本地流已经发布，可通过此方法在不中断当前发布的情况下，用屏幕共享来代替正在发布的音频（若屏幕共享包含音频）视频流，示例代码：
+
+```
+client.switchScreen(onSuccess, onFailure)
+```
+
+#### 参数说明
+- onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
+
+```
+function onSuccess() {}
+```
+- onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
+
+```
+function(Err) {}
+```
+Err 为错误信息
+
+
+<a name="client-switchimage"></a>
+
+### 28. switchImage 方法
+
+当本地流已经发布，可通过此方法在不中断当前发布的情况下，用静态图片来代替正在发布的视频流，示例代码：
+
+```
+client.switchImage(onSuccess, onFailure)
+```
+
+#### 参数说明
+- onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
+
+```
+function onSuccess() {}
+```
+- onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
+
+```
+function(Err) {}
+```
+Err 为错误信息
+
+
+
 <a name="client-getaudiovolume"></a>
 
-### 27. getAudioVolume 方法
+### 29. getAudioVolume 方法
 
 获取流的音量大小，返回值范围 [0,100]，示例代码：
 
@@ -743,7 +795,7 @@ client.getAudioVolume(StreamId)
 
 <a name="client-getaudiostats"></a>
 
-### 28. getAudioStats 方法
+### 30. getAudioStats 方法
 
 获取流的音频状态，示例代码：
 
@@ -781,7 +833,7 @@ Err 为错误信息
 
 <a name="client-getvideostats"></a>
 
-### 29. getVideoStats 方法
+### 31. getVideoStats 方法
 
 获取流的视频状态，示例代码：
 
@@ -821,7 +873,7 @@ Err 为错误信息
 
 <a name="client-getnetworkstats"></a>
 
-### 30. getNetworkStats 方法
+### 32. getNetworkStats 方法
 
 获取流的网络状态，示例代码：
 
@@ -853,9 +905,9 @@ function(Err) {}
 ```
 Err 为错误信息
 
-<a name="client-preloadEffect"></a>
+<a name="client-preloadeffect"></a>
 
-### 31. preloadEffect 方法
+### 33. preloadEffect 方法
 
 预加载音效资源，示例代码：
 
@@ -876,9 +928,9 @@ function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
 
-<a name="client-unloadEffect"></a>
+<a name="client-unloadeffect"></a>
 
-### 32. unloadEffect 方法
+### 34. unloadEffect 方法
 
 卸载音效资源，示例代码：：
 
@@ -890,9 +942,9 @@ client.unloadEffect(EffectId)
 
 - EffectId: number 类型，必传，指音效资源 ID，须唯一，用于区分不同的音效资源
 
-<a name="client-playEffect"></a>
+<a name="client-playeffect"></a>
 
-### 33. playEffect 方法
+### 35. playEffect 方法
 
 播放音效，示例代码：
 
@@ -922,9 +974,9 @@ function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
 
-<a name="client-pauseEffect"></a>
+<a name="client-pauseeffect"></a>
 
-### 34. pauseEffect 方法
+### 36. pauseEffect 方法
 
 暂停播放音效，示例代码：
 
@@ -949,9 +1001,9 @@ function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
 
-<a name="client-resumeEffect"></a>
+<a name="client-resumeeffect"></a>
 
-### 35. resumeEffect 方法
+### 37. resumeEffect 方法
 
 恢复播放音效，示例代码：
 
@@ -977,9 +1029,9 @@ function callback(Err) {}
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
 
 
-<a name="client-stopEffect"></a>
+<a name="client-stopeffect"></a>
 
-### 36. stopEffect 方法
+### 38. stopEffect 方法
 
 停止播放音效，示例代码：
 
@@ -1004,9 +1056,9 @@ function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
 
-<a name="client-setEffectVolume"></a>
+<a name="client-seteffectvolume"></a>
 
-### 37. setEffectVolume 方法
+### 39. setEffectVolume 方法
 
 设置正在播放的音效的音量大小，示例代码：
 
@@ -1031,6 +1083,22 @@ client.setEffectVolume(Options, callback)
 function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+<a name="client-snapshot"></a>
+
+### 40. snapshot 方法
+
+可将正在播放的视频截屏显示到页面，或保存图片到本地，示例代码：
+
+```
+const image = client.snapshot(VideoElement, Download);
+```
+
+#### 参数说明
+
+- VideoElement: object 类型, 详见 [HTMLVideoElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLVideoElement)
+
+- Download: boolean 类型，选传，传 true 时，可将截屏保存为本地图片，默认为不保存图片到本地
 
 ----
 
