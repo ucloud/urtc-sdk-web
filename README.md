@@ -10,7 +10,7 @@ UCloudRTC 包含以下方法、类或对象：
 * [Logger 对象](#logger)
 * [setServers 方法](#setservers)
 
-> 注： 想要了解使用此 SDK 的简单步骤，请查看 [使用说明](./Manual.md) 
+> 注： 想要了解使用此 SDK 的简单步骤，请查看 [使用说明](./Manual.md)
 
 ---
 
@@ -396,6 +396,7 @@ client.startRecording(RecordOptions, onSuccess, onFailure)
   bucket: string  // 必传，存储的 bucket, URTC 使用 UCloud 的 UFile 产品进行在存储，相关信息见控制台操作文档
   region: string  // 必传，存储服务所在的地域
   waterMark: WaterMarkOptions // 选传，水印的相关配置，不需要添加水印时，不用填写
+  mixStream: MixStreamOptions // 选传，混流的相关配置，无混流时，不用填写
 }
 ```
 
@@ -406,12 +407,21 @@ WaterMarkOptions: object 类型，选传，添加的水印相关配置，类型�
   position: 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom' // 选传，指定水印的位置，前面四种类型分别对应 左上，左下，右上，右下，默认 'left-top'
   type: 'time' | 'image' | 'text' // 选传，水印类型，分别对应时间水印、图片水印、文字水印，默认为 'time'
   remarks:  string,   // 选传，水印备注，当为时间水印时，传空字符串，当为图片水印时，此处需为图片的 URL（此时必传），当为文字水印时，此处需为水印文字
-  template: number,   // 选传，1-9 对应的模板，默认为 1
-  isAverage: boolean, // 选传，是否均分，默认为 true
 }
 ```
 
-> 注：关于 template, 请参见详细的模板说明 [录制混流风格](https://github.com/UCloudDocs/urtc/blob/master/cloudRecord/RecordLaylout.md)
+MixStreamOptions: object 类型，选传，混流相关配置，类型说明如下
+
+```
+{
+  uid: string,        // 选传，指定某用户的流作为主画面，不传时，默认为当前开启录制的用户的流作为主画面
+  type: 'desktop' | 'camera',   // 选传，指定主画面使用的流的媒体类型（当同一用户推多路流时），不传时，默认使用 camera
+  template: number,   // 选传，指定混流布局模板，可使用 1-9 对应的模板，默认为 1
+  isAverage: boolean, // 选传，是否均分，均分对应平铺风格，不均分对应垂直风格，默认为 true
+}
+```
+
+> 注：关于混流风格, 请参见详细的模板说明 [录制混流风格](https://github.com/UCloudDocs/urtc/blob/master/cloudRecord/RecordLaylout.md)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -760,10 +770,13 @@ Err 为错误信息
 当本地流已经发布，可通过此方法在不中断当前发布的情况下，用静态图片来代替正在发布的视频流，示例代码：
 
 ```
-client.switchImage(onSuccess, onFailure)
+client.switchImage(FilePath, onSuccess, onFailure)
 ```
 
 #### 参数说明
+
+- FilePath: string 类型，必传，指图片文件的路径（URL)，支持以下图片格式：PNG，JPEG 以及浏览器支持的其他图片格式，注：当图片文件为其他站点的网络文件时，可能会有跨域访问问题
+
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
 ```
@@ -919,7 +932,7 @@ client.preloadEffect(EffectId, FilePath, callback)
 
 - EffectId: number 类型，必传，指音效资源 ID，须唯一，用于区分不同的音效资源
 
-- FilePath: string 类型，必传，指音效文件的路径，当为网络文件时，请传相应的 URL（注意跨域访问问题），此外，音效文件不应过大，否则可能会影响通信的流畅性
+- FilePath: string 类型，必传，指音效文件的路径（URL)，支持以下音频格式：MP3，AAC 以及浏览器支持的其他音频格式。此外，音效文件不应过大，否则可能会影响通信的流畅性，注：当音效文件为其他站点的网络文件时，可能会有跨域访问问题
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
