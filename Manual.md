@@ -71,8 +71,8 @@ client.joinRoom(roomId, userId, () => {
 ## 4. 取消发布本地流或取消订阅远端流
 
 ```
-client.unpublish();
-client.unsubscibe(streamId);
+client.unpublish(pubStreamId);
+client.unsubscibe(subStreamId);
 ```
 
 ## 5. 退出房间

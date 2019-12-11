@@ -38,9 +38,12 @@ Client 类包含以下方法：
 * [getUser 方法](#client-getuser)
 * [getUsers 方法](#client-getusers)
 * [getStream 方法](#client-getstream)
-* [getStreams 方法](#client-getstreams)
-* [getLocalMediaStream 方法](#client-getlocalmediastream)
-* [getRemoteMediaStream 方法](#client-getremotemediastream)
+* [getLocalStreams 方法](#client-getlocalstreams)
+* [getRemoteStreams 方法](#client-getremotestreams)
+* [getStreams 方法 - 已废弃](#client-getstreams)
+* [getMediaStream 方法](#client-getmediastream)
+* [getLocalMediaStream 方法 - 已废弃](#client-getlocalmediastream)
+* [getRemoteMediaStream 方法 - 已废弃](#client-getremotemediastream)
 * [getMicrophones 方法](#client-getmicrophones)
 * [getCameras 方法](#client-getcameras)
 * [getLoudspeakers 方法](#client-getloudspeakers)
@@ -149,7 +152,7 @@ Err 为错误信息
 
 ### 4. publish 方法
 
-发布本地流，示例代码：
+发布本地流，最多同时可发布条流（且摄像头，屏幕共享各一条，不可同时为同一类），示例代码：
 
 ```
 client.publish(Options, onFailure)
@@ -191,10 +194,12 @@ Err 为错误信息
 取消发布本地流，示例代码：
 
 ```
-client.unpublish(onSuccess, onFailure)
+client.unpublish(StreamId, onSuccess, onFailure)
 ```
 
 #### 参数说明
+- StreamId: string 类型，选传，不传时，若仅有一条本地流，那么该流将被取消发布，若有两条本地流，那么最早发布的那条本地流将被取消发布
+
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
 ```
@@ -311,7 +316,7 @@ const result = client.muteAudio(StreamId)
 
 - StreamId: string 类型，选传，指流的 ID
 
-> 注：StreamId 不传时，为 mute 发布流的音频，并会通知到其他用户；传时，为 mute 订阅流的音频，此时只是影响到本地订阅的流的音频，并不是指远端流推送或不推送音频。
+> 注：StreamId 不传时，为 mute 第一条发布流的音频，并会通知到其他用户；传时，为 mute StreamId 对应的发布或订阅流的音频，若为订阅流时，只是影响到本地订阅的流的音频，并不是指远端流推送或不推送音频。
 
 #### 返回值说明
 
@@ -332,7 +337,7 @@ const result = client.unmuteAudio(StreamId)
 
 - StreamId: string 类型，选传，指流的 ID
 
-> 注：StreamId 不传时，为 unmute 发布流的音频，并会通知到其他用户；传时，为 unmute 订阅流的音频，此时只是影响到本地订阅的流的音频，并不是指远端流推送或不推送音频。
+> 注：StreamId 不传时，为 unmute 第一条发布流的音频，并会通知到其他用户；传时，为 unmute StreamId 对应的发布或订阅流的音频，若为订阅流时，只是影响到本地订阅的流的音频，并不是指远端流推送或不推送音频。
 
 #### 返回值说明
 
@@ -351,7 +356,7 @@ const result = client.muteVideo(StreamId)
 
 - StreamId: string 类型，选传，指流的 ID
 
-> 注：StreamId 不传时，为 mute 发布流的视频，并会通知到其他用户；传时，为 mute 订阅流的视频，此时只是影响到本地订阅的流的视频，并不是指远端流推送或不推送视频。
+> 注：StreamId 不传时，为 mute 第一条发布流的视频，并会通知到其他用户；传时，为 mute 对应的发布或订阅流的视频，若为订阅流时，只是影响到本地订阅的流的视频，并不是指远端流推送或不推送视频。
 
 #### 返回值说明
 
@@ -370,7 +375,7 @@ const result = client.unmuteVideo(StreamId)
 
 - StreamId: string 类型，选传，指流的 ID
 
-> 注：StreamId 不传时，为 unmute 发布流的视频，并会通知到其他用户；传时，为 unmute 订阅流的视频，此时只是影响到本地订阅的流的视频，并不是指远端流推送或不推送视频。
+> 注：StreamId 不传时，为 unmute 发布流的视频，并会通知到其他用户；传时，为 unmute 对应的发布或订阅流的视频，若为订阅流时，只是影响到本地订阅的流的视频，并不是指远端流推送或不推送视频。
 
 #### 返回值说明
 
@@ -415,7 +420,7 @@ MixStreamOptions: object 类型，选传，混流相关配置，类型说明如�
 ```
 {
   uid?: string,        // 选传，指定某用户的流作为主画面，不传时，默认为当前开启录制的用户的流作为主画面
-  type?: 'desktop' | 'camera',   // 选传，指定主画面使用的流的媒体类型（当同一用户推多路流时），不传时，默认使用 camera
+  type?: 'screen' | 'camera',   // 选传，指定主画面使用的流的媒体类型（当同一用户推多路流时），不传时，默认使用 camera
   width?: number,      // 选传，设置混流后视频的宽度，不传时，默认为 1280
   height?: number,     // 选传，设置混流后视频的高度，不传时，默认为 720
   template?: number,   // 选传，指定混流布局模板，可使用 1-9 对应的模板，默认为 1
@@ -518,15 +523,19 @@ const result = client.getUsers()
 
 ### 18. getStream 方法
 
-获取本地发布流的信息，示例代码：
+获取单条发布（本地）/订阅（远端）流的信息，示例代码：
 
 ```
-const result = client.getStream()
+const result = client.getStream(StreamId)
 ```
+
+#### 参数说明
+
+- StreamId: string 类型，选传，流的 ID，当不传时，默认返回第一条发布流（当有两条发布流时）
 
 #### 返回值说明
 
-- result: Stream 类型或 undefined（未发布时），Stream 类型说明如下
+- result: Stream 类型或 undefined（未找到对应流），Stream 类型说明如下
 
 <a name='stream'></a>
 
@@ -541,58 +550,78 @@ Stream:
   audio: boolean                  // 是否包含视频
   muteAudio: boolean              // 音频是否静音
   muteVideo: boolean              // 视频是否静音
+  mediaType?: 'camera'|'screen'   // 流的媒体类型，当流为发布（本地）流时，存在两种媒体类型 'camera' 及 'screen'，且一种类型的流只能存在一个，以此来区分不同类型的发布流
   mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
 }
 ```
 
 
-<a name="client-getstreams"></a>
+<a name="client-getlocalstreams"></a>
 
-### 19. getStreams 方法
+### 19. getLocalStreams 方法
 
-获取订阅流（远端流）的信息，示例代码：
+获取所有发布流（本地流）的信息，示例代码：
 
 ```
-const result = client.getStreams()
+const result = client.getLocalStreams()
 ```
 
 #### 返回值说明
 
 - result: Stream 类型的数组，Stream 类型说明见 [Stream](#stream)
 
+<a name="client-getremotestreams"></a>
 
-<a name="client-getlocalmediastream"></a>
+### 20. getRemoteStreams 方法
 
-### 20. getLocalMediaStream 方法
-
-获取本地流对应的媒体流后，可通过 HtmlMediaElement（如：[video](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video)）进行播放，示例代码：
+获取所有订阅流（远端流）的信息，示例代码：
 
 ```
-const result = client.getLocalMediaStream()
+const result = client.getRemoteStreams()
 ```
 
 #### 返回值说明
 
-- result: MediaStream 类型，类型说明见 [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream)
+- result: Stream 类型的数组，Stream 类型说明见 [Stream](#stream)
+
+<a name="client-getstreams"></a>
+
+### getStreams 方法 - 已废弃
+
+获取订阅流（远端流）的信息，请使用 [getRemoteStreams](#client-getremotestreams)
 
 
-<a name="client-getremotemediastream"></a>
+<a name="client-getmediastream"></a>
 
-### 21. getRemoteMediaStream 方法
+### 21. getMediaStream 方法
 
-获取订阅流（远端流）对应的媒体流，示例代码：
+获取发布（本地）/ 订阅（远端）流对应的媒体流，获取后，可通过 HtmlMediaElement（如：[video](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video)）进行播放，示例代码：
 
 ```
-const result = client.getRemoteMediaStream(StreamId)
+const result = client.getMediaStream(StreamId)
 ```
 
 #### 参数说明
 
-- StreamId: string 类型，必传，流的 ID
+- StreamId: string 类型，选传，流的 ID，当不传时，默认返回第一条发布流（当有两条发布流时），传时，返回 StreamId 对应的发布或订阅流的的媒体流
 
 #### 返回值说明
 
 - result: MediaStream 类型，类型说明见 [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream)
+
+
+<a name="client-getlocalmediastream"></a>
+
+### getLocalMediaStream 方法 - 已废弃
+
+获取发布流对应的媒体流，请使用 [getMediaStream](#client-getmediastream)
+
+
+<a name="client-getremotemediastream"></a>
+
+### getRemoteMediaStream 方法 - 已废弃
+
+获取订阅流对应的媒体流，请使用 [getMediaStream](#client-getmediastream)
 
 
 <a name="client-getmicrophones"></a>
@@ -718,15 +747,23 @@ Err 为错误信息
 
 ### 26. switchDevice 方法
 
-当本地流已经发布，可通过此方法在不中断当前发布的情况下，用指定的音视频设备采集的音视频流代替正在发布的音视频流，示例代码：
+当发布（本地）流已经发布，可通过此方法在不中断当前发布的情况下，用指定的音视频设备采集的音视频流代替正在发布的音视频流，示例代码：
 
 ```
-client.switchDevice(DeviceType, DeviceId, onSuccess, onFailure)
+client.switchDevice(SwitchDeviceOptions, onSuccess, onFailure)
 ```
 
 #### 参数说明
-- DeviceType: string 类型，有 'audio' | 'video' 两种可选
-- DeviceId: string 类型，设备ID，可通过 sdk 的 getDevices 方法或 client 的 getMicrophones 和 getCameras 方法获取
+
+- SwitchDeviceOptions: object 类型，必传，详细类型说明如下
+
+```
+{
+  streamId?: string       // 选填，发布流的 ID，不填时，为第一条发布流
+  type: 'audio' | 'video' // 必填，指定音频或视频设备
+  deviceId: string        // 必填，设备 ID
+}
+```
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -748,10 +785,13 @@ Err 为错误信息
 当本地流已经发布，可通过此方法在不中断当前发布的情况下，用屏幕共享来代替正在发布的音频（若屏幕共享包含音频）视频流，示例代码：
 
 ```
-client.switchScreen(onSuccess, onFailure)
+client.switchScreen(StreamId, onSuccess, onFailure)
 ```
 
 #### 参数说明
+
+- StreamId: string 类型，选传，不传时，为第一条发布流
+
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
 ```
@@ -772,12 +812,19 @@ Err 为错误信息
 当本地流已经发布，可通过此方法在不中断当前发布的情况下，用静态图片来代替正在发布的视频流，示例代码：
 
 ```
-client.switchImage(FilePath, onSuccess, onFailure)
+client.switchImage(SwitchImageOptions, onSuccess, onFailure)
 ```
 
 #### 参数说明
 
-- FilePath: string 类型，必传，指图片文件的路径（URL)，支持以下图片格式：PNG，JPEG 以及浏览器支持的其他图片格式，注：当图片文件为其他站点的网络文件时，可能会有跨域访问问题
+- SwitchImageOptions: object 类型，必传，详细类型说明如下
+
+```
+{
+  streamId?: string       // 选填，发布流的 ID，不填时，为第一条发布流
+  filePath: string        // 必填，指图片文件的路径（URL)，支持以下图片格式：PNG，JPEG 以及浏览器支持的其他图片格式，注：当图片文件为其他站点的网络文件时，可能会有跨域访问问题
+}
+```
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -792,7 +839,6 @@ function(Err) {}
 Err 为错误信息
 
 
-
 <a name="client-getaudiovolume"></a>
 
 ### 29. getAudioVolume 方法
@@ -805,7 +851,7 @@ client.getAudioVolume(StreamId)
 
 #### 参数说明
 
-- StreamId: string 类型，可选，本地或远端流的 ID 即 [Stream](#stream) 的 sid 属性值，当不传时，默认获取本地流的音量大小
+- StreamId: string 类型，选传，本地或远端流的 ID 即 [Stream](#stream) 的 sid 属性值，当不传时，默认获取第一条本地流的音量大小
 
 
 <a name="client-getaudiostats"></a>
@@ -820,7 +866,7 @@ client.getAudioStats(StreamId, onSuccess, onFailure)
 
 #### 参数说明
 
-- StreamId: string 类型，可选，本地或远端流的 ID 即 [Stream](#stream) 的 sid 属性值，当不传时，默认获取本地流的音频状态
+- StreamId: string 类型，选传，本地或远端流的 ID 即 [Stream](#stream) 的 sid 属性值，当不传时，默认获取第一条本地流的音频状态
   
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -858,7 +904,7 @@ client.getVideoStats(StreamId, onSuccess, onFailure)
 
 #### 参数说明
 
-- StreamId: string 类型，可选，本地或远端流的 ID 即 [Stream](#stream) 的 sid 属性值，当不传时，默认获取本地流的视频状态
+- StreamId: string 类型，选传，本地或远端流的 ID 即 [Stream](#stream) 的 sid 属性值，当不传时，默认获取第一条本地流的视频状态
   
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -898,7 +944,7 @@ client.getNetworkStats(StreamId, onSuccess, onFailure)
 
 #### 参数说明
 
-- StreamId: string 类型，可选，本地或远端流的 ID 即 [Stream](#stream) 的 sid 属性值，当不传时，默认获取本地流的网络状态
+- StreamId: string 类型，可选，本地或远端流的 ID 即 [Stream](#stream) 的 sid 属性值，当不传时，默认获取第一条本地流的网络状态
   
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -975,6 +1021,7 @@ client.playEffect(EffectOptions, callback)
 
 ```
 {
+  streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
   filePath?: string   // 选填，音效文件的路径，当音效文件已经使用 preloadEffect 进行预加载后，可不填此项
   loop?: boolean      // 选填，是否循环播放音效，默认不循环
@@ -1005,6 +1052,7 @@ client.pauseEffect(Options, callback)
 
 ```
 {
+  streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
 }
 ```
@@ -1032,6 +1080,7 @@ client.resumeEffect(Options, callback)
 
 ```
 {
+  streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
 }
 ```
@@ -1060,6 +1109,7 @@ client.stopEffect(Options, callback)
 
 ```
 {
+  streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
 }
 ```
@@ -1087,6 +1137,7 @@ client.setEffectVolume(Options, callback)
 
 ```
 {
+  streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
   volume: number      // 必填，音量大小，取值范围 [0, 100]
 }
@@ -1103,17 +1154,40 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 ### 40. snapshot 方法
 
-可将正在播放的视频截屏显示到页面，或保存图片到本地，示例代码：
+可将指定的发布（本地）/订阅（远端）流截屏用于页面展示，或下载截屏图片，示例代码：
 
 ```
-const image = client.snapshot(VideoElement, Download);
+client.snapshot(SnapshotOptions, onSuccess, onFailure);
 ```
+
+> 注：为保证 API 的易用性，此 API 进行了重新设计，由于无法做到向前兼容，请使用 1.3.10 及以前包含此功能版本的用户调整调用方式。
 
 #### 参数说明
 
-- VideoElement: object 类型, 详见 [HTMLVideoElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLVideoElement)
+- SnapshotOptions: object 类型，选传，详细的类型说明如下
 
-- Download: boolean 类型，选传，传 true 时，可将截屏保存为本地图片，默认为不保存图片到本地
+```
+{
+  streamId?: string             // 选填，发布/订阅流的 ID，不填时，为第一条发布流，
+  download?: boolean 或 string  // 选填，是否要下载图片，或指定下载图片的文件名，传 true 时，可将截屏下载到本地（文件名自动生成），传非空字符串时，将会以该字符串命名下载时保存到本地的图片名，不传或传 false 或空字符串时，都将不下载图片
+}
+```
+
+- onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
+
+```
+function onSuccess(ImgString) {}
+```
+
+ImgString: string 类型，是图片转化的 base64 编码的 [Data URLs](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/data_URIs)，可将其赋值给 Image 元素 - 详见 [HTMLImageElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLImageElement) 的 src 属性。
+
+
+- onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
+
+```
+function(Err) {}
+```
+Err 为错误信息
 
 #### 返回值说明
 
@@ -1232,7 +1306,7 @@ Logger.setLogLevel(Level)
 
 #### 参数说明
 
-Level: 必传，有 "debug" | "info" | "warn" | "error" 四个日志级别，默认为 "error" 级别
+Level: 必传，有 "debug" | "info" | "warn" | "error" 四个日志级别，默认为 "warn" 级别
 
 <a name='logger-debug'></a>
 
