@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> URTC DEMO PureJS </title>
+    <style type="text/css">
+      video {
+        margin: 6px;
+        width: 300px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>房间号：<span id="roomId"></span></div>
+    <div>当前用户ID：<span id="userId"></span></div>
+    <br/>
+    <div>本地音视频</div>
+    <div>
+      <video id="pusher" autoplay playsinline></video>
+    </div>
+    <br/>
+    <div>远端音视频</div>
+    <div id="pullers"></div>
+    <br/>
+    <a href="https://github.com/ucloud/urtc-sdk-web" target="_blank">API 文档请看这里</a>
+    <script type="text/javascript" src="https://ucloud.github.io/urtc-sdk-web/lib/index.js"></script>
+    <script>
+      window.onload = function() {
+        const pusherElem = document.querySelector('#pusher');
+        const pullersElem = document.querySelector('#pullers');
+        const roomElem = document.querySelector('#roomId');
+        const userElem = document.querySelector('#userId');
+
+        const appId = '';   // "urtc-xxxxxx";
+        const appKey = '';  // "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+        const roomId = "xxxx";  // "xxxx"
+        const userId = Math.floor(Math.random() * 1000000).toString();
+        if (!appId || !appKey) {
+          alert('请先设置 AppId 和 AppKey');
+          return;
+        }
+        if (!roomId) {
+          alert('请先设置roomId');
+          return;
+        }
+
+        roomElem.innerHTML = roomId;
+        userElem.innerHTML = userId;
+
+        console.log('UCloudRTC Version: ', UCloudRTC.version);
+
+        const token = UCloudRTC.generateToken(appId, appKey, roomId, userId);
+        const client = new UCloudRTC.Client(appId, token, {type: 'rtc', role: 'push-and-pull'});
+
+        // 监听 publish 成功的事件
+        client.on('stream-published', function(stream) {
+          console.log('成功发布流 ', stream);
+          pusherElem.srcObject = stream.mediaStream;
+        });
+        // 监听 subscribe 成功的事件
+        client.on('stream-subscribed', function(stream) {
+          console.log('成功订阅流 ', stream);
+          const pullerElem = document.createElement('video')
+          pullerElem.id = stream.sid;
+          pullerElem.autoplay = true;
+          pullerElem.playsinline = true;
+          pullerElem.srcObject = stream.mediaStream;
+          pullersElem.append(pullerElem);
+        });
+        // 监听有远端流加入的事件
+        client.on('stream-added', function(stream) {
+          // 当有新的远端流加入后，就订阅该流
+          client.subscribe(stream.sid, function(s) {
+            console.log(`已订阅用户${stream.uid}的流${stream.sid} `, s);
+          }, function(e) {
+            console.log(`订阅用户${stream.uid}的流${stream.sid}失败 `, e);
+          });
+        });
+        client.on('stream-removed', function(stream) {
+          const pullerElem = document.querySelector('#' + stream.sid);
+          pullerElem.srcObject = null;
+          pullersElem.removeChild(pullerElem);
+        });
+
+        // 加入房间
+        client.joinRoom(roomId, userId, function() {
+          console.log('加入房间成功');
+
+          // 加入房间成功后，就发布本地流
+          client.publish(function(e) {
+            console.log(`发布流失败 `, e);
+          });
+        }, function(e) {
+          console.log('加入房间失败 ', e);
+        });
+
+        window.onunload = function () {
+          // 离开页面前，先离开房间
+          client.leaveRoom();
+        }
+      }
+    </script>
+  </body>
+</html>
