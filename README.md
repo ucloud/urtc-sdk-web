@@ -20,49 +20,52 @@ UCloudRTC 包含以下方法、类或对象：
 
 Client 类包含以下方法：
 
-* [构建函数](#client-constructor)
-* [joinRoom 方法](#client-joinroom)
-* [leaveRoom 方法](#client-leaveroom)
-* [publish 方法](#client-publish)
-* [unpublish 方法](#client-unpublish)
-* [subscribe 方法](#client-subscribe)
-* [unsubscribe 方法](#client-unsubscribe)
-* [on 方法](#client-on)
-* [off 方法](#client-off)
-* [muteAudio 方法](#client-muteaudio)
-* [unmuteAudio 方法](#client-unmuteaudio)
-* [muteVideo 方法](#client-mutevideo)
-* [unmuteVideo 方法](#client-unmutevideo)
-* [startRecording 方法](#client-startrecording)
-* [stopRecording 方法](#client-stoprecording)
-* [getUser 方法](#client-getuser)
-* [getUsers 方法](#client-getusers)
-* [getStream 方法](#client-getstream)
-* [getLocalStreams 方法](#client-getlocalstreams)
-* [getRemoteStreams 方法](#client-getremotestreams)
+* [构建函数 - 创建客户端](#client-constructor)
+* [joinRoom 方法 - 加入房间](#client-joinroom)
+* [leaveRoom 方法 - 离开房间](#client-leaveroom)
+* [publish 方法 - 发布本地流](#client-publish)
+* [unpublish 方法 - 取消发布本地流](#client-unpublish)
+* [subscribe 方法 - 订阅远端流](#client-subscribe)
+* [unsubscribe 方法 - 取消订阅远端流](#client-unsubscribe)
+* [on 方法 - 绑定事件处理函数](#client-on)
+* [off 方法 - 解绑事件处理函数](#client-off)
+* [muteAudio 方法 - 禁用音频轨道](#client-muteaudio)
+* [unmuteAudio 方法 - 启用音频轨道](#client-unmuteaudio)
+* [muteVideo 方法 - 禁用视频轨道](#client-mutevideo)
+* [unmuteVideo 方法 - 启用视频轨道](#client-unmutevideo)
+* [startRecording 方法 - 开启服务端录制](#client-startrecording)
+* [stopRecording 方法 - 结束服务端录制](#client-stoprecording)
+* [getUser 方法 - 获取当前用户信息](#client-getuser)
+* [getUsers 方法 - 获取所有远端用户信息](#client-getusers)
+* [getStream 方法 - 获取某条流信息](#client-getstream)
+* [getLocalStreams 方法 - 获取所有本地流信息](#client-getlocalstreams)
+* [getRemoteStreams 方法 - 获取所有远端流信息](#client-getremotestreams)
 * [getStreams 方法 - 已废弃](#client-getstreams)
-* [getMediaStream 方法](#client-getmediastream)
+* [getMediaStream 方法 - 获取某条流对应的媒体流](#client-getmediastream)
 * [getLocalMediaStream 方法 - 已废弃](#client-getlocalmediastream)
 * [getRemoteMediaStream 方法 - 已废弃](#client-getremotemediastream)
-* [getMicrophones 方法](#client-getmicrophones)
-* [getCameras 方法](#client-getcameras)
-* [getLoudspeakers 方法](#client-getloudspeakers)
-* [setVideoProfile 方法](#client-setvideoprofile)
-* [switchDevice 方法](#client-switchdevice)
-* [switchScreen 方法](#client-switchscreen)
-* [switchImage 方法](#client-switchimage)
-* [getAudioVolume 方法](#client-getaudiovolume)
-* [getAudioStats 方法](#client-getaudiostats)
-* [getVideoStats 方法](#client-getvideostats)
-* [getNetworkStats 方法](#client-getnetworkstats)
-* [preloadEffect 方法](#client-preloadeffect)
-* [unloadEffect 方法](#client-unloadeffect)
-* [playEffect 方法](#client-playeffect)
-* [pauseEffect 方法](#client-pauseeffect)
-* [resumeEffect 方法](#client-resumeeffect)
-* [stopEffect 方法](#client-stopeffect)
-* [setEffectVolume 方法](#client-seteffectvolume)
-* [snapshot 方法](#client-snapshot)
+* [getMicrophones 方法 - 获取麦克风设备信息](#client-getmicrophones)
+* [getCameras 方法 - 获取摄像头设备信息](#client-getcameras)
+* [getLoudspeakers 方法 - 获取扬声器设备信息](#client-getloudspeakers)
+* [setVideoProfile 方法 - 设置视频属性](#client-setvideoprofile)
+* [switchDevice 方法 - 切换音视频输入设备](#client-switchdevice)
+* [switchScreen 方法 - 切换屏幕共享](#client-switchscreen)
+* [switchImage 方法 - 切换图片推送](#client-switchimage)
+* [getAudioVolume 方法 - 获取音频音量](#client-getaudiovolume)
+* [setAudioVolume 方法 - 设置音频音量](#client-setaudiovolume)
+* [getAudioStats 方法 - 获取音频状态](#client-getaudiostats)
+* [getVideoStats 方法 - 获取视频状态](#client-getvideostats)
+* [getNetworkStats 方法 - 获取网络状态](#client-getnetworkstats)
+* [preloadEffect 方法 - 预加载音效文件](#client-preloadeffect)
+* [unloadEffect 方法 - 卸载音效文件](#client-unloadeffect)
+* [playEffect 方法 - 开始播放音效](#client-playeffect)
+* [pauseEffect 方法 - 暂停播放音效](#client-pauseeffect)
+* [resumeEffect 方法 - 恢复播放音效](#client-resumeeffect)
+* [stopEffect 方法 - 停止播放音效](#client-stopeffect)
+* [setEffectVolume 方法 - 设置播放音效的音量](#client-seteffectvolume)
+* [snapshot 方法 - 截屏](#client-snapshot)
+* [startPreviewing 方法 - 开启预览](#client-startpreviewing)
+* [stopPreviewing 方法 - 停止预览](#client-stoppreviewing)
 
 <a name="client-constructor"></a>
 
@@ -152,7 +155,7 @@ Err 为错误信息
 
 ### 4. publish 方法
 
-发布本地流，最多同时可发布条流（且摄像头，屏幕共享各一条，不可同时为同一类），示例代码：
+发布本地流，自 1.4.0 版本开始支持同时发布两条流（且摄像头，屏幕共享各一条，不可同时为同一类），示例代码：
 
 ```
 client.publish(Options, onFailure)
@@ -560,7 +563,7 @@ Stream:
 
 ### 19. getLocalStreams 方法
 
-获取所有发布流（本地流）的信息，示例代码：
+获取所有发布流（本地流）的信息（ 1.4.0 及以上版本支持），示例代码：
 
 ```
 const result = client.getLocalStreams()
@@ -574,7 +577,7 @@ const result = client.getLocalStreams()
 
 ### 20. getRemoteStreams 方法
 
-获取所有订阅流（远端流）的信息，示例代码：
+获取所有订阅流（远端流）的信息（ 1.4.0 及以上版本支持），示例代码：
 
 ```
 const result = client.getRemoteStreams()
@@ -588,14 +591,14 @@ const result = client.getRemoteStreams()
 
 ### getStreams 方法 - 已废弃
 
-获取订阅流（远端流）的信息，请使用 [getRemoteStreams](#client-getremotestreams)
+获取订阅流（远端流）的信息，1.4.0 及以上版本请使用 [getRemoteStreams](#client-getremotestreams)
 
 
 <a name="client-getmediastream"></a>
 
 ### 21. getMediaStream 方法
 
-获取发布（本地）/ 订阅（远端）流对应的媒体流，获取后，可通过 HtmlMediaElement（如：[video](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video)）进行播放，示例代码：
+获取发布（本地）/ 订阅（远端）流对应的媒体流（ 1.4.0 及以上版本支持），获取后，可通过 HtmlMediaElement（如：[video](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video)）进行播放，示例代码：
 
 ```
 const result = client.getMediaStream(StreamId)
@@ -614,14 +617,14 @@ const result = client.getMediaStream(StreamId)
 
 ### getLocalMediaStream 方法 - 已废弃
 
-获取发布流对应的媒体流，请使用 [getMediaStream](#client-getmediastream)
+获取发布流对应的媒体流，1.4.0 及以上版本请使用 [getMediaStream](#client-getmediastream)
 
 
 <a name="client-getremotemediastream"></a>
 
 ### getRemoteMediaStream 方法 - 已废弃
 
-获取订阅流对应的媒体流，请使用 [getMediaStream](#client-getmediastream)
+获取订阅流对应的媒体流，1.4.0 及以上版本请使用 [getMediaStream](#client-getmediastream)
 
 
 <a name="client-getmicrophones"></a>
@@ -843,7 +846,7 @@ Err 为错误信息
 
 ### 29. getAudioVolume 方法
 
-获取流的音量大小，返回值范围 [0,100]，示例代码：
+获取音频的音量，返回值范围 [0,100]，示例代码：
 
 ```
 client.getAudioVolume(StreamId)
@@ -853,10 +856,38 @@ client.getAudioVolume(StreamId)
 
 - StreamId: string 类型，选传，本地或远端流的 ID 即 [Stream](#stream) 的 sid 属性值，当不传时，默认获取第一条本地流的音量大小
 
+<a name="client-setaudiovolume"></a>
+
+### 30. setAudioVolume 方法
+
+设置音频的音量，可设置的音量范围 [0,100]，示例代码：
+
+```
+client.setAudioVolume(AudioVolumeOptions, callback)
+```
+
+#### 参数说明
+
+- AudioVolumeOptions: object 类型，必传，详细类型说明如下
+
+```
+{
+  streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
+  volume: number      // 必填，音量大小，取值范围 [0, 100]
+}
+```
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
 
 <a name="client-getaudiostats"></a>
 
-### 30. getAudioStats 方法
+### 31. getAudioStats 方法
 
 获取流的音频状态，示例代码：
 
@@ -894,7 +925,7 @@ Err 为错误信息
 
 <a name="client-getvideostats"></a>
 
-### 31. getVideoStats 方法
+### 32. getVideoStats 方法
 
 获取流的视频状态，示例代码：
 
@@ -934,7 +965,7 @@ Err 为错误信息
 
 <a name="client-getnetworkstats"></a>
 
-### 32. getNetworkStats 方法
+### 33. getNetworkStats 方法
 
 获取流的网络状态，示例代码：
 
@@ -968,7 +999,7 @@ Err 为错误信息
 
 <a name="client-preloadeffect"></a>
 
-### 33. preloadEffect 方法
+### 34. preloadEffect 方法
 
 预加载音效资源，示例代码：
 
@@ -991,7 +1022,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-unloadeffect"></a>
 
-### 34. unloadEffect 方法
+### 35. unloadEffect 方法
 
 卸载音效资源，示例代码：：
 
@@ -1005,7 +1036,7 @@ client.unloadEffect(EffectId)
 
 <a name="client-playeffect"></a>
 
-### 35. playEffect 方法
+### 36. playEffect 方法
 
 播放音效，示例代码：
 
@@ -1029,6 +1060,7 @@ client.playEffect(EffectOptions, callback)
   replace?: boolean   // 选填，是否替换当前音轨，即只使用音效，不混音，默认不替换
 }
 ```
+
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
 ```
@@ -1038,7 +1070,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-pauseeffect"></a>
 
-### 36. pauseEffect 方法
+### 37. pauseEffect 方法
 
 暂停播放音效，示例代码：
 
@@ -1066,7 +1098,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-resumeeffect"></a>
 
-### 37. resumeEffect 方法
+### 38. resumeEffect 方法
 
 恢复播放音效，示例代码：
 
@@ -1095,7 +1127,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-stopeffect"></a>
 
-### 38. stopEffect 方法
+### 39. stopEffect 方法
 
 停止播放音效，示例代码：
 
@@ -1123,7 +1155,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-seteffectvolume"></a>
 
-### 39. setEffectVolume 方法
+### 40. setEffectVolume 方法
 
 设置正在播放的音效的音量大小，示例代码：
 
@@ -1152,7 +1184,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-snapshot"></a>
 
-### 40. snapshot 方法
+### 41. snapshot 方法
 
 可将指定的发布（本地）/订阅（远端）流截屏用于页面展示，或下载截屏图片，示例代码：
 
@@ -1160,7 +1192,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 client.snapshot(SnapshotOptions, onSuccess, onFailure);
 ```
 
-> 注：为保证 API 的易用性，此 API 进行了重新设计，由于无法做到向前兼容，请使用 1.3.10 及以前包含此功能版本的用户调整调用方式。
+> 注：为保证 API 的易用性，此 API 自 1.4.0 版本进行了重新设计，由于无法做到向前（ 1.3.7 - 1.3.10 版本）兼容，请使用 1.3.7 - 1.3.10 版本的用户调整调用方式。
 
 #### 参数说明
 
@@ -1189,9 +1221,53 @@ function(Err) {}
 ```
 Err 为错误信息
 
-#### 返回值说明
+<a name="client-startpreviewing"></a>
 
-- image: string 类型，是图片转化的 base64 编码的 [Data URLs](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/data_URIs)，可将其赋值给 Image 元素 - 详见 [HTMLImageElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLImageElement) 的 src 属性
+### 42. startPreviewing 方法
+
+启动预览，示例代码：
+
+```
+client.startPreviewing(PreviewOptions, onSuccess, onFailure);
+```
+
+#### 参数说明
+
+- PreviewOptions: object 类型，选传，详细的类型说明如下
+
+```
+{
+  audio: boolean          // 必填，指定是否使用麦克风设备
+  video: boolean          // 必填，指定是否使用摄像头设备
+  microphoneId?: string   // 选填，指定使用的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将使用默认麦克风设备
+  cameraId?: string       // 选填，指定使用的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将使用默认的摄像头设备
+}
+```
+
+- onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
+
+```
+function onSuccess(result) {}
+```
+
+- result: MediaStream 类型，类型说明见 [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream)，可通过 HtmlMediaElement（如：[video](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video)）进行播放
+
+- onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
+
+```
+function(Err) {}
+```
+Err 为错误信息
+
+<a name="client-stoppreviewing"></a>
+
+### 43. stopPreviewing 方法
+
+停止预览，示例代码：
+
+```
+client.stopPreviewing();
+```
 
 ----
 
