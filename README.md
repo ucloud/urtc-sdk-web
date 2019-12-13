@@ -161,8 +161,6 @@ Err 为错误信息
 client.publish(Options, onFailure)
 ```
 
-> 注：同一时间不可发布两次，若要再次发布，须 unpublish ，解除当前的 publish 状态，再进行发布。
-
 #### 参数说明
 
 - Options: object 类型，选传，类型说明如下
