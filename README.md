@@ -66,6 +66,7 @@ Client 类包含以下方法：
 * [snapshot 方法 - 截屏](#client-snapshot)
 * [startPreviewing 方法 - 开启预览](#client-startpreviewing)
 * [stopPreviewing 方法 - 停止预览](#client-stoppreviewing)
+* [deviceDetection 方法 - 设备可用性检测](#client-devicedetection)
 
 <a name="client-constructor"></a>
 
@@ -1265,6 +1266,57 @@ Err 为错误信息
 
 ```
 client.stopPreviewing();
+```
+
+<a name="client-devicedetection"></a>
+
+### 44. deviceDetection 方法
+
+发布本地流或启动预览时，有可能因为麦克风或摄像头设备问题（如驱动问题，或未经授权等），导致无法正常发布或预览。此方法可用于发布或预览前的设备检测，根据检测结果，再自行决定在发布或预览时启用麦克风或摄像头或麦克风和摄像头，示例代码：
+
+```
+client.deviceDetection(DeviceDetectionOptions, callback);
+```
+
+#### 参数说明
+
+- DeviceDetectionOptions: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  audio: boolean          // 必填，指定是否检测麦克风设备
+  video: boolean          // 必填，指定是否检测摄像头设备
+  microphoneId?: string   // 选填，指定需要检测的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将检测默认的麦克风设备
+  cameraId?: string       // 选填，指定需要检测的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将检测默认的摄像头设备
+}
+```
+
+- callback: function 类型，必传，方法的回调函数，函数说明如下
+
+```
+function callback(Result) {
+  if (Result.audio && Result.video) {
+    // 麦克风和摄像头都可有和，发布或预览时可启用麦克风和摄像头
+    // client.publish({audio: true, video: true});
+  } else if (Result.audio) {
+    // 麦克风可用，发布或预览时能启用麦克风
+    // client.publish({audio: true, video: false});
+  } else if (Result.video) {
+    // 摄像头可用，发布或预览时能启用摄像头
+    // client.publish({audio: false, video: true});
+  } else {
+    // 麦克风和摄像头都不可用
+  }
+}
+```
+
+Result 为返回值，object 类型，详细的类型说明如下
+
+```
+{
+  audio: boolean, // 指麦克风设备是否可用
+  video: boolean  // 指摄像头设备是否可用
+}
 ```
 
 ----
