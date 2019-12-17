@@ -562,7 +562,7 @@ Stream:
 
 ### 19. getLocalStreams 方法
 
-获取所有发布流（本地流）的信息（ 1.4.0 及以上版本支持），示例代码：
+获取所有发布（本地）流的信息（ 1.4.0 及以上版本支持），示例代码：
 
 ```
 const result = client.getLocalStreams()
@@ -761,7 +761,7 @@ client.switchDevice(SwitchDeviceOptions, onSuccess, onFailure)
 
 ```
 {
-  streamId?: string       // 选填，发布流的 ID，不填时，为第一条发布流
+  streamId?: string       // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   type: 'audio' | 'video' // 必填，指定音频或视频设备
   deviceId: string        // 必填，设备 ID
 }
@@ -823,7 +823,7 @@ client.switchImage(SwitchImageOptions, onSuccess, onFailure)
 
 ```
 {
-  streamId?: string       // 选填，发布流的 ID，不填时，为第一条发布流
+  streamId?: string       // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   filePath: string        // 必填，指图片文件的路径（URL)，支持以下图片格式：PNG，JPEG 以及浏览器支持的其他图片格式，注：当图片文件为其他站点的网络文件时，可能会有跨域访问问题
 }
 ```
@@ -872,6 +872,7 @@ client.setAudioVolume(AudioVolumeOptions, callback)
 ```
 {
   streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
+  element?: HTMLMediaElement // 播放媒体流的 DOM 元素，当需要设置音量的流为发布（本地）流时，不填，为订阅（远端）流，必填
   volume: number      // 必填，音量大小，取值范围 [0, 100]
 }
 ```
@@ -1051,7 +1052,7 @@ client.playEffect(EffectOptions, callback)
 
 ```
 {
-  streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
+  streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
   filePath?: string   // 选填，音效文件的路径，当音效文件已经使用 preloadEffect 进行预加载后，可不填此项
   loop?: boolean      // 选填，是否循环播放音效，默认不循环
@@ -1083,7 +1084,7 @@ client.pauseEffect(Options, callback)
 
 ```
 {
-  streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
+  streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
 }
 ```
@@ -1111,7 +1112,7 @@ client.resumeEffect(Options, callback)
 
 ```
 {
-  streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
+  streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
 }
 ```
@@ -1140,7 +1141,7 @@ client.stopEffect(Options, callback)
 
 ```
 {
-  streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
+  streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
 }
 ```
@@ -1168,7 +1169,7 @@ client.setEffectVolume(Options, callback)
 
 ```
 {
-  streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
+  streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
   volume: number      // 必填，音量大小，取值范围 [0, 100]
 }
