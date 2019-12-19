@@ -3,10 +3,10 @@
   margin: 0 auto;
 }
 
-.room input {
-  padding: 4px 0;
+.room .local-stream,
+.room .remote-stream {
+  text-align: left;
 }
-
 .room button {
   padding: 8px 0;
   display: inline-block;

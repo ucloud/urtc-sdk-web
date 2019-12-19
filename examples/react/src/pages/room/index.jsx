@@ -202,11 +202,11 @@ export default class Room extends Component {
     const { remoteStreams } = this.state;
     return remoteStreams.map(stream => {
       return stream.mediaStream ?
-        <MediaPlayer className="remote-stream" key={stream.sid} client={this.client} stream={stream} onClick={this.handleChooseStream} /> :
-        <div className="remote-stream" key={stream.sid} onClick={() => { this.handleSelectStream(stream) }}>
+        <MediaPlayer className="remote-stream" key={stream.sid} client={this.client} stream={stream} onClick={this.handleSelectStream} /> :
+        <div className="media-player remote-stream" key={stream.sid} onClick={() => { this.handleSelectStream(stream) }}>
           <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>用户ID: {stream.uid}</div>
           <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>流ID: {stream.sid}</div>
-          <div style={{ width: '100%' }}> unsubscribe </div>
+          <p> unsubscribe </p>
         </div>;
     });
   }
