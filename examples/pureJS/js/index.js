@@ -161,6 +161,8 @@ window.onload = function () {
       }
     },
     init: function () {
+      this.renderRoomId();
+
       const token = UCloudRTC.generateToken(AppId, AppKey, RoomId, UserId);
       this.client = new UCloudRTC.Client(AppId, token);
 

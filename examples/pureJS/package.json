@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "UCloud RTC 纯 JS 版本的 demo",
   "scripts": {
-    "start": "npx serve . -p 3000"
+    "start": "npx serve . -p 3001"
   },
   "author": "",
   "license": "MIT",
