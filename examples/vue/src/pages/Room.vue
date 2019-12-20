@@ -194,7 +194,7 @@ export default {
         this.selectedStream = null;
         this.localStreams = [];
         this.remoteStreams = [];
-        this.isJoinedRoom = null;
+        this.isJoinedRoom = false;
       }, (err) => {
         console.error('离开房间失败：', err);
       });

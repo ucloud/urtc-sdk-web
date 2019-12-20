@@ -1,9 +1,9 @@
 <template>
   <div v-bind:class="classes" v-on:click="handleClick">
-    <div style="overflow: 'hidden', textOverflow: 'ellipsis'">用户ID: {{stream.uid}}</div>
-    <div style="overflow: 'hidden', textOverflow: 'ellipsis'">流ID: {{stream.sid}}</div>
-    <div v-show="stream.mediaStream" style="overflow: 'hidden', textOverflow: 'ellipsis'">音量: {{volume}} % &nbsp;&nbsp;&nbsp;&nbsp;音频丢包率: {{stats.audioLost}} %</div>
-    <div v-show="stream.mediaStream" style="overflow: 'hidden', textOverflow: 'ellipsis'">视频丢包率: {{stats.videoLost}} % &nbsp;&nbsp;&nbsp;&nbsp;网络延时: {{stats.rtt}} ms</div>
+    <div style="overflow: 'hidden'; text-overflow: 'ellipsis';">用户ID: {{stream.uid}}</div>
+    <div style="overflow: 'hidden'; text-overflow: 'ellipsis';">流ID: {{stream.sid}}</div>
+    <div v-show="stream.mediaStream" style="overflow: 'hidden'; text-overflow: 'ellipsis';">音量: {{volume}} % &nbsp;&nbsp;&nbsp;&nbsp;音频丢包率: {{stats.audioLost}} %</div>
+    <div v-show="stream.mediaStream" style="overflow: 'hidden'; text-overflow: 'ellipsis';">视频丢包率: {{stats.videoLost}} % &nbsp;&nbsp;&nbsp;&nbsp;网络延时: {{stats.rtt}} ms</div>
     <div v-show="stream.mediaStream">
       <video
         ref="video"
