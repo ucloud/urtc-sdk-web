@@ -7,7 +7,9 @@ function App() {
     <div className="App">
       <Room/>
       <br/>
-      <a href="https://github.com/ucloud/urtc-sdk-web" target="_blank">API 文档请看这里</a>
+      <a href="https://github.com/ucloud/urtc-sdk-web" target="_blank" rel="noopener noreferrer">
+        API 文档请看这里
+      </a>
     </div>
   );
 }

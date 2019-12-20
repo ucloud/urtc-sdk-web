@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'unique-classnames';
 import './index.css';
@@ -40,28 +40,33 @@ export default class MediaPlayer extends Component {
 
   componentDidMount() {
     this.isComponentMounted = true;
-    this.play(this.props.stream.mediaStream);
-    this.startGetVolume();
-    this.startGetState();
+    const { stream } = this.props;
+    if (stream.mediaStream) {
+      this.play(stream.mediaStream);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.stream.mediaStream !== this.props.stream.mediaStream) {
+    if (!nextProps.stream.mediaStream) {
+      this.stop();
+    } else if (nextProps.stream.mediaStream !== this.props.stream.mediaStream) {
       this.play(nextProps.stream.mediaStream);
     }
   }
 
   componentWillUnmount() {
-    this.stopGetVolume();
-    this.stopGetState();
     this.stop();
     this.isComponentMounted = false;
   }
 
   play(mediaStream) {
     this.videoElem.current.srcObject = mediaStream;
+    this.startGetVolume();
+    this.startGetState();
   }
   stop() {
+    this.stopGetVolume();
+    this.stopGetState();
     this.videoElem.current.srcObject = null;
   }
 
@@ -135,19 +140,29 @@ export default class MediaPlayer extends Component {
     onClick && onClick(stream);
   }
 
+  renderStats = () => {
+    const { stream } = this.props;
+    const { volume, stats } = this.state;
+    return stream.mediaStream
+      ? <Fragment>
+          <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>音量: {volume} % &nbsp;&nbsp;&nbsp;&nbsp;音频丢包率: {stats.audioLost} %</div>
+          <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>视频丢包率: {stats.videoLost} % &nbsp;&nbsp;&nbsp;&nbsp;网络延时: {stats.rtt} ms</div>
+        </Fragment>
+      : null;
+  }
+
   render() {
     const { stream, className, style } = this.props;
-    const { volume, stats } = this.state;
 
     const classes = classnames('media-player', className);
+    const hasMediaStream = !!stream.mediaStream;
 
     return (
       <div className={classes} style={style} onClick={this.handleClick}>
         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>用户ID: {stream.uid}</div>
         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>流ID: {stream.sid}</div>
-        <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>音量: {volume} % &nbsp;&nbsp;&nbsp;&nbsp;音频丢包率: {stats.audioLost} %</div>
-        <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>视频丢包率: {stats.videoLost} % &nbsp;&nbsp;&nbsp;&nbsp;网络延时: {stats.rtt} ms</div>
-        <div style={{ width: '100%' }}>
+        { this.renderStats() }
+        <div style={{ display: hasMediaStream ? 'block' : 'none' }}>
           <video
             ref={this.videoElem}
             webkit-playsinline="true"
@@ -155,6 +170,7 @@ export default class MediaPlayer extends Component {
             playsInline>
           </video>
         </div>
+        <p style={{ display: hasMediaStream ? 'none' : 'block' }}> unsubscribe </p>
       </div>
     )
   }

@@ -11,7 +11,7 @@
     "react-dom": "^16.12.0",
     "react-scripts": "3.3.0",
     "unique-classnames": "^1.0.6",
-    "urtc-sdk": "^1.4.1"
+    "urtc-sdk": "^1.4.5"
   },
   "scripts": {
     "start": "react-scripts start",
