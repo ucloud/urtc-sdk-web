@@ -13,7 +13,7 @@ module.exports = {
     'semi': ['error', 'always', {
       "omitLastInOneLineBlock": true
     }],
-    "indent": [1, 2]
+    'indent': 0
   },
   parserOptions: {
     parser: 'babel-eslint'

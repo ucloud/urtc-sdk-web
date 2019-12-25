@@ -1,7 +1,7 @@
 {
-  "name": "vue",
-  "version": "0.1.0",
-  "private": true,
+  "name": "urtc-demo-vue",
+  "version": "1.0.0",
+  "description": "UCloud RTC VUE 版本的 demo",
   "scripts": {
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -10,7 +10,6 @@
   "dependencies": {
     "core-js": "^3.4.3",
     "unique-classnames": "^1.0.6",
-    "urtc-sdk": "^1.4.5",
     "vue": "^2.6.10"
   },
   "devDependencies": {

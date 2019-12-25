@@ -18,7 +18,8 @@
 </template>
 
 <script>
-import sdk, { Client } from 'urtc-sdk';
+// 注：实际使用时，请使用 import sdk, { Client } from 'urtc-sdk';
+import sdk, { Client } from '@sdk';
 
 import config from '../config';
 import MediaPlayer from '../components/MediaPlayer.vue';
@@ -222,9 +223,11 @@ export default {
   padding: 8px 0;
   display: inline-block;
   width: 100%;
+  border-width: 1px;
   border-radius: 6px;
+  background-color: #fff;
   cursor: pointer;
-  text-align: center;;
+  text-align: center;
 }
 
 .room input:visited,
