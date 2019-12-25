@@ -12,10 +12,11 @@
   padding: 8px 0;
   display: inline-block;
   width: 100%;
+  border-width: 1px;
   border-radius: 6px;
+  background-color: #fff;
   cursor: pointer;
   text-align: center;
-  ;
 }
 
 .room input:visited,

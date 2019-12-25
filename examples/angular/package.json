@@ -1,6 +1,7 @@
 {
-  "name": "angular",
-  "version": "0.0.0",
+  "name": "urtc-demo-angular",
+  "version": "1.0.0",
+  "description": "UCloud RTC Angular 版本的 demo",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -22,7 +23,6 @@
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "unique-classnames": "^1.0.6",
-    "urtc-sdk": "^1.4.5",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

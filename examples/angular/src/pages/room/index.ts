@@ -6,8 +6,12 @@ import {
   OnDestroy,
 } from '@angular/core';
 
-import sdk, { Client } from 'urtc-sdk';
-import { Stream } from '../../../../../types';
+// 注：实际使用时，请使用 import sdk, { Client } from 'urtc-sdk';
+import sdk, { Client } from '@sdk';
+// 注：实际使用时，请使用 import { Stream } from 'urtc-sdk/types';
+import { Stream } from '@sdk/types';
+
+// 注：实际使用时，请自行在 config 目录下创建 index.ts 配置文件
 import config from '../../config';
 
 const { AppId, AppKey } = config;

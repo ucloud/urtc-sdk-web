@@ -11,8 +11,10 @@ import {
 } from '@angular/core';
 import classnames from 'unique-classnames';
 
-import { Client } from 'urtc-sdk';
-import { Stream, AudioStats, VideoStats, NetworkStats } from '../../../../../types/index.d';
+// 注：实际使用时，请使用 import sdk, { Client } from 'urtc-sdk';
+import sdk, { Client } from '@sdk';
+// 注：实际使用时，请使用 import { Stream, AudioStats, VideoStats, NetworkStats } from 'urtc-sdk/types';
+import { Stream, AudioStats, VideoStats, NetworkStats } from '@sdk/types';
 
 interface Stats {
   audioLost: number;

@@ -2,7 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      "@sdk": ["../../lib/index.js"],
+      "@sdk/types": ["../../types"]
+    }
   },
   "files": [
     "src/main.ts",
