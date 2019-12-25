@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import sdk, { Client } from 'urtc-sdk';
+
+// 注：实际使用时，请使用 import sdk, { Client } from 'urtc-sdk';
+import sdk, { Client } from '@sdk';
 
 import config from '../../config';
 import MediaPlayer from '../../components/MediaPlayer';
