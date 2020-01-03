@@ -72,7 +72,7 @@ client.joinRoom(roomId, userId, () => {
 
 ```
 client.unpublish(pubStreamId);
-client.unsubscibe(subStreamId);
+client.unsubscribe(subStreamId);
 ```
 
 ## 5. 退出房间

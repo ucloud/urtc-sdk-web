@@ -20,7 +20,7 @@ UCloudRTC 包含以下方法、类或对象：
 
 Client 类包含以下方法：
 
-* [构建函数 - 创建客户端](#client-constructor)
+* [构造函数 - 创建客户端](#client-constructor)
 * [joinRoom 方法 - 加入房间](#client-joinroom)
 * [leaveRoom 方法 - 离开房间](#client-leaveroom)
 * [publish 方法 - 发布本地流](#client-publish)
@@ -67,15 +67,16 @@ Client 类包含以下方法：
 * [startPreviewing 方法 - 开启预览](#client-startpreviewing)
 * [stopPreviewing 方法 - 停止预览](#client-stoppreviewing)
 * [deviceDetection 方法 - 设备可用性检测](#client-devicedetection)
+* [getSupportedCodec 方法 - 检测当前浏览器支持的编解码格式](#client-getsupportedcodec)
 
 <a name="client-constructor"></a>
 
-### 1. 构建函数
+### 1. 构造函数
 
 用于创建一个 URTC Client 对象，示例代码：
 
 ```
-new Client(AppId, Token, Options);
+new Client(AppId, Token, ClientOptions);
 ```
 
 #### 参数说明
@@ -84,7 +85,7 @@ new Client(AppId, Token, Options);
 
 - Token: string 类型, 必传，需按规则生成，测试阶段，可使用 [generateToken](#generateToken) 临时生成
 
-- Options: object 类型, 选传，类型说明如下
+- ClientOptions: object 类型, 选传，类型说明如下
 
 ```
 {
@@ -159,12 +160,12 @@ Err 为错误信息
 发布本地流，自 1.4.0 版本开始支持同时发布两条流（且摄像头，屏幕共享各一条，不可同时为同一类），示例代码：
 
 ```
-client.publish(Options, onFailure)
+client.publish(PublishOptions, onFailure)
 ```
 
 #### 参数说明
 
-- Options: object 类型，选传，类型说明如下
+- PublishOptions: object 类型，选传，类型说明如下
 
 ```
 {
@@ -1075,12 +1076,12 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 暂停播放音效，示例代码：
 
 ```
-client.pauseEffect(Options, callback)
+client.pauseEffect(EffectOptions, callback)
 ```
 
 #### 参数说明
 
-- Options: object 类型, 必传，详细的类型说明如下
+- EffectOptions: object 类型, 必传，详细的类型说明如下
 
 ```
 {
@@ -1103,12 +1104,12 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 恢复播放音效，示例代码：
 
 ```
-client.resumeEffect(Options, callback)
+client.resumeEffect(EffectOptions, callback)
 ```
 
 #### 参数说明
 
-- Options: object 类型, 必传，详细的类型说明如下
+- EffectOptions: object 类型, 必传，详细的类型说明如下
 
 ```
 {
@@ -1132,12 +1133,12 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 停止播放音效，示例代码：
 
 ```
-client.stopEffect(Options, callback)
+client.stopEffect(EffectOptions, callback)
 ```
 
 #### 参数说明
 
-- Options: object 类型, 必传，详细的类型说明如下
+- EffectOptions: object 类型, 必传，详细的类型说明如下
 
 ```
 {
@@ -1160,12 +1161,12 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 设置正在播放的音效的音量大小，示例代码：
 
 ```
-client.setEffectVolume(Options, callback)
+client.setEffectVolume(EffectVolumeOptions, callback)
 ```
 
 #### 参数说明
 
-- Options: object 类型, 必传，详细的类型说明如下
+- EffectVolumeOptions: object 类型, 必传，详细的类型说明如下
 
 ```
 {
@@ -1228,12 +1229,12 @@ Err 为错误信息
 启动预览，示例代码：
 
 ```
-client.startPreviewing(PreviewOptions, onSuccess, onFailure);
+client.startPreviewing(DeviceOptions, onSuccess, onFailure);
 ```
 
 #### 参数说明
 
-- PreviewOptions: object 类型，选传，详细的类型说明如下
+- DeviceOptions: object 类型，选传，详细的类型说明如下
 
 ```
 {
@@ -1317,6 +1318,33 @@ Result 为返回值，object 类型，详细的类型说明如下
 {
   audio: boolean, // 指麦克风设备是否可用
   video: boolean  // 指摄像头设备是否可用
+}
+```
+
+<a name="client-getsupportedcodec"></a>
+
+### 45. getSupportedCodec 方法
+
+检测当前浏览器支持的编解码格式
+
+```
+client.getSupportedCodec(callback);
+```
+
+#### 参数说明
+
+- callback: function 类型，必传，方法的回调函数，函数说明如下
+
+```
+function callback(Codecs) { }
+```
+
+Codecs 为返回值，object 类型，详细的类型说明如下
+
+```
+{
+  audio: string[],  // 字符串数组，支持的音频编解码格式。可能含有 "opus"，或为空数组。
+  video: string[],  // 字符串数组，支持的视频编解码格式。可能含有 "h264"、"vp8" 两种取值，或为空数组。
 }
 ```
 
@@ -1469,7 +1497,14 @@ Logger.debug(a, ...)  // 可传任意数量的任意类型的变量作为参数
 
 ```
 UCloudRTC.setServers({
-  api: "https://env1.urtc.com",   // api 为 URTC 房间服务的访问域名
-  log: "https://env1.urtclog.com" // log 为 URTC 日志服务器的访问域名
+  api: "https://env1.urtc.com",   // api 为 URTC 房间服务的访问地址
+  log: "https://env1.urtclog.com" // log 为 URTC 日志服务的访问地址
+  signal: "wss://env1.urtcsignal.com.cn:5005" // signal 为 URTC 信令服务的访问地址
 })
 ```
+
+> 注：
+> 
+> 1. 当不需要日志服务（未部署日志服务器）时，可不用设置 log。
+> 2. 当仅部署一台信令服务器时，由于可直接指定信令服务的访问地址，不需要由房间服务分配，此时可仅设置 signal，不用设置 api，如：`UCloudRTC.setServers({signal: "wss://env1.urtcsignal.com.cn:5005"})`。
+> 3. 当设置了 signal 时，优先使用 signal 指定的信令服务的访问地址，不再调用由 api 指定的房间服务分配信令服务访问地址的接口。
