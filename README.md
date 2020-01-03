@@ -1,4 +1,4 @@
-# UCloudRTC Web SDK API 说明
+# UCloudRTC Web SDK API 手册
 
 UCloudRTC 包含以下方法、类或对象：
 
@@ -40,10 +40,10 @@ Client 类包含以下方法：
 * [getStream 方法 - 获取某条流信息](#client-getstream)
 * [getLocalStreams 方法 - 获取所有本地流信息](#client-getlocalstreams)
 * [getRemoteStreams 方法 - 获取所有远端流信息](#client-getremotestreams)
-* [getStreams 方法 - 已废弃](#client-getstreams)
+* [~~getStreams 方法 - 已废弃~~](#client-getstreams)
 * [getMediaStream 方法 - 获取某条流对应的媒体流](#client-getmediastream)
-* [getLocalMediaStream 方法 - 已废弃](#client-getlocalmediastream)
-* [getRemoteMediaStream 方法 - 已废弃](#client-getremotemediastream)
+* [~~getLocalMediaStream 方法 - 已废弃~~](#client-getlocalmediastream)
+* [~~getRemoteMediaStream 方法 - 已废弃~~](#client-getremotemediastream)
 * [getMicrophones 方法 - 获取麦克风设备信息](#client-getmicrophones)
 * [getCameras 方法 - 获取摄像头设备信息](#client-getcameras)
 * [getLoudspeakers 方法 - 获取扬声器设备信息](#client-getloudspeakers)
@@ -589,7 +589,7 @@ const result = client.getRemoteStreams()
 
 <a name="client-getstreams"></a>
 
-### getStreams 方法 - 已废弃
+### ~~getStreams 方法 - 已废弃~~
 
 获取订阅流（远端流）的信息，1.4.0 及以上版本请使用 [getRemoteStreams](#client-getremotestreams)
 
@@ -615,14 +615,14 @@ const result = client.getMediaStream(StreamId)
 
 <a name="client-getlocalmediastream"></a>
 
-### getLocalMediaStream 方法 - 已废弃
+### ~~getLocalMediaStream 方法 - 已废弃~~
 
 获取发布流对应的媒体流，1.4.0 及以上版本请使用 [getMediaStream](#client-getmediastream)
 
 
 <a name="client-getremotemediastream"></a>
 
-### getRemoteMediaStream 方法 - 已废弃
+### ~~getRemoteMediaStream 方法 - 已废弃~~
 
 获取订阅流对应的媒体流，1.4.0 及以上版本请使用 [getMediaStream](#client-getmediastream)
 
