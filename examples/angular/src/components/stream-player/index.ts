@@ -25,6 +25,10 @@ interface Stats {
   biggestRTT: number;
 }
 
+function isIOS(): boolean {
+  return /.*iphone.*/i.test(navigator.userAgent);
+}
+
 @Component({
   selector: 'app-stream-player',
   templateUrl: './index.html',
@@ -49,6 +53,7 @@ export class StreamPlayerComponent implements OnInit, OnDestroy, OnChanges, Afte
 
   private volumeTimer: number;
   private stateTimer: number;
+  private isIOS: boolean;
 
   @ViewChild('video', {static: true}) videoRef: ElementRef;
 
@@ -57,6 +62,7 @@ export class StreamPlayerComponent implements OnInit, OnDestroy, OnChanges, Afte
   constructor() {
     this.volumeTimer = 0;
     this.stateTimer = 0;
+    this.isIOS = isIOS();
   }
 
   ngOnInit() {

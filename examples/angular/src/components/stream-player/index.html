@@ -8,7 +8,7 @@
     %
     &nbsp;&nbsp;&nbsp;&nbsp;网络延时: {{stats.rtt}} ms</div>
   <div [hidden]="!stream.mediaStream">
-    <video webkit-playsinline autoplay playsinline #video>
+    <video webkit-playsinline autoplay playsinline [controls]="isIOS" #video>
     </video>
   </div>
   <p [hidden]="stream.mediaStream">unsubscribe</p>

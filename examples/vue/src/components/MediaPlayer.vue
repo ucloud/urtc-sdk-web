@@ -9,7 +9,8 @@
         ref="video"
         webkit-playsinline
         autoplay
-        playsinline>
+        playsinline
+        v-bind:controls="isIOS">
       </video>
     </div>
     <p v-show="!stream.mediaStream">unsubscribe</p>
@@ -23,6 +24,10 @@ export default {
   name: 'MediaPlayer',
   data: function () {
     const classes = classnames('media-player', this.className);
+    function isIOS () {
+      return /.*iphone.*/i.test(navigator.userAgent);
+    }
+
     return {
       classes: classes,
       volume: 0,
@@ -33,7 +38,8 @@ export default {
         biggestVideoLost: 0,
         rtt: 0,
         biggestRTT: 0
-      }
+      },
+      isIOS: isIOS()
     };
   },
   props: {

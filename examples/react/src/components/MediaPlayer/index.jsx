@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import classnames from 'unique-classnames';
 import './index.css';
 
+function isIOS() {
+  return /.*iphone.*/i.test(navigator.userAgent);
+}
+
 export default class MediaPlayer extends Component {
   static propTypes = {
     className: PropTypes.string,
@@ -36,6 +40,7 @@ export default class MediaPlayer extends Component {
     this.volumeTimer = 0;
     this.stateTimer = 0;
     this.videoElem = React.createRef();
+    this.isIOS = isIOS();
   }
 
   componentDidMount() {
@@ -167,7 +172,8 @@ export default class MediaPlayer extends Component {
             ref={this.videoElem}
             webkit-playsinline="true"
             autoPlay
-            playsInline>
+            playsInline
+            controls={this.isIOS}>
           </video>
         </div>
         <p style={{ display: hasMediaStream ? 'none' : 'block' }}> unsubscribe </p>

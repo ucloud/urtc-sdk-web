@@ -19,6 +19,10 @@ window.onload = function () {
 
   console.log('UCloudRTC sdk version: ', UCloudRTC.version);
 
+  function isIOS() {
+    return /.*iphone.*/i.test(navigator.userAgent);
+  }
+
   // 用于维护应用内的状态
   const App = {
     state: {
@@ -118,7 +122,11 @@ window.onload = function () {
       } else {
         const videoElem = document.createElement('video');
         videoElem.autoplay = true;
-        videoElem.playsinline = true;
+        videoElem.playsInline = true;
+        videoElem['webkit-playsinline'] = 'true';
+        if (isIOS()) {
+          videoElem.controls = true;
+        }
         videoElem.srcObject = stream.mediaStream;
         player.append(videoElem);
       }
@@ -147,7 +155,11 @@ window.onload = function () {
       if (stream.mediaStream) {
         const videoElem = document.createElement('video');
         videoElem.autoplay = true;
-        videoElem.playsinline = true;
+        videoElem.playsInline = true;
+        videoElem['webkit-playsinline'] = 'true';
+        if (isIOS()) {
+          videoElem.controls = true;
+        }
         videoElem.srcObject = stream.mediaStream;
         const pElem = player.querySelector('p');
         player.removeChild(pElem);
