@@ -5,6 +5,7 @@ UCloudRTC 包含以下方法、类或对象：
 * [Client 类](#client)
 * [getDevices 方法](#getdevices)
 * [getSupportProfileNames 方法](#getsupportprofilenames)
+* [getSupportedCodec 方法](#getsupportedcodec)
 * [version 属性](#version)
 * [generateToken 方法](#generateToken)
 * [Logger 对象](#logger)
@@ -67,7 +68,6 @@ Client 类包含以下方法：
 * [startPreviewing 方法 - 开启预览](#client-startpreviewing)
 * [stopPreviewing 方法 - 停止预览](#client-stoppreviewing)
 * [deviceDetection 方法 - 设备可用性检测](#client-devicedetection)
-* [getSupportedCodec 方法 - 检测当前浏览器支持的编解码格式](#client-getsupportedcodec)
 
 <a name="client-constructor"></a>
 
@@ -1335,33 +1335,6 @@ Result 为返回值，object 类型，详细的类型说明如下
 }
 ```
 
-<a name="client-getsupportedcodec"></a>
-
-### 45. getSupportedCodec 方法
-
-检测当前浏览器支持的编解码格式
-
-```
-client.getSupportedCodec(callback);
-```
-
-#### 参数说明
-
-- callback: function 类型，必传，方法的回调函数，函数说明如下
-
-```
-function callback(Codecs) { }
-```
-
-Codecs 为返回值，object 类型，详细的类型说明如下
-
-```
-{
-  audio: string[],  // 字符串数组，支持的音频编解码格式。可能含有 "opus"，或为空数组。
-  video: string[],  // 字符串数组，支持的视频编解码格式。可能含有 "h264"、"vp8" 两种取值，或为空数组。
-}
-```
-
 ----
 
 <a name='getdevices'></a>
@@ -1421,9 +1394,38 @@ profileNames: String 类型的数组，如当前可用的 ["240\*180", "480\*360
 
 ---
 
+<a name="getsupportedcodec"></a>
+
+## 四. getSupportedCodec 方法
+
+检测当前浏览器支持的音视频的编解码格式
+
+```
+UCloudRTC.getSupportedCodec(callback);
+```
+
+#### 参数说明
+
+- callback: function 类型，必传，方法的回调函数，函数说明如下
+
+```
+function callback(Codecs) { }
+```
+
+Codecs 为返回值，object 类型，详细的类型说明如下
+
+```
+{
+  audio: string[],  // 字符串数组，支持的音频编解码格式。可能含有 "opus"，或为空数组。
+  video: string[],  // 字符串数组，支持的视频编解码格式。可能含有 "h264"、"vp8" 两种取值，或为空数组。
+}
+```
+
+---
+
 <a name='version'></a>
 
-## 四、version 属性
+## 五、version 属性
 
 version 属性用于显示当前 sdk 的版本
 
@@ -1431,7 +1433,7 @@ version 属性用于显示当前 sdk 的版本
 
 <a name='generateToken'></a>
 
-## generateToken 方法
+## 六、generateToken 方法
 
 generateToken 方法仅用于试用 URTC 产品时替代服务器生成 sdk 所需 token 的方法，正式使用 URTC 产品时，需要搭建后台服务按规则生成 token
 
@@ -1453,7 +1455,7 @@ const token = UCloudRTC.generateToken(AppId, AppKey, RoomId, UserId);
 
 <a name='logger'></a>
 
-## 六、Logger 对象
+## 七、Logger 对象
 
 Logger 对象用于调试时打印内部日志，包含以下方法：
 
@@ -1505,7 +1507,7 @@ Logger.debug(a, ...)  // 可传任意数量的任意类型的变量作为参数
 
 <a name='setservers'></a>
 
-## 七、setServers 方法
+## 八、setServers 方法
 
 可配置 URTC 服务的域名，用于私有化部署，目前有房间服务器和日志服务器的两种域名可进行配置，示例代码：
 
