@@ -125,7 +125,8 @@ export interface SwitchDeviceOptions {
 
 export interface SwitchImageOptions {
   streamId?: string
-  filePath: string
+  file?: File,
+  filePath?: string
 }
 
 export interface SnapshotOptions {

@@ -135,10 +135,18 @@ Err 为错误信息
 离开房间，示例代码：
 
 ```
-client.leaveRoom(onSuccess, onFailure)
+client.leaveRoom(LeaveRoomOptions, onSuccess, onFailure)
 ```
 
 #### 参数说明
+
+- LeaveRoomOptions，object 类型，选传，类型说明如下
+
+```
+{
+  keepRecording: boolean  // 是否保持服务端录制，默认不保持。使用场景：课堂管理员开启房间内的流进行服务端录制后，不需要等待课堂结束即可直接退出房间，并使在房间内的流继续录制。
+}
+```
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -175,6 +183,7 @@ client.publish(PublishOptions, onFailure)
   microphoneId?: string   // 选填，指定使用的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将使用默认麦克风设备
   cameraId?: string       // 选填，指定使用的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将使用默认的摄像头设备
   extensionId?: string    // 选填，指定使用的 Chrome 插件的 extensionId，可使 72 以下版本的 Chrome 浏览器进行屏幕共享。
+  mediaStream? MediaStream  // 选填，允许用户发布自定义的媒体流
 }
 ```
 
@@ -825,9 +834,14 @@ client.switchImage(SwitchImageOptions, onSuccess, onFailure)
 ```
 {
   streamId?: string       // 选填，发布（本地）流的 ID，不填时，为第一条发布流
-  filePath: string        // 必填，指图片文件的路径（URL)，支持以下图片格式：PNG，JPEG 以及浏览器支持的其他图片格式，注：当图片文件为其他站点的网络文件时，可能会有跨域访问问题
+  file?: File             // 选填，指（图片）文件，更多请参考下面的备注
+  filePath?: string       // 选填，指图片文件的网络路径（URL)，支持以下图片格式：PNG，JPEG 以及浏览器支持的其他图片格式，注：当图片文件为其他站点的网络文件时，可能会有跨域访问问题
 }
 ```
+
+> 注：
+> 1. file 和 filePath 两者不可同时为空，至少填一项。特别地，若都填时，将优先使用 file 的值。
+> 2. file 请参考 [File 对象](https://developer.mozilla.org/zh-CN/docs/Web/API/File)，一般可通过 `<input type="file" accept="image/*"></input>` 来上传来获取
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
