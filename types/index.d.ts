@@ -7,8 +7,8 @@ export declare type DeviceType = 'audio'|'video';
 
 // 业务方使用的事件类型
 export declare type EventType = 'user-added' | 'user-removed' |
-  'stream-added'|'stream-removed'| 'stream-published' | 'stream-subscribed' |
-  'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio';
+  'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' |
+  'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped';
 
 export declare type WaterMarkPosition = 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom'; // 左上，左下，右上，右下
 export declare type WaterMarkType = 'time' | 'image' | 'text';

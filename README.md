@@ -292,11 +292,27 @@ client.on(EventType, Listener)
 #### 参数说明
 
 - EventType: string 类型， 必传，目前有 'user-added' | 'user-removed' |
-  'stream-added'|'stream-removed'| 'stream-published' | 'stream-subscribed' |
-  'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' 这些事件可绑定监听函数
+  'stream-added' |'stream-removed' | 'stream-published' | 'stream-subscribed' |
+  'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' 这些事件可绑定监听函数
 - Listener: function 类型，事件监听函数
   - 当事件类型为 'user-added' | 'user-removed' 时，可用 `function Listener(User) {}` 类型的函数，其中函数的参数类型见 [User](#user)
-  - 当事件类型为 'stream-added'|'stream-removed'| 'stream-published' | 'stream-subscribed' | 'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' 时，可用 `function Listener(Stream) {}` 类型的函数，其中函数的参数类型见 [Stream](#stream)
+  - 当事件类型为 'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' | 'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' 时，可用 `function Listener(Stream) {}` 类型的函数，其中函数的参数类型见 [Stream](#stream)
+
+#### 事件名解释：
+
+事件名 | 描述
+:--: | :--
+user-added | 有其他用户加入房间
+user-removed | 有其他用户离开房间
+stream-added | 有其他用户发布了一条流，当收到此事件通知时，可调用 subscribe 方法订阅该流
+stream-removed | 有其他用户取消发布了一条流
+stream-published | 本地流已发布，可获取该流对应的媒体流来进行播放
+stream-subscribed | 远端流已订阅，可获取该流对应的媒体流来进行播放
+mute-video | 流的 video 被 mute
+unmute-video | 流的 video 被取消 mute
+mute-audio | 流的 audio 被 mute
+unmute-audio | 流的 audio 被取消 mute
+screenshare-stopped | 屏幕共享已被手动停止，当收到此事件通知时，需调用 unpublish 方法取消发布本地流
 
 
 <a name="client-off"></a>
