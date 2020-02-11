@@ -428,8 +428,11 @@ client.startRecording(RecordOptions, onSuccess, onFailure)
 {
   bucket: string  // 必传，存储的 bucket, URTC 使用 UCloud 的 UFile 产品进行在存储，相关信息见控制台操作文档
   region: string  // 必传，存储服务所在的地域
-  waterMark?: WaterMarkOptions // 选传，水印的相关配置，不需要添加水印时，不用填写
+  uid?: string,                         // 选传，指定某用户的流作为主画面，不传时，默认为当前开启录制的用户的流作为主画面
+  mainViewType?: 'screen' | 'camera',   // 选传，指定主画面使用的流的媒体类型（当同一用户推多路流时），不传时，默认使用 camera
   mixStream?: MixStreamOptions // 选传，混流的相关配置，无混流时，不用填写
+  waterMark?: WaterMarkOptions // 选传，水印的相关配置，不需要添加水印时，不用填写
+  relay?: RelayOptions         // 选传，转推相关配置，不需要转推时，不用填写
 }
 ```
 
@@ -447,8 +450,6 @@ MixStreamOptions: object 类型，选传，混流相关配置，类型说明如�
 
 ```
 {
-  uid?: string,        // 选传，指定某用户的流作为主画面，不传时，默认为当前开启录制的用户的流作为主画面
-  type?: 'screen' | 'camera',   // 选传，指定主画面使用的流的媒体类型（当同一用户推多路流时），不传时，默认使用 camera
   width?: number,      // 选传，设置混流后视频的宽度，不传时，默认为 1280
   height?: number,     // 选传，设置混流后视频的高度，不传时，默认为 720
   template?: number,   // 选传，指定混流布局模板，可使用 1-9 对应的模板，默认为 1
@@ -457,6 +458,15 @@ MixStreamOptions: object 类型，选传，混流相关配置，类型说明如�
 ```
 
 > 注：关于混流风格, 请参见详细的模板说明 [录制混流风格](https://github.com/UCloudDocs/urtc/blob/master/cloudRecord/RecordLaylout.md)
+
+RelayOptions: object 类型，选传，转推相关配置，类型说明如下
+
+```
+{
+  time?: number,        // 转推开启时间的Unix时间戳（单位：秒），不填时，将默认使用当前时间的Unix时间戳
+  fragment: number,     // 切片大小（单位：秒），默认 60s
+}
+```
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 

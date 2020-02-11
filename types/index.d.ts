@@ -82,19 +82,25 @@ export interface WaterMarkOptions {
 }
 
 export interface MixStreamOptions {
-  uid?: string           // 指定某用户的流为主画面
-  type?: MainViewType    // 主画面类型
   width?: number         // 混流后视频的宽度
   height?: number        // 混流后视频的高度
   template?: number      // 混流模板，对应不同的录制布局
   isAverage?: boolean    // 是否均匀，均分对应平铺，不均分对应垂直
 }
 
+export interface RelayOptions {
+  time?: number,         // 转推开启时间的时间戳，不填时，将默认使用当前时间的时间戳
+  fragment: number,      // 切片
+}
+
 export interface RecordOptions {
-  waterMark?: WaterMarkOptions
-  mixStream?: MixStreamOptions
   bucket: string
   region: string
+  uid?: string           // 指定某用户的流为主画面
+  mainViewType?: MainViewType    // 主画面类型
+  mixStream?: MixStreamOptions
+  waterMark?: WaterMarkOptions
+  relay?: RelayOptions
 }
 
 export interface Record {
