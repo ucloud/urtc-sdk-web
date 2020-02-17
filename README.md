@@ -588,7 +588,7 @@ Stream:
   audio: boolean                  // 是否包含视频
   muteAudio: boolean              // 音频是否静音
   muteVideo: boolean              // 视频是否静音
-  mediaType?: 'camera'|'screen'   // 流的媒体类型，当流为发布（本地）流时，存在两种媒体类型 'camera' 及 'screen'，且一种类型的流只能存在一个，以此来区分不同类型的发布流
+  mediaType?: 'camera'|'screen'   // 流的媒体类型，目前存在两种媒体类型 'camera' 及 'screen'，同一用户可发布的各类型的流只能存在一个，以此来区分不同媒体类型的发布/订阅流
   mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
 }
 ```
