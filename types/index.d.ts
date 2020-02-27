@@ -8,7 +8,10 @@ export declare type DeviceType = 'audio'|'video';
 // 业务方使用的事件类型
 export declare type EventType = 'user-added' | 'user-removed' |
   'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' |
-  'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped';
+  'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' |
+  'connection-state-change';
+
+export declare type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
 
 export declare type WaterMarkPosition = 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom'; // 左上，左下，右上，右下
 export declare type WaterMarkType = 'time' | 'image' | 'text';
@@ -47,6 +50,13 @@ export interface DeviceDetectionOptions {
   video: boolean          // 必填，指定是否检测摄像头设备
   microphoneId?: string   // 选填，指定需要检测的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将检测默认的麦克风设备
   cameraId?: string       // 选填，指定需要检测的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将检测默认的摄像头设备
+}
+
+export interface DeviceDetectionResult {
+  audio: boolean
+  audioError?: string
+  video: boolean
+  videoError?: string
 }
 
 export interface User {
@@ -158,4 +168,10 @@ export interface VideoStats {
 
 export interface NetworkStats {
   rtt: number
+}
+
+export interface ReplaceTrackOptions {
+  streamId?: string
+  track: MediaStreamTrack
+  retain?: boolean
 }

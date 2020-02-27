@@ -6,6 +6,8 @@ UCloudRTC 包含以下方法、类或对象：
 * [getDevices 方法](#getdevices)
 * [getSupportProfileNames 方法](#getsupportprofilenames)
 * [getSupportedCodec 方法](#getsupportedcodec)
+* [isSupportWebRTC 方法](#issupportwebrtc)
+* [deviceDetection 方法](#devicedetection)
 * [version 属性](#version)
 * [generateToken 方法](#generateToken)
 * [Logger 对象](#logger)
@@ -67,7 +69,8 @@ Client 类包含以下方法：
 * [snapshot 方法 - 截屏](#client-snapshot)
 * [startPreviewing 方法 - 开启预览](#client-startpreviewing)
 * [stopPreviewing 方法 - 停止预览](#client-stoppreviewing)
-* [deviceDetection 方法 - 设备可用性检测](#client-devicedetection)
+* [~~deviceDetection 方法 - 已转移~~](#client-devicedetection)
+* [replaceTrack 方法 - 替换音频轨道或视频轨道](#client-replacetrack)
 
 <a name="client-constructor"></a>
 
@@ -199,6 +202,17 @@ function(Err) {}
 ```
 Err 为错误信息
 
+<a name="device-error"></a>
+
+> 可能的错误信息有：
+>
+> - AbortError［中止错误］ 尽管用户和操作系统都授予了访问设备硬件的权利，而且未出现可能抛出NotReadableError异常的硬件问题，但仍然有一些问题的出现导致了设备无法被使用。
+> - NotAllowedError［拒绝错误］ 用户拒绝了当前的浏览器实例的访问请求；或者用户拒绝了当前会话的访问；或者用户在全局范围内拒绝了所有媒体访问请求。
+> - NotFoundError［找不到错误］ 找不到满足请求参数的媒体类型。
+> - NotReadableError［无法读取错误］ 尽管用户已经授权使用相应的设备，操作系统上某个硬件、浏览器或者网页层面发生的错误导致设备无法被访问。
+> - OverConstrainedError［无法满足要求错误］ 指定的要求无法被设备满足。
+
+
 <a name="client-unpublish"></a>
 
 ### 5. unpublish 方法
@@ -293,10 +307,12 @@ client.on(EventType, Listener)
 
 - EventType: string 类型， 必传，目前有 'user-added' | 'user-removed' |
   'stream-added' |'stream-removed' | 'stream-published' | 'stream-subscribed' |
-  'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' 这些事件可绑定监听函数
+  'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' |
+  'connection-state-change' 这些事件可绑定监听函数
 - Listener: function 类型，事件监听函数
   - 当事件类型为 'user-added' | 'user-removed' 时，可用 `function Listener(User) {}` 类型的函数，其中函数的参数类型见 [User](#user)
   - 当事件类型为 'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' | 'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' 时，可用 `function Listener(Stream) {}` 类型的函数，其中函数的参数类型见 [Stream](#stream)
+  - 当事件类型为 'connection-state-change' 时，可用 `function Listener(States) {}` 类型的函数，函数的参数为 `{previous: State, current: State}`，其中 State 为 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED' 四种类型之一。
 
 #### 事件名解释：
 
@@ -313,6 +329,7 @@ unmute-video | 流的 video 被取消 mute
 mute-audio | 流的 audio 被 mute
 unmute-audio | 流的 audio 被取消 mute
 screenshare-stopped | 屏幕共享已被手动停止，当收到此事件通知时，需调用 unpublish 方法取消发布本地流
+connection-state-change | 当 URTC client 与服务器的连接状态变化时，会由此事件通知。特别地，当因网络问题导致连接断开时，sdk 将会自动重连，此时将收到内容为 `{previous: "OPEN", current: "RECONNECTING"}` 的通知，表示开始重连，若在约1分钟的时间内重连成功，将收到内容为 `{previous: "RECONNECTING", current: "OPEN"}` 的通知，表示重连成功，若在1分钟的时间内不能重连成功，将收到内容为 `{previous: "RECONNECTING", current: "CLOSED"}` 的通知，则表示重连失败，此时需要依次调用 leaveRoom 和 joinRoom 以重新进入房间。
 
 
 <a name="client-off"></a>
@@ -815,6 +832,8 @@ function(Err) {}
 ```
 Err 为错误信息
 
+> 可能的错误信息有：[参见](#device-error)
+
 
 <a name="client-switchscreen"></a>
 
@@ -1298,7 +1317,11 @@ function onSuccess(result) {}
 ```
 function(Err) {}
 ```
+
 Err 为错误信息
+
+> 可能的错误信息有：[参见](#device-error)
+
 
 <a name="client-stoppreviewing"></a>
 
@@ -1312,54 +1335,43 @@ client.stopPreviewing();
 
 <a name="client-devicedetection"></a>
 
-### 44. deviceDetection 方法
+### ~~deviceDetection 方法 - 已转移~~
 
-发布本地流或启动预览时，有可能因为麦克风或摄像头设备问题（如驱动问题，或未经授权等），导致无法正常发布或预览。此方法可用于发布或预览前的设备检测，根据检测结果，再自行决定在发布或预览时启用麦克风或摄像头或麦克风和摄像头，示例代码：
+此 API 已转移至 UCloudRTC 中，详见 [UCloudRTC.deviceDetection](#devicedetection)
+
+
+<a name="client-replacetrack"></a>
+
+### 44. replaceTrack 方法
+
+替换发布流的音频轨道或视频轨道，可在保持发布流的发布状态下，切换音频或视频，示例代码：
 
 ```
-client.deviceDetection(DeviceDetectionOptions, callback);
+client.replaceTrack(ReplaceTrackOptions, callback)
 ```
 
 #### 参数说明
 
-- DeviceDetectionOptions: object 类型, 必传，详细的类型说明如下
+- ReplaceTrackOptions: object 类型, 必传，详细的类型说明如下
 
 ```
 {
-  audio: boolean          // 必填，指定是否检测麦克风设备
-  video: boolean          // 必填，指定是否检测摄像头设备
-  microphoneId?: string   // 选填，指定需要检测的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将检测默认的麦克风设备
-  cameraId?: string       // 选填，指定需要检测的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将检测默认的摄像头设备
+  streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
+  track: MediaStreamTrack   // 必填，需要替换的新的音轨或视轨，MediaStreamTrack 参见下面注释
+  retain?: boolean    // 选填，是否需要保持被替换的老的音轨或视轨可用，一般情况下，如果后面需要切换回老的音轨或视轨，建议保持其可用，否则可不用保持
 }
 ```
 
-- callback: function 类型，必传，方法的回调函数，函数说明如下
+> MediaStreamTrack 类型，类型说明见 [MediaStreamTrack](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaStreamTrack)
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
 
 ```
-function callback(Result) {
-  if (Result.audio && Result.video) {
-    // 麦克风和摄像头都可有和，发布或预览时可启用麦克风和摄像头
-    // client.publish({audio: true, video: true});
-  } else if (Result.audio) {
-    // 麦克风可用，发布或预览时能启用麦克风
-    // client.publish({audio: true, video: false});
-  } else if (Result.video) {
-    // 摄像头可用，发布或预览时能启用摄像头
-    // client.publish({audio: false, video: true});
-  } else {
-    // 麦克风和摄像头都不可用
-  }
-}
+function callback(Err, OldTrack) {}
 ```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
 
-Result 为返回值，object 类型，详细的类型说明如下
-
-```
-{
-  audio: boolean, // 指麦克风设备是否可用
-  video: boolean  // 指摄像头设备是否可用
-}
-```
+OldTrack 为返回值，MediaStreamTrack 类型，不为空时，值为被替换的音频轨道或视频轨道
 
 ----
 
@@ -1407,7 +1419,7 @@ const profileNames = UCloudRTC.getSupportProfileNames();
 
 #### 返回值说明
 
-profileNames: String 类型的数组，如当前可用的 ["240\*180", "480\*360", "640\*360", "640\*480", "1280\*720", "1920\*1080"]
+- profileNames: String 类型的数组，如当前可用的 ["240\*180", "480\*360", "640\*360", "640\*480", "1280\*720", "1920\*1080"]
 
 名称 | 视频宽高 | 帧率 | 视频最大带宽
 :-: | :-: | :-: | :-:
@@ -1449,9 +1461,85 @@ Codecs 为返回值，object 类型，详细的类型说明如下
 
 ---
 
+<a name="issupportwebrtc"></a>
+
+## 五. isSupportWebRTC 方法
+
+检测当前浏览器对 WebRTC 的适配情况
+
+```
+const result = UCloudRTC.isSupportWebRTC();
+```
+
+#### 返回值说明
+
+- result: boolean 类型，
+  - true: 当前使用的浏览器支持 WebRTC。
+  - false: 当前使用的浏览器不支持 WebRTC。
+
+---
+
+<a name="devicedetection"></a>
+
+### 六. deviceDetection 方法
+
+发布本地流或启动预览时，有可能因为麦克风或摄像头设备问题（如驱动问题，或未经授权等），导致无法正常发布或预览。此方法可用于发布或预览前的设备检测，根据检测结果，再自行决定在发布或预览时启用麦克风或摄像头或麦克风和摄像头，示例代码：
+
+```
+UCloudRTC.deviceDetection(DeviceDetectionOptions, callback);
+```
+
+#### 参数说明
+
+- DeviceDetectionOptions: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  audio: boolean          // 必填，指定是否检测麦克风设备
+  video: boolean          // 必填，指定是否检测摄像头设备
+  microphoneId?: string   // 选填，指定需要检测的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将检测默认的麦克风设备
+  cameraId?: string       // 选填，指定需要检测的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将检测默认的摄像头设备
+}
+```
+
+- callback: function 类型，必传，方法的回调函数，函数说明如下
+
+```
+function callback(Result) {
+  if (Result.audio && Result.video) {
+    // 麦克风和摄像头都可有和，发布或预览时可启用麦克风和摄像头
+    // client.publish({audio: true, video: true});
+  } else if (Result.audio) {
+    // 麦克风可用，发布或预览时能启用麦克风
+    // client.publish({audio: true, video: false});
+  } else if (Result.video) {
+    // 摄像头可用，发布或预览时能启用摄像头
+    // client.publish({audio: false, video: true});
+  } else {
+    // 麦克风和摄像头都不可用
+  }
+}
+```
+
+Result 为返回值，DeviceDetectionResult 类型，详细的类型说明如下
+
+```
+{
+  audio: boolean,       // 指麦克风设备是否可用
+  audioError?: string   // 当麦克风不可用时，此字段可说明设备不可用的原因
+  video: boolean        // 指摄像头设备是否可用
+  videoError?: string   // 当摄像头不可用时，此字段可说明设备不可用的原因
+}
+```
+
+> audioError 和 videoError 可能的错误信息有：[参见](#device-error)
+
+
+---
+
 <a name='version'></a>
 
-## 五、version 属性
+## 七、version 属性
 
 version 属性用于显示当前 sdk 的版本
 
@@ -1459,7 +1547,7 @@ version 属性用于显示当前 sdk 的版本
 
 <a name='generateToken'></a>
 
-## 六、generateToken 方法
+## 八、generateToken 方法
 
 generateToken 方法仅用于试用 URTC 产品时替代服务器生成 sdk 所需 token 的方法，正式使用 URTC 产品时，需要搭建后台服务按规则生成 token
 
@@ -1481,7 +1569,7 @@ const token = UCloudRTC.generateToken(AppId, AppKey, RoomId, UserId);
 
 <a name='logger'></a>
 
-## 七、Logger 对象
+## 九、Logger 对象
 
 Logger 对象用于调试时打印内部日志，包含以下方法：
 
@@ -1533,7 +1621,7 @@ Logger.debug(a, ...)  // 可传任意数量的任意类型的变量作为参数
 
 <a name='setservers'></a>
 
-## 八、setServers 方法
+## 十、setServers 方法
 
 可配置 URTC 服务的域名，用于私有化部署，目前有房间服务器和日志服务器的两种域名可进行配置，示例代码：
 
