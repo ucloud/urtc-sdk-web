@@ -18,8 +18,7 @@
 </template>
 
 <script>
-// 注：实际使用时，请使用 import sdk, { Client } from 'urtc-sdk';
-import sdk, { Client } from '@sdk';
+import sdk, { Client } from 'urtc-sdk';
 
 import config from '../config';
 import MediaPlayer from '../components/MediaPlayer.vue';
@@ -209,7 +208,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 .room {
   max-width: 640px;
   margin: 0 auto;

@@ -10,7 +10,8 @@
   "dependencies": {
     "core-js": "^3.4.3",
     "unique-classnames": "^1.0.6",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "urtc-sdk": "latest"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",
