@@ -161,16 +161,24 @@ export default class MediaPlayer extends Component {
   }
 
   renderVideoMask = () => {
-    if (this.isIOS && this.videoElem.current && this.videoElem.current.muted) {
+    const { stream } = this.props;
+    if (!stream || stream.type !== 'subscribe') {
+      return null;
+    }
+    if (!this.isIOS) {
+      return null;
+    }
+    if (this.videoElem.current && this.videoElem.current.muted) {
       return (
         <div className="muted-mask">
           <div className="mask-content">
-            <div className="hint">由于iOS系统限制，视频自动播放时需要静音，需要您点击下面按钮来取消静音</div>
+            <div className="hint">由于iOS系统限制，视频自动播放时需要静音，需要您点击下面的按钮来取消静音</div>
             <button onClick={this.handleUnmute}>取消静音</button>
           </div>
         </div>
       )
     }
+    return null;
   }
 
   render() {
