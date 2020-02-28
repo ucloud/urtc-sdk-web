@@ -603,8 +603,8 @@ Stream:
   type: 'publish'|'subscribe'     // 流类型，分别为 publish 和 subscribe 两种，
   video: boolean                  // 是否包含音频
   audio: boolean                  // 是否包含视频
-  muteAudio: boolean              // 音频是否静音
-  muteVideo: boolean              // 视频是否静音
+  muteAudio: boolean              // 音频轨道是否禁用
+  muteVideo: boolean              // 视频轨道是否禁用
   mediaType?: 'camera'|'screen'   // 流的媒体类型，目前存在两种媒体类型 'camera' 及 'screen'，同一用户可发布的各类型的流只能存在一个，以此来区分不同媒体类型的发布/订阅流
   mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
 }
@@ -802,7 +802,7 @@ Err 为错误信息
 
 ### 26. switchDevice 方法
 
-当发布（本地）流已经发布，可通过此方法在不中断当前发布的情况下，用指定的音视频设备采集的音视频流代替正在发布的音视频流，示例代码：
+当发布（本地麦克风、摄像头）流已经发布，可通过此方法在不中断当前发布的情况下，用指定的音视频设备采集的音视频流代替正在发布的音视频流，示例代码：
 
 ```
 client.switchDevice(SwitchDeviceOptions, onSuccess, onFailure)
@@ -839,7 +839,7 @@ Err 为错误信息
 
 ### 27. switchScreen 方法
 
-当本地流已经发布，可通过此方法在不中断当前发布的情况下，用屏幕共享来代替正在发布的音频（若屏幕共享包含音频）视频流，示例代码：
+当屏幕共享流已经发布，可通过此方法在不中断当前发布的情况下，用屏幕共享来代替正在发布的屏幕共享流，示例代码：
 
 ```
 client.switchScreen(StreamId, onSuccess, onFailure)
@@ -847,7 +847,7 @@ client.switchScreen(StreamId, onSuccess, onFailure)
 
 #### 参数说明
 
-- StreamId: string 类型，选传，不传时，为第一条发布流
+- StreamId: string 类型，选传，不传时，为第一条发布流（请确保第一条发布为屏幕共享流）
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
