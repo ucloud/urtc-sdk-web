@@ -156,6 +156,23 @@ export default class MediaPlayer extends Component {
       : null;
   }
 
+  handleUnmute = () => {
+    this.videoElem.current.muted = false;
+  }
+
+  renderVideoMask = () => {
+    if (this.isIOS && this.videoElem.current && this.videoElem.current.muted) {
+      return (
+        <div className="muted-mask">
+          <div className="mask-content">
+            <div className="hint">由于iOS系统限制，视频自动播放时需要静音，需要您点击下面按钮来取消静音</div>
+            <button onClick={this.handleUnmute}>取消静音</button>
+          </div>
+        </div>
+      )
+    }
+  }
+
   render() {
     const { stream, className, style } = this.props;
 
@@ -167,14 +184,15 @@ export default class MediaPlayer extends Component {
         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>用户ID: {stream.uid}</div>
         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>流ID: {stream.sid}</div>
         { this.renderStats() }
-        <div style={{ display: hasMediaStream ? 'block' : 'none' }}>
+        <div className="video-container" style={{ display: hasMediaStream ? 'block' : 'none' }}>
           <video
             ref={this.videoElem}
             webkit-playsinline="true"
             autoPlay
             playsInline
-            controls={this.isIOS}>
+            muted={this.isIOS}>
           </video>
+          { this.renderVideoMask() }
         </div>
         <p style={{ display: hasMediaStream ? 'none' : 'block' }}> unsubscribe </p>
       </div>
