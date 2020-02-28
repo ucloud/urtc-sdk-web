@@ -12,7 +12,7 @@
         playsinline
         v-bind:muted="isIOS">
       </video>
-      <div class="muted-mask" v-show="isMuted">
+      <div class="muted-mask" v-show="showMuteMask">
         <div class="mask-content">
           <div class="hint">由于iOS系统限制，视频自动播放时需要静音，请点击下面的按钮来取消静音</div>
           <button @click.stop="handleUnmute">取消静音</button>
@@ -176,6 +176,14 @@ export default {
         this.$refs.video.muted = false;
         this.isMuted = false;
       }
+    }
+  },
+  computed: {
+    showMuteMask: function () {
+      if (this.stream && this.stream.type !== 'subscribe') {
+        return false;
+      }
+      return this.isMuted;
     }
   }
 };

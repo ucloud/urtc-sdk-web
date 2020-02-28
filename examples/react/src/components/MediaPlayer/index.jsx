@@ -172,7 +172,7 @@ export default class MediaPlayer extends Component {
       return (
         <div className="muted-mask">
           <div className="mask-content">
-            <div className="hint">由于iOS系统限制，视频自动播放时需要静音，需要您点击下面的按钮来取消静音</div>
+            <div className="hint">由于iOS系统限制，视频自动播放时需要静音，请点击下面的按钮来取消静音</div>
             <button onClick={this.handleUnmute}>取消静音</button>
           </div>
         </div>
