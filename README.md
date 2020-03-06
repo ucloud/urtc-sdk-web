@@ -308,11 +308,21 @@ client.on(EventType, Listener)
 - EventType: string 类型， 必传，目前有 'user-added' | 'user-removed' |
   'stream-added' |'stream-removed' | 'stream-published' | 'stream-subscribed' |
   'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' |
-  'connection-state-change' 这些事件可绑定监听函数
+  'connection-state-change' | 'kick-off' | 'network-quality' 这些事件可绑定监听函数
 - Listener: function 类型，事件监听函数
-  - 当事件类型为 'user-added' | 'user-removed' 时，可用 `function Listener(User) {}` 类型的函数，其中函数的参数类型见 [User](#user)
+
+  - 当事件类型为 'user-added' | 'user-removed' | 'kick-off' 时，可用 `function Listener(User) {}` 类型的函数，其中函数的参数类型见 [User](#user)
   - 当事件类型为 'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' | 'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' 时，可用 `function Listener(Stream) {}` 类型的函数，其中函数的参数类型见 [Stream](#stream)
   - 当事件类型为 'connection-state-change' 时，可用 `function Listener(States) {}` 类型的函数，函数的参数为 `{previous: State, current: State}`，其中 State 为 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED' 四种类型之一。
+  - 当事件类型为 'network-quality' 时，可用 `function Listener(Stats) {}` 类型的函数，函数的参数为 `{uplink: Quality, downlink: Quality}`，其中，uplink 代表上行网络质量，downlink 代表下行网络质量，其值 Quality 为字符串，是 '0' | '1' | '2' | '3' | '4' | '5' | '6' 几种类型之一。
+    - '0': 网络质量未知
+    - '1': 网络质量优秀
+    - '2': 网络质量良好
+    - '3': 网络质量一般
+    - '4': 网络质量较差
+    - '5': 网络质量糟糕
+    - '6': 网络连接断开
+
 
 #### 事件名解释：
 
@@ -330,6 +340,8 @@ mute-audio | 流的 audio 被 mute
 unmute-audio | 流的 audio 被取消 mute
 screenshare-stopped | 屏幕共享已被手动停止，当收到此事件通知时，需调用 unpublish 方法取消发布本地流
 connection-state-change | 当 URTC client 与服务器的连接状态变化时，会由此事件通知。特别地，当因网络问题导致连接断开时，sdk 将会自动重连，此时将收到内容为 `{previous: "OPEN", current: "RECONNECTING"}` 的通知，表示开始重连，若在约1分钟的时间内重连成功，将收到内容为 `{previous: "RECONNECTING", current: "OPEN"}` 的通知，表示重连成功，若在1分钟的时间内不能重连成功，将收到内容为 `{previous: "RECONNECTING", current: "CLOSED"}` 的通知，则表示重连失败，此时需要依次调用 leaveRoom 和 joinRoom 以重新进入房间。
+kick-off | 当前用户被踢出了房间。URTC 限制了多设备同时登录，同一用户（userId）不可同时在多处加入房间，即当同一用户（userId）分别在利用两个设备（譬如电脑、手机等）先后加入房间时，前一个加入房间的设备将在后一个加入房间时收到此事件的通知，此时业务层可提示用户。
+network-quality | 报告本地用户的上下行网络质量。每 2 秒触发一次，报告本地用户当前的上行和下行网络质量。`该功能目前处于实验阶段，网络质量评分仅供参考`
 
 
 <a name="client-off"></a>

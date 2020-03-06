@@ -9,13 +9,15 @@ export declare type DeviceType = 'audio'|'video';
 export declare type EventType = 'user-added' | 'user-removed' |
   'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' |
   'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' |
-  'connection-state-change';
+  'connection-state-change' | 'kick-off' | 'network-quality';
 
 export declare type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
 
 export declare type WaterMarkPosition = 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom'; // 左上，左下，右上，右下
 export declare type WaterMarkType = 'time' | 'image' | 'text';
 export declare type MainViewType = 'desktop' | 'screen' | 'camera'; // todo - remove desktop
+
+export declare type NetworkQuality = '0' | '1' | '2' | '3' | '4' | '5' | '6';
 
 export interface ClientOptions {
   type?: RoomType
@@ -24,8 +26,8 @@ export interface ClientOptions {
 }
 
 export interface Codecs {
-  audio: Array<string>,
-  video: Array<string>
+  audio: Array<AudioCodec>,
+  video: Array<VideoCodec>
 }
 
 export interface PublishOptions {
