@@ -177,3 +177,61 @@ export interface ReplaceTrackOptions {
   track: MediaStreamTrack
   retain?: boolean
 }
+
+export declare type MixType = 'relay' | 'record' | 'relay-and-record' | 'update-config'
+export declare type MixLayoutType = 'flow' | 'main' | 'custom'
+export declare type MixAudioCodec = 'aac'
+export declare type MixVideoCodec = 'h264' | 'h265'
+export declare type H264Quality = 'B' | 'CB' | 'M' | 'E' | 'H'
+
+export interface MixLayoutOptions {
+  type: MixLayoutType           // layout 类型
+  custom?: Object[]             // layout 为 'custom'，自定义布局填在custom里，格式参照RFC5707 Media Server Markup Language (MSML)
+  mainViewUId?: string          // 指定某用户的流为主画面
+  mainViewType?: MainViewType   // 主画面类型
+}
+
+export interface MixAudioOptions {
+  codec: MixAudioCodec
+}
+
+export interface MixVideoOptions {
+  codec: MixVideoCodec
+  quality?: H264Quality       // 当 codec 为 h264 时，此项起作用
+  frameRate?: number
+  bitRate?: number
+}
+
+export interface BackgroundColorOptions {
+  r: number
+  g: number
+  b: number
+}
+
+export interface MixOptions {
+  type?: MixType            // 默认为 record
+  bucket?: string
+  region?: string
+
+  pushURL?: string[]     // type 是 转推，转推和录制时，需指定
+  layout?: MixLayoutOptions
+  audio?: MixAudioOptions
+  video?: MixVideoOptions
+
+  width?: number
+  height?: number
+  backgroundColor?: BackgroundColorOptions
+
+  waterMark?: WaterMarkOptions
+}
+
+export interface StopMixOptions {
+  type?: MixType            // 默认为 record
+}
+
+export interface MixResult {
+  MixId: string
+  FileName?: string
+  Type?: MixType
+  PushURL?: string[]
+}

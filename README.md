@@ -71,6 +71,9 @@ Client 类包含以下方法：
 * [stopPreviewing 方法 - 停止预览](#client-stoppreviewing)
 * [~~deviceDetection 方法 - 已转移~~](#client-devicedetection)
 * [replaceTrack 方法 - 替换音频轨道或视频轨道](#client-replacetrack)
+* [startMix 方法 - 开始录制或转推](#client-startmix)
+* [stopMix 方法 - 结束录制或转推](#client-stopmix)
+* [queryMix 方法 - 查询录制或转推](#client-querymix)
 
 <a name="client-constructor"></a>
 
@@ -339,7 +342,7 @@ unmute-video | 流的 video 被取消 mute
 mute-audio | 流的 audio 被 mute
 unmute-audio | 流的 audio 被取消 mute
 screenshare-stopped | 屏幕共享已被手动停止，当收到此事件通知时，需调用 unpublish 方法取消发布本地流
-connection-state-change | 当 URTC client 与服务器的连接状态变化时，会由此事件通知。特别地，当因网络问题导致连接断开时，sdk 将会自动重连，此时将收到内容为 `{previous: "OPEN", current: "RECONNECTING"}` 的通知，表示开始重连，若在约1分钟的时间内重连成功，将收到内容为 `{previous: "RECONNECTING", current: "OPEN"}` 的通知，表示重连成功，若在1分钟的时间内不能重连成功，将收到内容为 `{previous: "RECONNECTING", current: "CLOSED"}` 的通知，则表示重连失败，此时需要依次调用 leaveRoom 和 joinRoom 以重新进入房间。
+connection-state-change | 当 URTC client 与服务器的连接状态变化时，会由此事件通知。特别地，当因网络问题导致连接断开时，sdk 将在1分钟内尝试自动重连，此时将收到内容为 `{previous: "OPEN", current: "RECONNECTING"}` 的通知，表示开始重连，若重连成功，将收到内容为 `{previous: "RECONNECTING", current: "OPEN"}` 的通知，若不能重连成功，将收到内容为 `{previous: "RECONNECTING", current: "CLOSED"}` 的通知，表示重连失败，此时需要依次调用 leaveRoom 和 joinRoom 以重新进入房间。
 kick-off | 当前用户被踢出了房间。URTC 限制了多设备同时登录，同一用户（userId）不可同时在多处加入房间，即当同一用户（userId）分别在利用两个设备（譬如电脑、手机等）先后加入房间时，前一个加入房间的设备将在后一个加入房间时收到此事件的通知，此时业务层可提示用户。
 network-quality | 报告本地用户的上下行网络质量。每 2 秒触发一次，报告本地用户当前的上行和下行网络质量。`该功能目前处于实验阶段，网络质量评分仅供参考`
 
@@ -1384,6 +1387,171 @@ function callback(Err, OldTrack) {}
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
 
 OldTrack 为返回值，MediaStreamTrack 类型，不为空时，值为被替换的音频轨道或视频轨道
+
+<a name="client-startmix"></a>
+
+### 45. startMix 方法
+
+开启录制或转推，示例代码：
+
+```
+client.startMix(MixOptions, callback)
+```
+
+#### 参数说明
+
+- MixOptions: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  type?: MixType  // 选传，MixType 为 'relay' | 'record' | 'relay-and-record' | 'update-config' 其中之一，分别代表 '转推' | '录制' | '录制并转推' | '更改设置'，不传时，默认为 'record' 录制。
+  bucket?: string  // 当 type 为 '录制' 和 '录制并转推时'，必传，存储的 bucket, URTC 使用 UCloud 的 UFile 产品进行在存储，相关信息见控制台操作文档
+  region?: string  // 当 type 为 '录制' 和 '录制并转推时'，必传，存储服务所在的地域
+
+  pushURL?: string[]          // 当 type 为 '转推' 和 '录制并转推时'，必传，为转推的 URL 的列表
+  layout?: MixLayoutOptions   // 选传，录制/转推后的视频的布局设置，类型说明见下面的 MixLayoutOptions 类型，不传时，将使用默认值
+  audio?: MixAudioOptions     // 选传，录制/转推后的音频的设置，类型说明见下面的 MixAudioOptions 类型，不传时，将使用默认值
+  video?: MixVideoOptions     // 选传，录制/转推后的视频的设置，类型说明见下面的 MixVideoOptions 类型，不传时，将使用默认值
+
+  width?: number      // 选传，录制转推后的视频的带宽，不传时，默认为 1280
+  height?: number     // 选传，录制转推后的视频的调试，不传时，默认为 720
+  backgroundColor?: BackgroundColorOptions  // 选传，背景色，类型说明见下面的 BackgroundColorOptions 类型，不传时，默认为 #000 黑色
+
+  waterMark?: WaterMarkOptions  // 选传，水印设置，类型说明见下面的 WaterMarkOptions 类型，不传时将不添加水印
+}
+```
+
+<a name="mixlayoutoptions"></a>
+
+MixLayoutOptions 类型，类型说明
+
+```
+{
+  type: MixLayoutType           // MixLayoutType 为 'flow' | 'main' | 'custom'，分别代表：1 流式(均分)布局；2 讲课模式，主讲人占大部分屏幕，其他人小屏居于右侧或底部；3 自定义布局，默认为 'flow'
+  custom?: Object[]             // type 为 'custom'时，自定义布局填在custom里，格式参照RFC5707 Media Server Markup Language (MSML)
+  mainViewUId?: string          // type 为 'main' 时，指定某用户的流为主画面，默认为当前用户
+  mainViewType?: MainViewType   // 主画面类型，'screen' | 'camera'，默认为用户发布的 'camera'
+}
+```
+
+<a name="mixaudiooptions"></a>
+
+MixAudioOptions 类型，类型说明
+
+```
+{
+  codec: MixAudioCodec    // 音频的编码格式，MixAudioCodec 为 'aac'，不传时默认为 'aac'
+}
+```
+
+<a name="mixvideooptions"></a>
+
+MixVideoOptions 类型，类型说明
+
+```
+{
+  codec: MixVideoCodec    // 视频的编码格式，MixVideoCodec 为 'h264' | 'h265' 其中之一，默认为 'h264'
+  quality?: H264Quality   // 视频质量，当 codec 为 h264 时，此项起作用，H264Quality 为 'B' | 'CB' | 'M' | 'E' | 'H' 其中之一，默认为 'CB'
+  frameRate?: number      // 视频码率，默认为 15
+  bitRate?: number        // 视频比特率，默认为 500
+}
+```
+
+<a name="backgroundcoloroptions"></a>
+
+BackgroundColorOptions 类型，类型说明
+
+```
+{
+  r: number   // r 通道值，默认为 0
+  g: number   // g 通道值，默认为 0
+  b: number   // b 通道值，默认为 0
+}
+```
+
+<a name="watermarkoptions"></a>
+
+WaterMarkOptions: object 类型，选传，添加的水印相关配置，类型说明如下
+
+```
+{
+  position?: 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom' // 选传，指定水印的位置，前面四种类型分别对应 左上，左下，右上，右下，默认 'left-top'
+  type?: 'time' | 'image' | 'text' // 选传，水印类型，分别对应时间水印、图片水印、文字水印，默认为 'time'
+  remarks?:  string,   // 选传，水印备注，当为时间水印时，传空字符串，当为图片水印时，此处需为图片的 URL（此时必传），当为文字水印时，此处需为水印文字
+}
+```
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err, Result) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+<a name="mixresult"></a>
+
+MixResult: object 类型，类型说明如下
+
+```
+{
+  MixId: string         // 混流 ID
+  FileName?: string     // 混流文件名
+  Type?: MixType        // 混流类型，MixType 为 'relay' | 'record' | 'relay-and-record' | 'update-config'，注：queryMix 操作时会返回此项
+  PushURL?: string[]    // 转推的 URL 列表，注：stopMix 操作时会返回此项
+}
+```
+
+<a name="client-stopmix"></a>
+
+### 46. stopMix 方法
+
+关闭录制或转推，示例代码：
+
+```
+client.stopMix(StopMixOptions, callback)
+```
+
+#### 参数说明
+
+- StopMixOptions: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  type?: MixType  // 选传，MixType 为 'relay' | 'record' | 'relay-and-record' | 'update-config' 其中之一，分别代表 '转推' | '录制' | '录制并转推' | '更改设置'，不传时，默认为 'record'
+}
+```
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err, Result) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+<a name="client-querymix"></a>
+
+### 47. queryMix 方法
+
+查询录制或转推，示例代码：
+
+```
+client.queryMix(callback)
+```
+
+#### 参数说明
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err, Result) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
 
 ----
 
