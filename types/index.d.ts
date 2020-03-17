@@ -22,7 +22,7 @@ export declare type NetworkQuality = '0' | '1' | '2' | '3' | '4' | '5' | '6';
 export interface ClientOptions {
   type?: RoomType
   role?: UserRole
-  codec?: VideoCodec  // 可设 vp8 或 h264，默认为 vp8
+  codec?: VideoCodec  // 可设 vp8 或 h264，默认为 h264
 }
 
 export interface Codecs {
@@ -30,9 +30,12 @@ export interface Codecs {
   video: Array<VideoCodec>
 }
 
+declare type FacingMode = 'user' | 'environment' | 'left' | 'right';
+
 export interface PublishOptions {
   audio: boolean    // 是否开启麦克风
   video: boolean    // 是否开启摄像头
+  facingMode?: FacingMode
   screen: boolean   // 是否共享屏幕
   microphoneId?: string // 麦克风设备ID
   cameraId?: string     // 摄像头设备ID
@@ -223,6 +226,8 @@ export interface MixOptions {
   backgroundColor?: BackgroundColorOptions
 
   waterMark?: WaterMarkOptions
+
+  streams?: MixStream[]
 }
 
 export interface StopMixOptions {
@@ -234,4 +239,17 @@ export interface MixResult {
   FileName?: string
   Type?: MixType
   PushURL?: string[]
+}
+
+export interface MixStream {
+  uid: string,        // 用户 ID
+  mediaType: 'camera'|'screen'   // 流的媒体类型
+}
+
+export interface AddMixStreamsOptions {
+  streams: MixStream[]
+}
+
+export interface RemoveMixStreamsOptions {
+  streams: MixStream[]
 }

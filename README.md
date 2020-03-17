@@ -74,6 +74,8 @@ Client 类包含以下方法：
 * [startMix 方法 - 开始录制或转推](#client-startmix)
 * [stopMix 方法 - 结束录制或转推](#client-stopmix)
 * [queryMix 方法 - 查询录制或转推](#client-querymix)
+* [addMixStreams 方法 - 为录制或转推添加需要混合的流](#client-addmixstreams)
+* [removeMixStreams 方法 - 删除录制或转推中混合的流](#client-removemixstreams)
 
 <a name="client-constructor"></a>
 
@@ -97,7 +99,7 @@ new Client(AppId, Token, ClientOptions);
 {
   type?: "rtc"|"live",  // 选填，设置房间类型，有两种 "live" 和 "rtc" 类型可选 ，分别对应直播模式和连麦模式，默认为 rtc
   role?: "pull" | "push" | "push-and-pull",   // 选填，设置用户角色，可设 "pull" | "push" | "push-and-pull" 三种角色，分别对应拉流、推流、推+拉流，默认为 "push-and-pull"，特别地，当房间类型为连麦模式（rtc）时，此参数将被忽视，会强制为 "push-and-pull"，即推+拉流
-  codec?: "vp8"|"h264", // 选填，设置视频编码格式，可设 "vp8" 或 "h264"，默认为 "vp8"，注：部分老版本浏览器不支持 vp8 的视频编解码时（譬如 macOS 10.14.4 平台的 Safar 12.1 及以上版本才支持 vp8），可选择 h264 编码格式
+  codec?: "vp8"|"h264", // 选填，设置视频编码格式，可设 "vp8" 或 "h264"，默认为 "h264"
 }
 ```
 
@@ -185,6 +187,7 @@ client.publish(PublishOptions, onFailure)
 {
   audio: boolean          // 必填，指定是否使用麦克风设备
   video: boolean          // 必填，指定是否使用摄像头设备
+  facingMode?: FacingMode // 选填，在移动设备上，可以设置该参数选择使用前置或后置摄像头，其中，FacingMode 为 'user'（前置摄像头）或 'environment'（后置摄像头），注：1. 请务必确定是在移动设备上设置该参数，否则可能会报 'OverConstrainedError［无法满足要求错误]' 的错误；2. 当在移动设备上使用前置摄像头时，图像是以 Y 轴反转的，可为 video 元素添加样式 'transform: rotateY(180deg);' 来指定本地视频流在本地显示的时候要做镜像翻转。
   screen: boolean         // 必填，指定是否为屏幕共享，audio, video, screen 不可同时为 true，更不可同时为 false
   microphoneId?: string   // 选填，指定使用的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将使用默认麦克风设备
   cameraId?: string       // 选填，指定使用的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将使用默认的摄像头设备
@@ -1418,6 +1421,8 @@ client.startMix(MixOptions, callback)
   backgroundColor?: BackgroundColorOptions  // 选传，背景色，类型说明见下面的 BackgroundColorOptions 类型，不传时，默认为 #000 黑色
 
   waterMark?: WaterMarkOptions  // 选传，水印设置，类型说明见下面的 WaterMarkOptions 类型，不传时将不添加水印
+
+  streams?: MixStream[]         // 选传，指定需要混合的流，类型说明见下面的 MixStream 类型
 }
 ```
 
@@ -1478,6 +1483,17 @@ WaterMarkOptions: object 类型，选传，添加的水印相关配置，类型�
   position?: 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom' // 选传，指定水印的位置，前面四种类型分别对应 左上，左下，右上，右下，默认 'left-top'
   type?: 'time' | 'image' | 'text' // 选传，水印类型，分别对应时间水印、图片水印、文字水印，默认为 'time'
   remarks?:  string,   // 选传，水印备注，当为时间水印时，传空字符串，当为图片水印时，此处需为图片的 URL（此时必传），当为文字水印时，此处需为水印文字
+}
+```
+
+<a name="mixstream"></a>
+
+MixStream: object 类型，选传，添加的水印相关配置，类型说明如下
+
+```
+{
+  uid: string,        // 用户 ID，指定需要混合的流的用户ID（远端用户）
+  mediaType: string   // 流的媒体类型，指定需要混合的流的媒体类型，有 'camera' 和 'screen' 两种可选，默认为 'camera'
 }
 ```
 
@@ -1543,6 +1559,68 @@ client.queryMix(callback)
 ```
 
 #### 参数说明
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err, Result) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+<a name="client-addmixstreams"></a>
+
+### 48. addMixStreams 方法
+
+可在录制或转推时，为录制或转推添加需要混合的流，示例代码：
+
+```
+client.addMixStreams(AddMixStreamsOptions, callback)
+```
+
+#### 参数说明
+
+- AddMixStreamsOptions: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  streams: MixStream[]  // 必传，指定需要混合的新流
+}
+```
+> 点击 [MixStream](#mixstream) 见详细的类型说明
+
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Err, Result) {}
+```
+Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+
+<a name="client-removemixstreams"></a>
+
+### 49. removeMixStreams 方法
+
+可在录制或转推时，删除录制或转推中混合的流，示例代码：
+
+```
+client.removeMixStreams(RemoveMixStreamsOptions, callback)
+```
+
+#### 参数说明
+
+- RemoveMixStreamsOptions: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  streams: MixStream[]  // 必传，指定需要混合的新流
+}
+```
+> 点击 [MixStream](#mixstream) 见详细的类型说明
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
