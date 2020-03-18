@@ -232,6 +232,7 @@ export interface MixOptions {
 
 export interface StopMixOptions {
   type?: MixType            // 默认为 record
+  pushURL?: string[]        // 如果 type 为 relay 或 relay-and-record，需要指定停止对哪个 url 的转推，如果留空会停止对所有 url 的转推
 }
 
 export interface MixResult {
