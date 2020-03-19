@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import sdk, { Client } from 'urtc-sdk';
 
 import config from '../../config';

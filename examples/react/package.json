@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "UCloud RTC react 版本的 demo",
   "dependencies": {
+    "can-autoplay": "^3.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "unique-classnames": "^1.0.6",

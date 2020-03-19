@@ -1,11 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import canAutoplay from 'can-autoplay';
 import PropTypes from 'prop-types';
 import classnames from 'unique-classnames';
 import './index.css';
-
-function isIOS() {
-  return /.*iphone.*/i.test(navigator.userAgent);
-}
 
 export default class MediaPlayer extends Component {
   static propTypes = {
@@ -34,13 +31,13 @@ export default class MediaPlayer extends Component {
         videoLost: 0,
         biggestVideoLost: 0,
         rtt: 0,
-        biggestRTT: 0
+        biggestRTT: 0,
+        canAutoplay: true
       },
     }
     this.volumeTimer = 0;
     this.stateTimer = 0;
     this.videoElem = React.createRef();
-    this.isIOS = isIOS();
   }
 
   componentDidMount() {
@@ -49,6 +46,11 @@ export default class MediaPlayer extends Component {
     if (stream.mediaStream) {
       this.play(stream.mediaStream);
     }
+    canAutoplay.video().then(res => {
+      this.setState({
+        canAutoplay: res.result
+      });
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -156,8 +158,10 @@ export default class MediaPlayer extends Component {
       : null;
   }
 
-  handleUnmute = () => {
-    this.videoElem.current.muted = false;
+  handlePlay = () => {
+    if (this.videoElem.current && this.videoElem.current.paused) {
+      this.videoElem.current.play();
+    }
   }
 
   renderVideoMask = () => {
@@ -165,18 +169,17 @@ export default class MediaPlayer extends Component {
     if (!stream || stream.type !== 'subscribe') {
       return null;
     }
-    if (!this.isIOS) {
-      return null;
-    }
-    if (this.videoElem.current && this.videoElem.current.muted) {
-      return (
-        <div className="muted-mask">
-          <div className="mask-content">
-            <div className="hint">由于iOS系统限制，视频自动播放时需要静音，请点击下面的按钮来取消静音</div>
-            <button onClick={this.handleUnmute}>取消静音</button>
+    if (this.videoElem.current && this.videoElem.current.paused) {
+      if (!this.state.canAutoplay) {
+        return (
+          <div className="play-mask">
+            <div className="mask-content">
+              <div className="hint">由于当前浏览器不支持视频自动播放，请点击下面的按钮来播放</div>
+              <button onClick={this.handlePlay}>播放</button>
+            </div>
           </div>
-        </div>
-      )
+        )
+      }
     }
     return null;
   }
@@ -197,8 +200,7 @@ export default class MediaPlayer extends Component {
             ref={this.videoElem}
             webkit-playsinline="true"
             autoPlay
-            playsInline
-            muted={this.isIOS}>
+            playsInline>
           </video>
           { this.renderVideoMask() }
         </div>

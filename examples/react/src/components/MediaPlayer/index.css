@@ -11,7 +11,8 @@
   position: relative;
 }
 
-.media-player .muted-mask {
+.media-player .muted-mask,
+.media-player .play-mask {
   position: absolute;
   top: 0;
   right: 0;
@@ -26,7 +27,8 @@
   align-items: center;
 }
 
-.muted-mask .mask-content {
+.muted-mask .mask-content,
+.play-mask .mask-content {
   max-width: 200px;
 }
 
