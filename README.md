@@ -187,7 +187,7 @@ client.publish(PublishOptions, onFailure)
 {
   audio: boolean          // 必填，指定是否使用麦克风设备
   video: boolean          // 必填，指定是否使用摄像头设备
-  facingMode?: FacingMode // 选填，在移动设备上，可以设置该参数选择使用前置或后置摄像头，其中，FacingMode 为 'user'（前置摄像头）或 'environment'（后置摄像头），注：1. 请务必确定是在移动设备上设置该参数，否则可能会报 'OverConstrainedError［无法满足要求错误]' 的错误；2. 当在移动设备上使用前置摄像头时，图像是以 Y 轴反转的，可为 video 元素添加样式 'transform: rotateY(180deg);' 来指定本地视频流在本地显示的时候要做镜像翻转。
+  facingMode?: FacingMode // 选填，在移动设备上，可以设置该参数选择使用前置或后置摄像头，其中，FacingMode 为 'user'（前置摄像头）或 'environment'（后置摄像头），注：1. 请务必确定是在移动设备上设置该参数，否则可能会报 'OverConstrainedError［无法满足要求错误]' 的错误；2. 当在设备上使用前置摄像头时，设备（如苹果设备，以及没有设置摄像头为 "自拍镜像" 的 Android 设备）本地显示的图像是左右相反的（以 Y 轴对称），此时可为 video 元素添加样式 'transform: rotateY(180deg);' 来指定视频在本地显示的时候做镜像翻转。
   screen: boolean         // 必填，指定是否为屏幕共享，audio, video, screen 不可同时为 true，更不可同时为 false
   microphoneId?: string   // 选填，指定使用的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将使用默认麦克风设备
   cameraId?: string       // 选填，指定使用的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将使用默认的摄像头设备
