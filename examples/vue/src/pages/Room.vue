@@ -135,7 +135,7 @@ export default {
       });
     },
     handlePublishScreen: function () {
-      this.client.publish({ audio: true, video: false, screen: true }, (err) => {
+      this.client.publish({ audio: false, video: false, screen: true }, (err) => {
         console.error('发布失败：', err);
       });
     },

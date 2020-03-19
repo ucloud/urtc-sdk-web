@@ -253,7 +253,7 @@ window.onload = function () {
     },
     handlePublishScreen: function () {
       this.client.publish({
-        audio: true,
+        audio: false,
         video: false,
         screen: true
       }, err => {
