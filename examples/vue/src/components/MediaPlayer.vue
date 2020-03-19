@@ -9,13 +9,12 @@
         ref="video"
         webkit-playsinline
         autoplay
-        playsinline
-        v-bind:muted="isIOS">
+        playsinline>
       </video>
-      <div class="muted-mask" v-show="showMuteMask">
+      <div class="play-mask" v-show="showPlayMask">
         <div class="mask-content">
-          <div class="hint">由于iOS系统限制，视频自动播放时需要静音，请点击下面的按钮来取消静音</div>
-          <button @click.stop="handleUnmute">取消静音</button>
+          <div class="hint">由于当前浏览器不支持视频自动播放，请点击下面的按钮来播放</div>
+          <button @click.stop="handlePlay">播放</button>
         </div>
       </div>
     </div>
@@ -25,14 +24,12 @@
 
 <script>
 import classnames from 'unique-classnames';
+import canAutoplay from 'can-autoplay';
 
 export default {
   name: 'MediaPlayer',
   data: function () {
     const classes = classnames('media-player', this.className);
-    function isIOS () {
-      return /.*iphone.*/i.test(navigator.userAgent);
-    }
 
     return {
       classes: classes,
@@ -45,8 +42,8 @@ export default {
         rtt: 0,
         biggestRTT: 0
       },
-      isIOS: isIOS(),
-      isMuted: isIOS()
+      canAutoplay: true,
+      paused: false
     };
   },
   props: {
@@ -80,6 +77,13 @@ export default {
     if (this.stream.mediaStream) {
       this.play(this.stream.mediaStream);
     }
+    this.$refs.video.onplay = (e) => {
+      this.paused = e.target.paused;
+    };
+    this.paused = this.$refs.video.paused;
+    canAutoplay.video().then(res => {
+      this.canAutoplay = res.result;
+    });
   },
   beforeDestroy: function () {
     this.stop();
@@ -171,19 +175,21 @@ export default {
       const { stream, onClick } = this;
       onClick && onClick(stream);
     },
-    handleUnmute: function () {
-      if (this.$refs.video) {
-        this.$refs.video.muted = false;
-        this.isMuted = false;
+    handlePlay: function () {
+      if (this.$refs.video && this.paused) {
+        this.$refs.video.play();
       }
     }
   },
   computed: {
-    showMuteMask: function () {
+    showPlayMask: function () {
       if (this.stream && this.stream.type !== 'subscribe') {
         return false;
       }
-      return this.isMuted;
+      if (!this.canAutoplay && this.paused) {
+        return true;
+      }
+      return false;
     }
   }
 };
@@ -204,7 +210,8 @@ export default {
   position: relative;
 }
 
-.media-player .muted-mask {
+.media-player .muted-mask,
+.media-player .play-mask {
   position: absolute;
   top: 0;
   right: 0;
@@ -219,7 +226,8 @@ export default {
   align-items: center;
 }
 
-.muted-mask .mask-content {
+.muted-mask .mask-content,
+.play-mask .mask-content {
   max-width: 200px;
 }
 
