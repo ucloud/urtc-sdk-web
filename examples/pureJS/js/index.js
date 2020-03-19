@@ -19,9 +19,15 @@ window.onload = function () {
 
   console.log('UCloudRTC sdk version: ', UCloudRTC.version);
 
-  function isIOS() {
-    return /.*iphone.*/i.test(navigator.userAgent);
-  }
+  canAutoplay.video().then(res => {
+    if (!res.result) {
+      const pullerElm = document.querySelector('#pullers-title');
+      const hintElm = document.createElement('p');
+      hintElm.className = 'hint';
+      hintElm.textContent = '当前浏览器不支持自动播放视频，订阅远端流成功后，可点击对应的视频区域进行播放'
+      pullerElm.appendChild(hintElm);
+    }
+  });
 
   // 用于维护应用内的状态
   const App = {
@@ -124,9 +130,6 @@ window.onload = function () {
         videoElem.autoplay = true;
         videoElem.playsInline = true;
         videoElem['webkit-playsinline'] = 'true';
-        if (isIOS()) {
-          videoElem.controls = true;
-        }
         videoElem.srcObject = stream.mediaStream;
         player.append(videoElem);
       }
@@ -157,13 +160,15 @@ window.onload = function () {
         videoElem.autoplay = true;
         videoElem.playsInline = true;
         videoElem['webkit-playsinline'] = 'true';
-        if (isIOS()) {
-          videoElem.controls = true;
-        }
         videoElem.srcObject = stream.mediaStream;
         const pElem = player.querySelector('p');
         player.removeChild(pElem);
         player.appendChild(videoElem);
+        videoElem.addEventListener('click', function() {
+          if (videoElem.paused) {
+            videoElem.play();
+          }
+        });
       } else {
         const videoElem = player.querySelector('video');
         const pElem = document.createElement('p');

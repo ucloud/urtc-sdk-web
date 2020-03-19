@@ -7,6 +7,13 @@
   color: #2c3e50;
 }
 
+.hint {
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 100;
+  color: #666;
+}
+
 .room {
   max-width: 640px;
   margin: 0 auto;
