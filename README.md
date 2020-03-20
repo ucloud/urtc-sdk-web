@@ -2,16 +2,16 @@
 
 UCloudRTC 包含以下方法、类或对象：
 
-* [Client 类](#client)
-* [getDevices 方法](#getdevices)
-* [getSupportProfileNames 方法](#getsupportprofilenames)
-* [getSupportedCodec 方法](#getsupportedcodec)
-* [isSupportWebRTC 方法](#issupportwebrtc)
-* [deviceDetection 方法](#devicedetection)
-* [version 属性](#version)
-* [generateToken 方法](#generateToken)
-* [Logger 对象](#logger)
-* [setServers 方法](#setservers)
+* [一、Client 类](#client)
+* [二、getDevices 方法](#getdevices)
+* [三、getSupportProfileNames 方法](#getsupportprofilenames)
+* [四、getSupportedCodec 方法](#getsupportedcodec)
+* [五、isSupportWebRTC 方法](#issupportwebrtc)
+* [六、deviceDetection 方法](#devicedetection)
+* [七、version 属性](#version)
+* [八、generateToken 方法](#generateToken)
+* [九、Logger 对象](#logger)
+* [十、setServers 方法](#setservers)
 
 > 注： 想要了解使用此 SDK 的简单步骤，请查看 [使用说明](./Manual.md)
 
