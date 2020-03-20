@@ -83,7 +83,7 @@ Client 类包含以下方法：
 
 用于创建一个 URTC Client 对象，示例代码：
 
-```
+```js
 new Client(AppId, Token, ClientOptions);
 ```
 
@@ -95,7 +95,7 @@ new Client(AppId, Token, ClientOptions);
 
 - ClientOptions: object 类型, 选传，类型说明如下
 
-```
+```js
 {
   type?: "rtc"|"live",  // 选填，设置房间类型，有两种 "live" 和 "rtc" 类型可选 ，分别对应直播模式和连麦模式，默认为 rtc
   role?: "pull" | "push" | "push-and-pull",   // 选填，设置用户角色，可设 "pull" | "push" | "push-and-pull" 三种角色，分别对应拉流、推流、推+拉流，默认为 "push-and-pull"，特别地，当房间类型为连麦模式（rtc）时，此参数将被忽视，会强制为 "push-and-pull"，即推+拉流
@@ -109,7 +109,7 @@ new Client(AppId, Token, ClientOptions);
 
 加入房间，示例代码：
 
-```
+```js
 client.joinRoom(RoomId, UserId, onSuccess, onFailure)
 ```
 
@@ -121,7 +121,7 @@ client.joinRoom(RoomId, UserId, onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(Users, Streams) {}
 ```
 
@@ -131,7 +131,7 @@ function onSuccess(Users, Streams) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -142,7 +142,7 @@ Err 为错误信息
 
 离开房间，示例代码：
 
-```
+```js
 client.leaveRoom(LeaveRoomOptions, onSuccess, onFailure)
 ```
 
@@ -150,7 +150,7 @@ client.leaveRoom(LeaveRoomOptions, onSuccess, onFailure)
 
 - LeaveRoomOptions，object 类型，选传，类型说明如下
 
-```
+```js
 {
   keepRecording: boolean  // 是否保持服务端录制，默认不保持。使用场景：课堂管理员开启房间内的流进行服务端录制后，不需要等待课堂结束即可直接退出房间，并使在房间内的流继续录制。
 }
@@ -158,13 +158,13 @@ client.leaveRoom(LeaveRoomOptions, onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess() {}
 ```
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -175,7 +175,7 @@ Err 为错误信息
 
 发布本地流，自 1.4.0 版本开始支持同时发布两条流（且摄像头，屏幕共享各一条，不可同时为同一类），示例代码：
 
-```
+```js
 client.publish(PublishOptions, onFailure)
 ```
 
@@ -183,7 +183,7 @@ client.publish(PublishOptions, onFailure)
 
 - PublishOptions: object 类型，选传，类型说明如下
 
-```
+```js
 {
   audio: boolean          // 必填，指定是否使用麦克风设备
   video: boolean          // 必填，指定是否使用摄像头设备
@@ -203,7 +203,7 @@ client.publish(PublishOptions, onFailure)
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -225,7 +225,7 @@ Err 为错误信息
 
 取消发布本地流，示例代码：
 
-```
+```js
 client.unpublish(StreamId, onSuccess, onFailure)
 ```
 
@@ -234,7 +234,7 @@ client.unpublish(StreamId, onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(Stream) {}
 ```
 
@@ -242,7 +242,7 @@ function onSuccess(Stream) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -253,7 +253,7 @@ Err 为错误信息
 
 订阅远端流，，示例代码：
 
-```
+```js
 client.subscribe(StreamId, onFailure)
 ```
 
@@ -263,7 +263,7 @@ client.subscribe(StreamId, onFailure)
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -275,7 +275,7 @@ Err 为错误信息
 
 取消订阅远端流，示例代码：
 
-```
+```js
 client.unsubscribe(StreamId, onSuccess, onFailure)
 ```
 
@@ -285,7 +285,7 @@ client.unsubscribe(StreamId, onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(Stream) {}
 ```
 
@@ -293,7 +293,7 @@ function onSuccess(Stream) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -305,7 +305,7 @@ Err 为错误信息
 
 给事件绑定监听函数，示例代码：
 
-```
+```js
 client.on(EventType, Listener)
 ```
 
@@ -356,7 +356,7 @@ network-quality | 报告本地用户的上下行网络质量。每 2 秒触发�
 
 解除绑定事件的监听函数，示例代码：
 
-```
+```js
 client.off(EventType, Listener)
 ```
 
@@ -371,7 +371,7 @@ client.off(EventType, Listener)
 
 关闭流的音频，示例代码：
 
-```
+```js
 const result = client.muteAudio(StreamId)
 ```
 
@@ -392,7 +392,7 @@ const result = client.muteAudio(StreamId)
 
 启用流的音频，示例代码：
 
-```
+```js
 const result = client.unmuteAudio(StreamId)
 ```
 
@@ -413,7 +413,7 @@ const result = client.unmuteAudio(StreamId)
 
 关闭流的视频，示例代码：
 
-```
+```js
 const result = client.muteVideo(StreamId)
 ```
 
@@ -432,7 +432,7 @@ const result = client.muteVideo(StreamId)
 
 启用流的视频，示例代码：
 
-```
+```js
 const result = client.unmuteVideo(StreamId)
 ```
 
@@ -451,7 +451,7 @@ const result = client.unmuteVideo(StreamId)
 
 开始录制音视频，示例代码：
 
-```
+```js
 client.startRecording(RecordOptions, onSuccess, onFailure)
 ```
 
@@ -459,7 +459,7 @@ client.startRecording(RecordOptions, onSuccess, onFailure)
 
 - RecordOptions: object 类型，必传，录制的配置信息，类型说明如下
 
-```
+```js
 {
   bucket: string  // 必传，存储的 bucket, URTC 使用 UCloud 的 UFile 产品进行在存储，相关信息见控制台操作文档
   region: string  // 必传，存储服务所在的地域
@@ -473,7 +473,7 @@ client.startRecording(RecordOptions, onSuccess, onFailure)
 
 WaterMarkOptions: object 类型，选传，添加的水印相关配置，类型说明如下
 
-```
+```js
 {
   position?: 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom' // 选传，指定水印的位置，前面四种类型分别对应 左上，左下，右上，右下，默认 'left-top'
   type?: 'time' | 'image' | 'text' // 选传，水印类型，分别对应时间水印、图片水印、文字水印，默认为 'time'
@@ -483,7 +483,7 @@ WaterMarkOptions: object 类型，选传，添加的水印相关配置，类型�
 
 MixStreamOptions: object 类型，选传，混流相关配置，类型说明如下
 
-```
+```js
 {
   width?: number,      // 选传，设置混流后视频的宽度，不传时，默认为 1280
   height?: number,     // 选传，设置混流后视频的高度，不传时，默认为 720
@@ -496,7 +496,7 @@ MixStreamOptions: object 类型，选传，混流相关配置，类型说明如�
 
 RelayOptions: object 类型，选传，转推相关配置，类型说明如下
 
-```
+```js
 {
   time?: number,        // 转推开启时间的Unix时间戳（单位：秒），不填时，将默认使用当前时间的Unix时间戳
   fragment: number,     // 切片大小（单位：秒），默认 60s
@@ -505,13 +505,13 @@ RelayOptions: object 类型，选传，转推相关配置，类型说明如下
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(Record) {}
 ```
 
 函数参数 Record 为返回值，object 类型，为流信息，类型说明如下
 
-```
+```js
 {
   FileName: string  // 录制到的文件的名称
   RecordId: string  // 录制 ID
@@ -520,7 +520,7 @@ function onSuccess(Record) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -532,7 +532,7 @@ Err 为错误信息
 
 停止录制音视频，示例代码：
 
-```
+```js
 client.stopRecording(onSuccess, onFailure)
 ```
 
@@ -540,13 +540,13 @@ client.stopRecording(onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess() {}
 ```
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -558,7 +558,7 @@ Err 为错误信息
 
 获取本地用户的信息，示例代码：
 
-```
+```js
 const result = client.getUser()
 ```
 
@@ -570,7 +570,7 @@ const result = client.getUser()
 
 User:
 
-```
+```js
 {
   uid: string   // 为用户ID
 }
@@ -583,7 +583,7 @@ User:
 
 获取当前加入房间的远端用户的信息，示例代码：
 
-```
+```js
 const result = client.getUsers()
 ```
 
@@ -598,7 +598,7 @@ const result = client.getUsers()
 
 获取单条发布（本地）/订阅（远端）流的信息，示例代码：
 
-```
+```js
 const result = client.getStream(StreamId)
 ```
 
@@ -614,7 +614,7 @@ const result = client.getStream(StreamId)
 
 Stream:
 
-```
+```js
 {
   sid: string                     // 流ID
   uid: string                     // 对应的用户的ID
@@ -635,7 +635,7 @@ Stream:
 
 获取所有发布（本地）流的信息（ 1.4.0 及以上版本支持），示例代码：
 
-```
+```js
 const result = client.getLocalStreams()
 ```
 
@@ -649,7 +649,7 @@ const result = client.getLocalStreams()
 
 获取所有订阅流（远端流）的信息（ 1.4.0 及以上版本支持），示例代码：
 
-```
+```js
 const result = client.getRemoteStreams()
 ```
 
@@ -670,7 +670,7 @@ const result = client.getRemoteStreams()
 
 获取发布（本地）/ 订阅（远端）流对应的媒体流（ 1.4.0 及以上版本支持），获取后，可通过 HtmlMediaElement（如：[video](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video)）进行播放，示例代码：
 
-```
+```js
 const result = client.getMediaStream(StreamId)
 ```
 
@@ -705,7 +705,7 @@ const result = client.getMediaStream(StreamId)
 
 > 注：若站点未经过用户授权浏览器使用麦克风设备，会弹出提示要求用户进行授权
 
-```
+```js
 client.getMicrophones(onSuccess, onFailure)
 ```
 
@@ -713,7 +713,7 @@ client.getMicrophones(onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(MediaDeviceInfos) {}
 ```
 
@@ -722,7 +722,7 @@ function onSuccess(MediaDeviceInfos) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -736,7 +736,7 @@ Err 为错误信息
 
 > 注：若站点未经过用户授权浏览器使用摄像头设备，会弹出提示要求用户进行授权
 
-```
+```js
 client.getCameras(onSuccess, onFailure)
 ```
 
@@ -744,7 +744,7 @@ client.getCameras(onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(MediaDeviceInfos) {}
 ```
 
@@ -753,7 +753,7 @@ function onSuccess(MediaDeviceInfos) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -767,7 +767,7 @@ Err 为错误信息
 
 > 注：若站点未经过用户授权浏览器使用音频设备，会弹出提示要求用户进行授权
 
-```
+```js
 client.getLoudspeakers(onSuccess, onFailure)
 ```
 
@@ -775,7 +775,7 @@ client.getLoudspeakers(onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(MediaDeviceInfos) {}
 ```
 
@@ -784,7 +784,7 @@ function onSuccess(MediaDeviceInfos) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -796,7 +796,7 @@ Err 为错误信息
 
 设置视频的 profile（通过getSupportProfileNames获取到视频质量的值）限制 client 使用的视频大小、帧率、带宽等，setVideoProfile须在publish之前设置。示例代码：
 
-```
+```js
 client.setVideoProfile(Profile, onSuccess, onFailure)
 ```
 
@@ -804,13 +804,13 @@ client.setVideoProfile(Profile, onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess() {}
 ```
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -822,7 +822,7 @@ Err 为错误信息
 
 当发布（本地麦克风、摄像头）流已经发布，可通过此方法在不中断当前发布的情况下，用指定的音视频设备采集的音视频流代替正在发布的音视频流，示例代码：
 
-```
+```js
 client.switchDevice(SwitchDeviceOptions, onSuccess, onFailure)
 ```
 
@@ -830,7 +830,7 @@ client.switchDevice(SwitchDeviceOptions, onSuccess, onFailure)
 
 - SwitchDeviceOptions: object 类型，必传，详细类型说明如下
 
-```
+```js
 {
   streamId?: string       // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   type: 'audio' | 'video' // 必填，指定音频或视频设备
@@ -840,12 +840,12 @@ client.switchDevice(SwitchDeviceOptions, onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess() {}
 ```
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -859,7 +859,7 @@ Err 为错误信息
 
 当屏幕共享流已经发布，可通过此方法在不中断当前发布的情况下，用屏幕共享来代替正在发布的屏幕共享流，示例代码：
 
-```
+```js
 client.switchScreen(StreamId, onSuccess, onFailure)
 ```
 
@@ -869,12 +869,12 @@ client.switchScreen(StreamId, onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess() {}
 ```
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -886,7 +886,7 @@ Err 为错误信息
 
 当本地流已经发布，可通过此方法在不中断当前发布的情况下，用静态图片来代替正在发布的视频流，示例代码：
 
-```
+```js
 client.switchImage(SwitchImageOptions, onSuccess, onFailure)
 ```
 
@@ -894,7 +894,7 @@ client.switchImage(SwitchImageOptions, onSuccess, onFailure)
 
 - SwitchImageOptions: object 类型，必传，详细类型说明如下
 
-```
+```js
 {
   streamId?: string       // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   file?: File             // 选填，指（图片）文件，更多请参考下面的备注
@@ -908,12 +908,12 @@ client.switchImage(SwitchImageOptions, onSuccess, onFailure)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess() {}
 ```
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -925,7 +925,7 @@ Err 为错误信息
 
 获取音频的音量，返回值范围 [0,100]，示例代码：
 
-```
+```js
 client.getAudioVolume(StreamId)
 ```
 
@@ -939,7 +939,7 @@ client.getAudioVolume(StreamId)
 
 设置音频的音量，可设置的音量范围 [0,100]，示例代码：
 
-```
+```js
 client.setAudioVolume(AudioVolumeOptions, callback)
 ```
 
@@ -947,7 +947,7 @@ client.setAudioVolume(AudioVolumeOptions, callback)
 
 - AudioVolumeOptions: object 类型，必传，详细类型说明如下
 
-```
+```js
 {
   streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
   element?: HTMLMediaElement // 播放媒体流的 DOM 元素，当需要设置音量的流为发布（本地）流时，不填，为订阅（远端）流，必填
@@ -957,7 +957,7 @@ client.setAudioVolume(AudioVolumeOptions, callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -969,7 +969,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 获取流的音频状态，示例代码：
 
-```
+```js
 client.getAudioStats(StreamId, onSuccess, onFailure)
 ```
 
@@ -979,12 +979,12 @@ client.getAudioStats(StreamId, onSuccess, onFailure)
   
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(AudioStats) {}
 ```
 函数参数 AudioStats 为返回值，为 object 类型，类型说明如下：
 
-```
+```js
 {
   br: number        // 码率
   lostpre: number   // 丢包率
@@ -995,7 +995,7 @@ function onSuccess(AudioStats) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -1007,7 +1007,7 @@ Err 为错误信息
 
 获取流的视频状态，示例代码：
 
-```
+```js
 client.getVideoStats(StreamId, onSuccess, onFailure)
 ```
 
@@ -1017,12 +1017,12 @@ client.getVideoStats(StreamId, onSuccess, onFailure)
   
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(VideoStats) {}
 ```
 函数参数 VideoStats 为返回值，为 object 类型，类型说明如下：
 
-```
+```js
 {
   br: number        // 码率
   lostpre: number   // 丢包率
@@ -1035,7 +1035,7 @@ function onSuccess(VideoStats) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -1047,7 +1047,7 @@ Err 为错误信息
 
 获取流的网络状态，示例代码：
 
-```
+```js
 client.getNetworkStats(StreamId, onSuccess, onFailure)
 ```
 
@@ -1057,12 +1057,12 @@ client.getNetworkStats(StreamId, onSuccess, onFailure)
   
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(NetworkStats) {}
 ```
 函数参数 NetworkStats 为返回值，为 object 类型，类型说明如下：
 
-```
+```js
 {
   rtt: number   //  往返时延，单位 ms
 }
@@ -1070,7 +1070,7 @@ function onSuccess(NetworkStats) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -1081,7 +1081,7 @@ Err 为错误信息
 
 预加载音效资源，示例代码：
 
-```
+```js
 client.preloadEffect(EffectId, FilePath, callback)
 ```
 
@@ -1093,7 +1093,7 @@ client.preloadEffect(EffectId, FilePath, callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1104,7 +1104,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 卸载音效资源，示例代码：：
 
-```
+```js
 client.unloadEffect(EffectId)
 ```
 
@@ -1118,7 +1118,7 @@ client.unloadEffect(EffectId)
 
 播放音效，示例代码：
 
-```
+```js
 client.playEffect(EffectOptions, callback)
 ```
 
@@ -1128,7 +1128,7 @@ client.playEffect(EffectOptions, callback)
 
 - EffectOptions: object 类型，必传，详细类型说明如下
 
-```
+```js
 {
   streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
@@ -1141,7 +1141,7 @@ client.playEffect(EffectOptions, callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1152,7 +1152,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 暂停播放音效，示例代码：
 
-```
+```js
 client.pauseEffect(EffectOptions, callback)
 ```
 
@@ -1160,7 +1160,7 @@ client.pauseEffect(EffectOptions, callback)
 
 - EffectOptions: object 类型, 必传，详细的类型说明如下
 
-```
+```js
 {
   streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
@@ -1169,7 +1169,7 @@ client.pauseEffect(EffectOptions, callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1180,7 +1180,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 恢复播放音效，示例代码：
 
-```
+```js
 client.resumeEffect(EffectOptions, callback)
 ```
 
@@ -1188,7 +1188,7 @@ client.resumeEffect(EffectOptions, callback)
 
 - EffectOptions: object 类型, 必传，详细的类型说明如下
 
-```
+```js
 {
   streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
@@ -1197,7 +1197,7 @@ client.resumeEffect(EffectOptions, callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1209,7 +1209,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 停止播放音效，示例代码：
 
-```
+```js
 client.stopEffect(EffectOptions, callback)
 ```
 
@@ -1217,7 +1217,7 @@ client.stopEffect(EffectOptions, callback)
 
 - EffectOptions: object 类型, 必传，详细的类型说明如下
 
-```
+```js
 {
   streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
@@ -1226,7 +1226,7 @@ client.stopEffect(EffectOptions, callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1237,7 +1237,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 设置正在播放的音效的音量大小，示例代码：
 
-```
+```js
 client.setEffectVolume(EffectVolumeOptions, callback)
 ```
 
@@ -1245,7 +1245,7 @@ client.setEffectVolume(EffectVolumeOptions, callback)
 
 - EffectVolumeOptions: object 类型, 必传，详细的类型说明如下
 
-```
+```js
 {
   streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   effectId: number    // 必填，音效资源 ID
@@ -1255,7 +1255,7 @@ client.setEffectVolume(EffectVolumeOptions, callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1266,7 +1266,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 可将指定的发布（本地）/订阅（远端）流截屏用于页面展示，或下载截屏图片，示例代码：
 
-```
+```js
 client.snapshot(SnapshotOptions, onSuccess, onFailure);
 ```
 
@@ -1276,7 +1276,7 @@ client.snapshot(SnapshotOptions, onSuccess, onFailure);
 
 - SnapshotOptions: object 类型，选传，详细的类型说明如下
 
-```
+```js
 {
   streamId?: string             // 选填，发布/订阅流的 ID，不填时，为第一条发布流，
   download?: boolean 或 string  // 选填，是否要下载图片，或指定下载图片的文件名，传 true 时，可将截屏下载到本地（文件名自动生成），传非空字符串时，将会以该字符串命名下载时保存到本地的图片名，不传或传 false 或空字符串时，都将不下载图片
@@ -1285,7 +1285,7 @@ client.snapshot(SnapshotOptions, onSuccess, onFailure);
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(ImgString) {}
 ```
 
@@ -1294,7 +1294,7 @@ ImgString: string 类型，是图片转化的 base64 编码的 [Data URLs](https
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -1305,7 +1305,7 @@ Err 为错误信息
 
 启动预览，示例代码：
 
-```
+```js
 client.startPreviewing(DeviceOptions, onSuccess, onFailure);
 ```
 
@@ -1313,7 +1313,7 @@ client.startPreviewing(DeviceOptions, onSuccess, onFailure);
 
 - DeviceOptions: object 类型，选传，详细的类型说明如下
 
-```
+```js
 {
   audio: boolean          // 必填，指定是否使用麦克风设备
   video: boolean          // 必填，指定是否使用摄像头设备
@@ -1324,7 +1324,7 @@ client.startPreviewing(DeviceOptions, onSuccess, onFailure);
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
-```
+```js
 function onSuccess(result) {}
 ```
 
@@ -1332,7 +1332,7 @@ function onSuccess(result) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 
@@ -1347,7 +1347,7 @@ Err 为错误信息
 
 停止预览，示例代码：
 
-```
+```js
 client.stopPreviewing();
 ```
 
@@ -1364,7 +1364,7 @@ client.stopPreviewing();
 
 替换发布流的音频轨道或视频轨道，可在保持发布流的发布状态下，切换音频或视频，示例代码：
 
-```
+```js
 client.replaceTrack(ReplaceTrackOptions, callback)
 ```
 
@@ -1372,7 +1372,7 @@ client.replaceTrack(ReplaceTrackOptions, callback)
 
 - ReplaceTrackOptions: object 类型, 必传，详细的类型说明如下
 
-```
+```js
 {
   streamId?: string   // 选填，发布（本地）流的 ID，不填时，为第一条发布流
   track: MediaStreamTrack   // 必填，需要替换的新的音轨或视轨，MediaStreamTrack 参见下面注释
@@ -1384,7 +1384,7 @@ client.replaceTrack(ReplaceTrackOptions, callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err, OldTrack) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1397,7 +1397,7 @@ OldTrack 为返回值，MediaStreamTrack 类型，不为空时，值为被替换
 
 开启录制或转推，示例代码：
 
-```
+```js
 client.startMix(MixOptions, callback)
 ```
 
@@ -1405,7 +1405,7 @@ client.startMix(MixOptions, callback)
 
 - MixOptions: object 类型, 必传，详细的类型说明如下
 
-```
+```js
 {
   type?: MixType  // 选传，MixType 为 'relay' | 'record' | 'relay-and-record' | 'update-config' 其中之一，分别代表 '转推' | '录制' | '录制并转推' | '更改设置'，不传时，默认为 'record' 录制。
   bucket?: string  // 当 type 为 '录制' 和 '录制并转推时'，必传，存储的 bucket, URTC 使用 UCloud 的 UFile 产品进行在存储，相关信息见控制台操作文档
@@ -1430,7 +1430,7 @@ client.startMix(MixOptions, callback)
 
 MixLayoutOptions 类型，类型说明
 
-```
+```js
 {
   type: MixLayoutType           // MixLayoutType 为 'flow' | 'main' | 'custom'，分别代表：1 流式(均分)布局；2 讲课模式，主讲人占大部分屏幕，其他人小屏居于右侧或底部；3 自定义布局，默认为 'flow'
   custom?: Object[]             // type 为 'custom'时，自定义布局填在custom里，格式参照RFC5707 Media Server Markup Language (MSML)
@@ -1443,7 +1443,7 @@ MixLayoutOptions 类型，类型说明
 
 MixAudioOptions 类型，类型说明
 
-```
+```js
 {
   codec: MixAudioCodec    // 音频的编码格式，MixAudioCodec 为 'aac'，不传时默认为 'aac'
 }
@@ -1453,7 +1453,7 @@ MixAudioOptions 类型，类型说明
 
 MixVideoOptions 类型，类型说明
 
-```
+```js
 {
   codec: MixVideoCodec    // 视频的编码格式，MixVideoCodec 为 'h264' | 'h265' 其中之一，默认为 'h264'
   quality?: H264Quality   // 视频质量，当 codec 为 h264 时，此项起作用，H264Quality 为 'B' | 'CB' | 'M' | 'E' | 'H' 其中之一，默认为 'CB'
@@ -1466,7 +1466,7 @@ MixVideoOptions 类型，类型说明
 
 BackgroundColorOptions 类型，类型说明
 
-```
+```js
 {
   r: number   // r 通道值，默认为 0
   g: number   // g 通道值，默认为 0
@@ -1478,7 +1478,7 @@ BackgroundColorOptions 类型，类型说明
 
 WaterMarkOptions: object 类型，选传，添加的水印相关配置，类型说明如下
 
-```
+```js
 {
   position?: 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom' // 选传，指定水印的位置，前面四种类型分别对应 左上，左下，右上，右下，默认 'left-top'
   type?: 'time' | 'image' | 'text' // 选传，水印类型，分别对应时间水印、图片水印、文字水印，默认为 'time'
@@ -1490,7 +1490,7 @@ WaterMarkOptions: object 类型，选传，添加的水印相关配置，类型�
 
 MixStream: object 类型，选传，添加的水印相关配置，类型说明如下
 
-```
+```js
 {
   uid: string,        // 用户 ID，指定需要混合的流的用户ID（远端用户）
   mediaType: string   // 流的媒体类型，指定需要混合的流的媒体类型，有 'camera' 和 'screen' 两种可选，默认为 'camera'
@@ -1499,7 +1499,7 @@ MixStream: object 类型，选传，添加的水印相关配置，类型说明�
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err, Result) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1510,7 +1510,7 @@ Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值�
 
 MixResult: object 类型，类型说明如下
 
-```
+```js
 {
   MixId: string         // 混流 ID
   FileName?: string     // 混流文件名
@@ -1525,7 +1525,7 @@ MixResult: object 类型，类型说明如下
 
 关闭录制或转推，示例代码：
 
-```
+```js
 client.stopMix(StopMixOptions, callback)
 ```
 
@@ -1542,7 +1542,7 @@ client.stopMix(StopMixOptions, callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err, Result) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1555,7 +1555,7 @@ Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值�
 
 查询录制或转推，示例代码：
 
-```
+```js
 client.queryMix(callback)
 ```
 
@@ -1563,7 +1563,7 @@ client.queryMix(callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err, Result) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1576,7 +1576,7 @@ Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值�
 
 可在录制或转推时，为录制或转推添加需要混合的流，示例代码：
 
-```
+```js
 client.addMixStreams(AddMixStreamsOptions, callback)
 ```
 
@@ -1584,7 +1584,7 @@ client.addMixStreams(AddMixStreamsOptions, callback)
 
 - AddMixStreamsOptions: object 类型, 必传，详细的类型说明如下
 
-```
+```js
 {
   streams: MixStream[]  // 必传，指定需要混合的新流
 }
@@ -1594,7 +1594,7 @@ client.addMixStreams(AddMixStreamsOptions, callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err, Result) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1608,7 +1608,7 @@ Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值�
 
 可在录制或转推时，删除录制或转推中混合的流，示例代码：
 
-```
+```js
 client.removeMixStreams(RemoveMixStreamsOptions, callback)
 ```
 
@@ -1616,7 +1616,7 @@ client.removeMixStreams(RemoveMixStreamsOptions, callback)
 
 - RemoveMixStreamsOptions: object 类型, 必传，详细的类型说明如下
 
-```
+```js
 {
   streams: MixStream[]  // 必传，指定需要混合的新流
 }
@@ -1625,7 +1625,7 @@ client.removeMixStreams(RemoveMixStreamsOptions, callback)
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Err, Result) {}
 ```
 Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
@@ -1642,7 +1642,7 @@ Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值�
 
 > 注：若站点未经过用户授权浏览器使用麦克风、摄像头、音频输出设备，会弹出提示要求用户进行授权
 
-```
+```js
 UCloudRTC.getDevices(onSuccess, onFailure)
 ```
 
@@ -1650,7 +1650,7 @@ UCloudRTC.getDevices(onSuccess, onFailure)
 
 - onSuccess: 必传，函数类型，方法调用成功时执行的回调函数。
 
-```
+```js
 function(MediaDeviceInfos) {}
 ```
 
@@ -1659,7 +1659,7 @@ function(MediaDeviceInfos) {}
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
-```
+```js
 function(Err) {}
 ```
 Err 为错误信息
@@ -1672,7 +1672,7 @@ Err 为错误信息
 
 用于获取当前 SDK 支持的视频质量的名称
 
-```
+```js
 const profileNames = UCloudRTC.getSupportProfileNames();
 ```
 
@@ -1697,7 +1697,7 @@ const profileNames = UCloudRTC.getSupportProfileNames();
 
 检测当前浏览器支持的音视频的编解码格式
 
-```
+```js
 UCloudRTC.getSupportedCodec(callback);
 ```
 
@@ -1705,13 +1705,13 @@ UCloudRTC.getSupportedCodec(callback);
 
 - callback: function 类型，必传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Codecs) { }
 ```
 
 Codecs 为返回值，object 类型，详细的类型说明如下
 
-```
+```js
 {
   audio: string[],  // 字符串数组，支持的音频编解码格式。可能含有 "opus"，或为空数组。
   video: string[],  // 字符串数组，支持的视频编解码格式。可能含有 "h264"、"vp8" 两种取值，或为空数组。
@@ -1726,7 +1726,7 @@ Codecs 为返回值，object 类型，详细的类型说明如下
 
 检测当前浏览器对 WebRTC 的适配情况
 
-```
+```js
 const result = UCloudRTC.isSupportWebRTC();
 ```
 
@@ -1744,7 +1744,7 @@ const result = UCloudRTC.isSupportWebRTC();
 
 发布本地流或启动预览时，有可能因为麦克风或摄像头设备问题（如驱动问题，或未经授权等），导致无法正常发布或预览。此方法可用于发布或预览前的设备检测，根据检测结果，再自行决定在发布或预览时启用麦克风或摄像头或麦克风和摄像头，示例代码：
 
-```
+```js
 UCloudRTC.deviceDetection(DeviceDetectionOptions, callback);
 ```
 
@@ -1752,7 +1752,7 @@ UCloudRTC.deviceDetection(DeviceDetectionOptions, callback);
 
 - DeviceDetectionOptions: object 类型, 必传，详细的类型说明如下
 
-```
+```js
 {
   audio: boolean          // 必填，指定是否检测麦克风设备
   video: boolean          // 必填，指定是否检测摄像头设备
@@ -1763,7 +1763,7 @@ UCloudRTC.deviceDetection(DeviceDetectionOptions, callback);
 
 - callback: function 类型，必传，方法的回调函数，函数说明如下
 
-```
+```js
 function callback(Result) {
   if (Result.audio && Result.video) {
     // 麦克风和摄像头都可有和，发布或预览时可启用麦克风和摄像头
@@ -1782,7 +1782,7 @@ function callback(Result) {
 
 Result 为返回值，DeviceDetectionResult 类型，详细的类型说明如下
 
-```
+```js
 {
   audio: boolean,       // 指麦克风设备是否可用
   audioError?: string   // 当麦克风不可用时，此字段可说明设备不可用的原因
@@ -1810,7 +1810,7 @@ version 属性用于显示当前 sdk 的版本
 
 generateToken 方法仅用于试用 URTC 产品时替代服务器生成 sdk 所需 token 的方法，正式使用 URTC 产品时，需要搭建后台服务按规则生成 token
 
-```
+```js
 const token = UCloudRTC.generateToken(AppId, AppKey, RoomId, UserId);
 ```
 
@@ -1844,7 +1844,7 @@ Logger 对象用于调试时打印内部日志，包含以下方法：
 
 用于设置 Logger 打印日志的级别
 
-```
+```js
 Logger.setLogLevel(Level)
 ```
 
@@ -1858,7 +1858,7 @@ Level: 必传，有 "debug" | "info" | "warn" | "error" 四个日志级别，默
 
 用于调试代码时，打印 debug 日志
 
-```
+```js
 Logger.debug(a, ...)  // 可传任意数量的任意类型的变量作为参数
 ```
 
@@ -1884,7 +1884,7 @@ Logger.debug(a, ...)  // 可传任意数量的任意类型的变量作为参数
 
 可配置 URTC 服务的域名，用于私有化部署，目前有房间服务器和日志服务器的两种域名可进行配置，示例代码：
 
-```
+```js
 UCloudRTC.setServers({
   api: "https://env1.urtc.com",   // api 为 URTC 房间服务的访问地址
   log: "https://env1.urtclog.com" // log 为 URTC 日志服务的访问地址
