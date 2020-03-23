@@ -112,7 +112,7 @@ window.onload = function () {
       }
       const player = document.createElement('div');
       player.className = 'media-player';
-      player.id = stream.sid;
+      player.id = 's' + stream.sid;
       const uIDElem = document.createElement('div');
       uIDElem.innerHTML = `用户ID：${stream.uid}`;
       uIDElem.style = 'overflow: hidden; text-overflow: ellipsis;';
@@ -150,11 +150,11 @@ window.onload = function () {
         default:
           return;
       }
-      const player = document.querySelector('#' + stream.sid);
+      const player = document.querySelector('#s' + stream.sid);
       parent.removeChild(player);
     },
     rerenderStream: function (stream) {
-      const player = document.querySelector('#' + stream.sid);
+      const player = document.querySelector('#s' + stream.sid);
       if (stream.mediaStream) {
         const videoElem = document.createElement('video');
         videoElem.autoplay = true;
