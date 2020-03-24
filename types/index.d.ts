@@ -46,6 +46,7 @@ export interface PublishOptions {
 export interface DeviceOptions {
   audio: boolean        // 是否开启麦克风
   video: boolean        // 是否开启摄像头
+  facingMode?: FacingMode
   microphoneId?: string // 麦克风设备ID
   cameraId?: string     // 摄像头设备ID
 }
