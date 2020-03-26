@@ -1,6 +1,6 @@
-# UCloudRTC Web SDK API 手册
+# URTC Web SDK API 手册
 
-UCloudRTC 包含以下方法、类或对象：
+URTC 包含以下方法、类或对象：
 
 * [Client 类](#client)
 * [getDevices 方法](#getdevices)
