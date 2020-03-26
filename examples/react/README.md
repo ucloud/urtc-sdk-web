@@ -4,7 +4,7 @@
 
 1. 添加配置
 
-config 目录创建 index.js 文件，并配置 AppId 和 AppKey，示例代码：
+src/config 目录创建 index.js 文件，并配置 AppId 和 AppKey，示例代码：
 
 ```
 const config = {
