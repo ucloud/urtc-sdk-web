@@ -9,7 +9,7 @@ export declare type DeviceType = 'audio'|'video';
 export declare type EventType = 'user-added' | 'user-removed' |
   'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' |
   'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' |
-  'connection-state-change' | 'kick-off' | 'network-quality';
+  'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected';
 
 export declare type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
 
@@ -183,7 +183,7 @@ export interface ReplaceTrackOptions {
 }
 
 export declare type MixType = 'relay' | 'record' | 'relay-and-record' | 'update-config'
-export declare type MixLayoutType = 'flow' | 'main' | 'custom'
+export declare type MixLayoutType = 'flow' | 'main' | 'custom' | 'customMain' | 'customFlow'
 export declare type MixAudioCodec = 'aac'
 export declare type MixVideoCodec = 'h264' | 'h265'
 export declare type H264Quality = 'B' | 'CB' | 'M' | 'E' | 'H'
