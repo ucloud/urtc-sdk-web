@@ -218,6 +218,31 @@ window.onload = function () {
           this.setState('remoteStream-remove', p);
         }
       });
+      this.client.on('connection-state-change', ({ previous, current }) => {
+        console.log(`连接状态 ${previous} -> ${current}`);
+      });
+      this.client.on('stream-reconnected', ({previous, current}) => {
+        console.log(`流已断开重连`);
+        if (previous.type === 'publish') {
+          const { localStreams } = this.state;
+          const idx = localStreams.findIndex(item => item.sid === previous.sid);
+          if (idx >= 0) {
+            const oldStream = localStreams.splice(idx, 1)[0];
+            this.setState('localStream-remove', oldStream);
+          }
+          localStreams.push(current);
+          this.setState('localStream-add', current);
+        } else {
+          const { remoteStreams } = this.state;
+          const idx = remoteStreams.findIndex(item => item.sid === previous.sid);
+          if (idx >= 0) {
+            const oldStream = remoteStreams.splice(idx, 1)[0];
+            this.setState('remoteStream-remove', oldStream);
+          }
+          remoteStreams.push(current);
+          this.setState('remoteStream-add', current);
+        }
+      });
 
       document.querySelector('#joinRoomBtn').addEventListener('click', this.handleJoinRoom.bind(this));
       document.querySelector('#publishBtn').addEventListener('click', this.handlePublish.bind(this));
