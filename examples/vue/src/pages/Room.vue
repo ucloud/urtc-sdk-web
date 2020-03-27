@@ -100,6 +100,25 @@ export default {
         remoteStreams.splice(idx, 1);
       }
     });
+    this.client.on('connection-state-change', ({ previous, current }) => {
+      console.log(`连接状态 ${previous} -> ${current}`);
+    });
+    this.client.on('stream-reconnected', ({ previous, current }) => {
+      console.log(`流已断开重连`);
+      if (previous.type === 'publish') {
+        const { localStreams } = this;
+        const idx = localStreams.findIndex(item => item.sid === previous.sid);
+        if (idx >= 0) {
+          localStreams.splice(idx, 1, current);
+        }
+      } else {
+        const { remoteStreams } = this;
+        const idx = remoteStreams.findIndex(item => item.sid === previous.sid);
+        if (idx >= 0) {
+          remoteStreams.splice(idx, 1, current);
+        }
+      }
+    });
 
     window.addEventListener('beforeunload', this.handleLeaveRoom);
   },
@@ -131,12 +150,12 @@ export default {
     },
     handlePublish: function () {
       this.client.publish(err => {
-        console.error('发布失败：', err);
+        console.error(`发布失败：错误码 - ${err.name}，错误信息 - ${err.message}`);
       });
     },
     handlePublishScreen: function () {
       this.client.publish({ audio: false, video: false, screen: true }, (err) => {
-        console.error('发布失败：', err);
+        console.error(`发布失败：错误码 - ${err.name}，错误信息 - ${err.message}`);
       });
     },
     handleUnpublish: function () {
