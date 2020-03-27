@@ -227,20 +227,20 @@ window.onload = function () {
           const { localStreams } = this.state;
           const idx = localStreams.findIndex(item => item.sid === previous.sid);
           if (idx >= 0) {
-            const oldStream = localStreams.splice(idx, 1)[0];
+            const oldStream = localStreams.splice(idx, 1, current)[0];
             this.setState('localStream-remove', oldStream);
+            localStreams.push(current);
+            this.setState('localStream-add', current);
           }
-          localStreams.push(current);
-          this.setState('localStream-add', current);
         } else {
           const { remoteStreams } = this.state;
           const idx = remoteStreams.findIndex(item => item.sid === previous.sid);
           if (idx >= 0) {
-            const oldStream = remoteStreams.splice(idx, 1)[0];
+            const oldStream = remoteStreams.splice(idx, 1, current)[0];
             this.setState('remoteStream-remove', oldStream);
+            remoteStreams.push(current);
+            this.setState('remoteStream-add', current);
           }
-          remoteStreams.push(current);
-          this.setState('remoteStream-add', current);
         }
       });
 
@@ -278,16 +278,12 @@ window.onload = function () {
     },
     handlePublish: function () {
       this.client.publish(err => {
-        console.error('发布失败：', err);
+        console.error(`发布失败：错误码 - ${err.name}，错误信息 - ${err.message}`);
       });
     },
     handlePublishScreen: function () {
-      this.client.publish({
-        audio: false,
-        video: false,
-        screen: true
-      }, err => {
-        console.error('发布失败：', err);
+      this.client.publish({ audio: false, video: false, screen: true }, err => {
+        console.error(`发布失败：错误码 - ${err.name}，错误信息 - ${err.message}`);
       });
     },
     handleUnpublish: function () {
