@@ -22,6 +22,8 @@ export default config;
 
 2. 安装 npm 依赖包
 
+在本地demo目录下，执行以下操作：    
+
 ```
 npm install
 ```
