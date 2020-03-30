@@ -25,7 +25,10 @@ export default config;
 npm install
 ```
 
-3. 执行运行命令
+3. 执行运行命令   
+
+在本地demo目录下，执行以下操作：    
+
 
 ```
 npm start
