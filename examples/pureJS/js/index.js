@@ -19,15 +19,80 @@ window.onload = function () {
 
   console.log('UCloudRTC sdk version: ', UCloudRTC.version);
 
-  canAutoplay.video().then(res => {
-    if (!res.result) {
-      const pullerElm = document.querySelector('#pullers-title');
-      const hintElm = document.createElement('p');
-      hintElm.className = 'hint';
-      hintElm.textContent = '当前浏览器不支持自动播放视频，订阅远端流成功后，可点击对应的视频区域进行播放'
-      pullerElm.appendChild(hintElm);
+  const Player = function(client, stream, selectFunc) {
+    this.client = client;
+    this.stream = stream;
+    this.element = document.createElement('div');
+
+    // userId
+    const uIDElem = document.createElement('div');
+    uIDElem.innerHTML = `用户ID：${stream.uid}`;
+    uIDElem.style = 'overflow: hidden; text-overflow: ellipsis;';
+    this.element.appendChild(uIDElem);
+
+    // streamId
+    const sIDElem = document.createElement('div');
+    sIDElem.innerHTML = `流ID：${stream.sid}`;
+    sIDElem.style = 'overflow: hidden; text-overflow: ellipsis;';
+    this.element.appendChild(sIDElem);
+
+    // hint - unsubscribe
+    const hintElem = document.createElement('p');
+    hintElem.innerHTML = 'unsubscribe';
+    hintElem.style = 'display: none;';
+    this.hint = hintElem;
+    this.element.appendChild(hintElem);
+
+    // container
+    const container = document.createElement('div');
+    container.className = 'media-player';
+    container.id = stream.sid;
+    this.container = container;
+    this.element.appendChild(container);
+
+    this.handleSelect = function() {
+      selectFunc(this.stream);
+    }.bind(this);
+    this.element.addEventListener('click', this.handleSelect);
+
+    if (stream.mediaStream) {
+      this.play();
     }
-  });
+  }
+  Player.prototype.play = function() {
+    const isLocalStream = this.stream.type === 'publish';
+    this.hint.style.display = 'none';
+    this.container.style.display = 'inline-block';
+    this.client.play({
+      streamId: this.stream.sid,
+      container: this.container,
+      mirror: isLocalStream
+    }, (err) => {
+      if (err) {
+        console.log(`自动播放失败 ${err}`);
+        alert(`自动播放失败 ${err}`);
+      }
+    })
+  }
+  Player.prototype.stop = function() {
+    const isLocalStream = this.stream.type === 'publish';
+    this.container.style.display = 'none';
+    if (!isLocalStream) {
+      this.hint.style.display = 'block';
+    }
+  }
+  Player.prototype.updateStream = function(stream) {
+    this.stream = stream;
+    if (stream.mediaStream) {
+      this.play();
+    } else {
+      this.stop();
+    }
+  }
+  Player.prototype.destroy = function() {
+    this.element.removeEventListener('click', this.handleSelect);
+    this.element.parentNode.removeChild(this.element);
+  }
 
   // 用于维护应用内的状态
   const App = {
@@ -37,58 +102,23 @@ window.onload = function () {
       isJoinedRoom: false,
       selectedStream: null,
       localStreams: [],
-      remoteStreams: []
+      remoteStreams: [],
+      players: [],
     },
     client: null,
-    setState: function (key, value) {
-      const keys = Object.keys(this.state);
-      if (keys.includes(key)) {
-        this.state[key] = value;
-      }
-      switch (key) {
-        case 'roomId':
-          this.renderRoomId();
-          break;
-        case 'isJoinedRoom':
-          this.renderRoomStatus();
-          break;
-        case 'selectedStream':
-          this.renderSelectedStream();
-          break;
-        case 'localStream-add':
-          this.loadStream(value, 'pusher');
-          break;
-        case 'localStream-remove':
-          this.unloadStream(value, 'pusher');
-          break;
-        case 'remoteStream-add':
-          this.loadStream(value, 'puller');
-          break;
-        case 'remoteStream-remove':
-          this.unloadStream(value, 'puller');
-          break;
-        case 'remoteStream-update':
-          this.rerenderStream(value);
-          break;
-        default:
-      }
-    },
-    renderRoomId: function () {
-      const { roomId } = this.state;
+    renderRoomId: function (roomId) {
       const roomElem = document.querySelector('#roomId');
       roomElem.innerHTML = roomId;
     },
-    renderRoomStatus: function () {
-      const { isJoinedRoom } = this.state;
+    renderRoomStatus: function (status) {
       const roomStatusElem = document.querySelector('#roomStatus');
-      if (isJoinedRoom) {
+      if (status) {
         roomStatusElem.innerHTML = "已加入";
       } else {
         roomStatusElem.innerHTML = "未加入";
       }
     },
-    renderSelectedStream: function () {
-      const { selectedStream } = this.state;
+    renderSelectedStream: function (selectedStream) {
       const selectedStreamElem = document.querySelector('#selectedStream');
       if (selectedStream) {
         selectedStreamElem.innerHTML = selectedStream.sid;
@@ -96,89 +126,39 @@ window.onload = function () {
         selectedStreamElem.innerHTML = "未选择";
       }
     },
-    loadStream: function (stream, type) {
+    renderStream: function (stream) {
+      const isLocalStream = stream.type === 'publish';
       let parent;
-      let isPuller;
-      switch (type) {
-        case 'pusher':
-          parent = document.querySelector('#pushers');
-          break;
-        case 'puller':
-          parent = document.querySelector('#pullers');
-          isPuller = true;
-          break;
-        default:
-          return;
-      }
-      const player = document.createElement('div');
-      player.className = 'media-player';
-      player.id = 's' + stream.sid;
-      const uIDElem = document.createElement('div');
-      uIDElem.innerHTML = `用户ID：${stream.uid}`;
-      uIDElem.style = 'overflow: hidden; text-overflow: ellipsis;';
-      const sIDElem = document.createElement('div');
-      sIDElem.innerHTML = `流ID：${stream.sid}`;
-      sIDElem.style = 'overflow: hidden; text-overflow: ellipsis;';
-      player.append(uIDElem);
-      player.append(sIDElem);
-      if (isPuller) {
-        const pElem = document.createElement('p');
-        pElem.innerHTML = 'unsubscribe';
-        player.append(pElem);
+      if (isLocalStream) {
+        parent = document.querySelector('#pushers');
       } else {
-        const videoElem = document.createElement('video');
-        videoElem.autoplay = true;
-        videoElem.playsInline = true;
-        videoElem['webkit-playsinline'] = 'true';
-        videoElem.srcObject = stream.mediaStream;
-        player.append(videoElem);
+        parent = document.querySelector('#pullers');
       }
-      player.addEventListener('click', function() {
-        this.handleSelectStream(stream);
-      }.bind(this));
-      parent.append(player);
+      const player = new Player(this.client, stream, this.handleSelectStream.bind(this));
+      // todo - handleSelectStream
+      this.state.players.push(player);
+      parent.appendChild(player.element);
     },
-    unloadStream: function (stream, type) {
-      let parent;
-      switch (type) {
-        case 'pusher':
-          parent = document.querySelector('#pushers');
-          break;
-        case 'puller':
-          parent = document.querySelector('#pullers');
-          break;
-        default:
-          return;
+    unrenderStream: function (stream) {
+      const idx = this.state.players.findIndex(item => item.stream.sid === stream.sid);
+      if (idx < 0) {
+        console.log('unrender stream - stream not found');
+        return;
       }
-      const player = document.querySelector('#s' + stream.sid);
-      parent.removeChild(player);
+      const player = this.state.players[idx];
+      this.state.players.splice(idx, 1);
+      player.destroy();
     },
     rerenderStream: function (stream) {
-      const player = document.querySelector('#s' + stream.sid);
-      if (stream.mediaStream) {
-        const videoElem = document.createElement('video');
-        videoElem.autoplay = true;
-        videoElem.playsInline = true;
-        videoElem['webkit-playsinline'] = 'true';
-        videoElem.srcObject = stream.mediaStream;
-        const pElem = player.querySelector('p');
-        player.removeChild(pElem);
-        player.appendChild(videoElem);
-        videoElem.addEventListener('click', function() {
-          if (videoElem.paused) {
-            videoElem.play();
-          }
-        });
-      } else {
-        const videoElem = player.querySelector('video');
-        const pElem = document.createElement('p');
-        pElem.innerHTML = 'unsubscribe';
-        player.removeChild(videoElem);
-        player.appendChild(pElem);
+      const player = this.state.players.find(item => item.stream.sid === stream.sid);
+      if (!player) {
+        console.log('rerender stream - stream not found');
+        return;
       }
+      player.updateStream(stream);
     },
     init: function () {
-      this.renderRoomId();
+      this.renderRoomId(RoomId);
 
       const token = UCloudRTC.generateToken(AppId, AppKey, RoomId, UserId);
       this.client = new UCloudRTC.Client(AppId, token);
@@ -188,17 +168,17 @@ window.onload = function () {
         console.info('stream-published: ', localStream);
         const { localStreams } = this.state;
         localStreams.push(localStream);
-        this.setState('localStream-add', localStream);
+        this.renderStream(localStream);
       });
       this.client.on('stream-added', (remoteStream) => {
         console.info('stream-added: ', remoteStream);
         const { remoteStreams } = this.state;
         remoteStreams.push(remoteStream);
+        this.renderStream(remoteStream);
         // 自动订阅
         this.client.subscribe(remoteStream.sid, (err) => {
           console.error('自动订阅失败：', err);
         });
-        this.setState('remoteStream-add', remoteStream);
       });
       this.client.on('stream-subscribed', (remoteStream) => {
         console.info('stream-subscribed: ', remoteStream);
@@ -207,15 +187,16 @@ window.onload = function () {
         if (idx >= 0) {
           remoteStreams.splice(idx, 1, remoteStream);
         }
-        this.setState('remoteStream-update', remoteStream);
+        this.rerenderStream(remoteStream);
       });
       this.client.on('stream-removed', (remoteStream) => {
         console.info('stream-removed: ', remoteStream);
         const { remoteStreams } = this.state;
         const idx = remoteStreams.findIndex(item => item.sid === remoteStream.sid);
         if (idx >= 0) {
-          const p = remoteStreams.splice(idx, 1)[0];
-          this.setState('remoteStream-remove', p);
+          const p = remoteStreams[idx];
+          remoteStreams.splice(idx, 1);
+          this.unrenderStream(p);
         }
       });
       this.client.on('connection-state-change', ({ previous, current }) => {
@@ -223,24 +204,14 @@ window.onload = function () {
       });
       this.client.on('stream-reconnected', ({previous, current}) => {
         console.log(`流已断开重连`);
-        if (previous.type === 'publish') {
-          const { localStreams } = this.state;
-          const idx = localStreams.findIndex(item => item.sid === previous.sid);
-          if (idx >= 0) {
-            const oldStream = localStreams.splice(idx, 1, current)[0];
-            this.setState('localStream-remove', oldStream);
-            localStreams.push(current);
-            this.setState('localStream-add', current);
-          }
-        } else {
-          const { remoteStreams } = this.state;
-          const idx = remoteStreams.findIndex(item => item.sid === previous.sid);
-          if (idx >= 0) {
-            const oldStream = remoteStreams.splice(idx, 1, current)[0];
-            this.setState('remoteStream-remove', oldStream);
-            remoteStreams.push(current);
-            this.setState('remoteStream-add', current);
-          }
+        const isLocalStream = previous.type === 'publish';
+        const streams = isLocalStream ? this.state.localStreams : this.state.remoteStreams;
+        const idx = streams.findIndex(item => item.sid === previous.sid);
+        if (idx >= 0) {
+          const oldStream = streams.splice(idx, 1, current)[0];
+          this.unrenderStream(oldStream);
+          streams.push(current);
+          this.renderStream(current);
         }
       });
 
@@ -271,7 +242,7 @@ window.onload = function () {
       }
       this.client.joinRoom(roomId, userId, () => {
         console.info('加入房间成功');
-        this.setState('isJoinedRoom', true);
+        this.renderRoomStatus(true);
       }, (err) => {
         console.error('加入房间失败： ', err);
       });
@@ -302,8 +273,9 @@ window.onload = function () {
         const idx = localStreams.findIndex(item => item.sid === stream.sid);
         if (idx >= 0) {
           const p = localStreams.splice(idx, 1)[0];
-          this.setState('selectedStream', null);
-          this.setState('localStream-remove', p);
+          this.state.selectedStream = null;
+          this.renderSelectedStream();
+          this.unrenderStream(p);
         }
       }, (err) => {
         console.error('取消发布本地流失败：', err);
@@ -337,7 +309,7 @@ window.onload = function () {
         const idx = remoteStreams.findIndex(item => item.sid === stream.sid);
         if (idx >= 0) {
           remoteStreams.splice(idx, 1, stream);
-          this.setState('remoteStream-update', stream);
+          this.rerenderStream(stream);
         }
       }, (err) => {
         console.error('订阅失败：', err);
@@ -352,25 +324,27 @@ window.onload = function () {
       }
       this.client.leaveRoom(() => {
         console.info('离开房间成功');
-        this.setState('selectedStream', null);
+        this.state.selectedStream = null;
+        this.renderSelectedStream();
         const {
           localStreams,
           remoteStreams
         } = this.state;
         localStreams.forEach(item => {
-          this.setState('localStream-remove', item);
+          this.unrenderStream(item);
         });
         remoteStreams.forEach(item => {
-          this.setState('remoteStream-remove', item);
+          this.unrenderStream(item);
         });
-        this.setState('isJoinedRoom', false);
+        this.renderRoomStatus(false);
       }, (err) => {
         console.error('离开房间失败：', err);
       });
     },
     handleSelectStream: function (stream) {
       console.log('select stream: ', stream);
-      this.setState('selectedStream', stream);
+      this.state.selectedStream = stream;
+      this.renderSelectedStream(stream);
     }
   }
 
