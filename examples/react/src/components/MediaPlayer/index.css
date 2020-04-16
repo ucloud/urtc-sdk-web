@@ -9,6 +9,7 @@
 
 .media-player .video-container {
   position: relative;
+  height: 200px;
 }
 
 .media-player .muted-mask,

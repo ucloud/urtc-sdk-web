@@ -80,20 +80,16 @@ export default class Room extends Component {
     });
     this.client.on('stream-reconnected', ({previous, current}) => {
       console.log(`流已断开重连`);
-      if (previous.type === 'publish') {
-        const { localStreams } = this.state;
-        const idx = localStreams.findIndex(item => item.sid === previous.sid);
-        if (idx >= 0) {
-          localStreams.splice(idx, 1, current);
-          this.setState({ localStreams });
-        }
+      const isLocalStream = previous.type === 'publish';
+      const streams = isLocalStream ? this.state.localStreams : this.state.remoteStreams;
+      const idx = streams.findIndex(item => item.sid === previous.sid);
+      if (idx >= 0) {
+        streams.splice(idx, 1, current);
+      }
+      if (isLocalStream) {
+        this.setState({ localStreams: streams });
       } else {
-        const { remoteStreams } = this.state;
-        const idx = remoteStreams.findIndex(item => item.sid === previous.sid);
-        if (idx >= 0) {
-          remoteStreams.splice(idx, 1, current);
-          this.setState({ remoteStreams });
-        }
+        this.setState({ remoteStreams: streams });
       }
     });
 
