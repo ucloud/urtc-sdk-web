@@ -2,16 +2,16 @@
 
 UCloudRTC 包含以下方法、类或对象：
 
-* [Client 类](#client)
-* [getDevices 方法](#getdevices)
-* [getSupportProfileNames 方法](#getsupportprofilenames)
-* [getSupportedCodec 方法](#getsupportedcodec)
-* [isSupportWebRTC 方法](#issupportwebrtc)
-* [deviceDetection 方法](#devicedetection)
-* [version 属性](#version)
-* [generateToken 方法](#generateToken)
-* [Logger 对象](#logger)
-* [setServers 方法](#setservers)
+* [一、Client 类](#client)
+* [二、getDevices 方法](#getdevices)
+* [三、getSupportProfileNames 方法](#getsupportprofilenames)
+* [四、getSupportedCodec 方法](#getsupportedcodec)
+* [五、isSupportWebRTC 方法](#issupportwebrtc)
+* [六、deviceDetection 方法](#devicedetection)
+* [七、version 属性](#version)
+* [八、generateToken 方法](#generateToken)
+* [九、Logger 对象](#logger)
+* [十、setServers 方法](#setservers)
 
 > 注： 想要了解使用此 SDK 的简单步骤，请查看 [使用说明](./Manual.md)
 
@@ -32,12 +32,14 @@ Client 类包含以下方法：
 * [unsubscribe 方法 - 取消订阅远端流](#client-unsubscribe)
 * [on 方法 - 绑定事件处理函数](#client-on)
 * [off 方法 - 解绑事件处理函数](#client-off)
+* [play 方法 - 播放一条流的音视频](#client-play)
+* [resume 方法 - 恢复一条流的音视频播放](#client-resume)
 * [muteAudio 方法 - 禁用音频轨道](#client-muteaudio)
 * [unmuteAudio 方法 - 启用音频轨道](#client-unmuteaudio)
 * [muteVideo 方法 - 禁用视频轨道](#client-mutevideo)
 * [unmuteVideo 方法 - 启用视频轨道](#client-unmutevideo)
-* [startRecording 方法 - 开启服务端录制](#client-startrecording)
-* [stopRecording 方法 - 结束服务端录制](#client-stoprecording)
+* [~~startRecording 方法 - 已废弃~~](#client-startrecording)
+* [~~stopRecording 方法 - 已废弃~~](#client-stoprecording)
 * [getUser 方法 - 获取当前用户信息](#client-getuser)
 * [getUsers 方法 - 获取所有远端用户信息](#client-getusers)
 * [getStream 方法 - 获取某条流信息](#client-getstream)
@@ -71,11 +73,18 @@ Client 类包含以下方法：
 * [stopPreviewing 方法 - 停止预览](#client-stoppreviewing)
 * [~~deviceDetection 方法 - 已转移~~](#client-devicedetection)
 * [replaceTrack 方法 - 替换音频轨道或视频轨道](#client-replacetrack)
-* [startMix 方法 - 开始录制或转推](#client-startmix)
-* [stopMix 方法 - 结束录制或转推](#client-stopmix)
-* [queryMix 方法 - 查询录制或转推](#client-querymix)
-* [addMixStreams 方法 - 为录制或转推添加需要混合的流](#client-addmixstreams)
-* [removeMixStreams 方法 - 删除录制或转推中混合的流](#client-removemixstreams)
+* [~~startMix 方法 - 已废弃~~](#client-startmix)
+* [~~stopMix 方法 - 已废弃~~](#client-stopmix)
+* [~~queryMix 方法 - 已废弃~~](#client-querymix)
+* [~~addMixStreams 方法 - 已废弃~~](#client-addmixstreams)
+* [~~removeMixStreams 方法 - 已废弃~~](#client-removemixstreams)
+* [setRole 方法 - 设置用户角色](#client-setrole)
+* [startRecord 方法 - 开启录制](#client-startrecord)
+* [stopRecord 方法 - 结束录制](#client-stoprecord)
+* [updateRecordStreams 方法 - 增加/删除录制的流](#client-updaterecordstreams)
+* [startRelay 方法 - 开启转推](#client-startrelay)
+* [stopRelay 方法 - 结束转推](#client-stoprelay)
+* [updateRelayStreams 方法 - 增加/删除转推的流](#client-updaterelaystreams)
 
 <a name="client-constructor"></a>
 
@@ -99,7 +108,7 @@ new Client(AppId, Token, ClientOptions);
 {
   type?: "rtc"|"live",  // 选填，设置房间类型，有两种 "live" 和 "rtc" 类型可选 ，分别对应直播模式和连麦模式，默认为 rtc
   role?: "pull" | "push" | "push-and-pull",   // 选填，设置用户角色，可设 "pull" | "push" | "push-and-pull" 三种角色，分别对应拉流、推流、推+拉流，默认为 "push-and-pull"，特别地，当房间类型为连麦模式（rtc）时，此参数将被忽视，会强制为 "push-and-pull"，即推+拉流
-  codec?: "vp8"|"h264", // 选填，设置视频编码格式，可设 "vp8" 或 "h264"，默认为 "h264"
+  codec?: "vp8"|"h264", // 选填，设置视频编码格式，可设 "vp8" 或 "h264"，默认为 "vp8"
 }
 ```
 
@@ -185,21 +194,24 @@ client.publish(PublishOptions, onFailure)
 
 ```
 {
-  audio: boolean          // 必填，指定是否使用麦克风设备
-  video: boolean          // 必填，指定是否使用摄像头设备
+  audio: boolean          // 必填，指定是否使用麦克风设备。若传了 mediaStream 参数，将不再采集麦克风的音频，直接使用 mediaStream 中的音频。
+  video: boolean          // 必填，指定是否使用摄像头设备。若传了 mediaStream 参数，将不再采集摄像头的视频，直接使用 mediaStream 中的视频；若传了 file 或 filePath 参数，将不再采集摄像头的视频，直接使用图片生成的视频。
   facingMode?: FacingMode // 选填，在移动设备上，可以设置该参数选择使用前置或后置摄像头，其中，FacingMode 为 'user'（前置摄像头）或 'environment'（后置摄像头），注：1. 请务必确定是在移动设备上设置该参数，否则可能会报 'OverConstrainedError［无法满足要求错误]' 的错误；2. 当在设备上使用前置摄像头时，设备（如苹果设备，以及没有设置摄像头为 "自拍镜像" 的 Android 设备）本地显示的图像是左右相反的（以 Y 轴对称），此时可为 video 元素添加样式 'transform: rotateY(180deg);' 来指定视频在本地显示的时候做镜像翻转。
   screen: boolean         // 必填，指定是否为屏幕共享，audio, video, screen 不可同时为 true，更不可同时为 false
   microphoneId?: string   // 选填，指定使用的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将使用默认麦克风设备
   cameraId?: string       // 选填，指定使用的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将使用默认的摄像头设备
   extensionId?: string    // 选填，指定使用的 Chrome 插件的 extensionId，可使 72 以下版本的 Chrome 浏览器进行屏幕共享。
-  mediaStream? MediaStream  // 选填，允许用户发布自定义的媒体流
+  mediaStream?: MediaStream  // 选填，允许用户发布自定义的媒体流
+  file?: File             // 选填，发布时指定使用图片文件生成视频源，具体参数说明可参考 switchImage 接口
+  filePath?: string       // 选填，发布时指定使用网络图片生成视频源，具体参数说明可参考 switchImage 接口
 }
 ```
 
 > 对于屏幕共享各浏览器兼容性，请参见 [getDisplayMedia](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia) 。
 > 特别地，使用 Chrome 浏览器屏幕共享 Tab（浏览器标签）页时，有分享 Tab 页中音频功能（分享弹出框左下脚勾选，Chrome 74 及以上版本可不用安装插件）。
 >
-> 此外，可使用 audio, video, screen 的配置组合来满足不同场景，如 audio = true, video = false, screen = true 时，可发布麦克风的音频以及屏幕共享的视频流；audio = false，video = true, screen = true 时，可发布屏幕共享中的音频（当屏幕共享有音频时）以及摄像头采集的视频流；audio = false, video = false, screen = true 时，可发布屏幕共享中的音频以及视频（当屏幕共享有音频时）流。
+> 此外，对于推流时所传参数的生效将采用此类优先级：mediaStream > file > filePath > video = screen；即用户指定媒体流（MediaStream）时，该媒体流将被发布，不再考虑其他情况生成的流；若指定了 file ，而没指定媒体流（MediaStream），那么将用 file 生成图片媒体流并被发布，依次类推。
+> file 和 filePath 参数说明，请参见 [switchImage](#client-switchimage) 接口的参数说明。
 
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
@@ -315,7 +327,8 @@ client.on(EventType, Listener)
 - EventType: string 类型， 必传，目前有 'user-added' | 'user-removed' |
   'stream-added' |'stream-removed' | 'stream-published' | 'stream-subscribed' |
   'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' |
-  'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' 这些事件可绑定监听函数
+  'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' |
+  'record-notify' | 'relay-notify' 这些事件可绑定监听函数
 - Listener: function 类型，事件监听函数
 
   - 当事件类型为 'user-added' | 'user-removed' | 'kick-off' 时，可用 `function Listener(User) {}` 类型的函数，其中函数的参数类型见 [User](#user)
@@ -330,6 +343,12 @@ client.on(EventType, Listener)
     - '5': 网络质量糟糕
     - '6': 网络连接断开
   - 当事件类型为 'stream-reconnected' 时，可用 `function Listener(Streams) {}` 类型的函数，函数的参数为 `{previous: Stream, current: Stream}`，其中 previous 是重连前的发布/订阅流，current 是重连后的发布/订阅流，请使用 current 来更新业务代码中的缓存。
+  - 当事件类型为 'record-notify' 时，可用 `function Listener(Error, RecordResult) {}` 类型的函数，函数的参数为 Error 和 [RecordResult](#recordresult)，其中 Error 的 name 属性为服务端返回的错误码，message 属性为错误信息。Error 的 name 有以下可能的值：
+    - '24149': 任务被停止，可能的原因有房间内没有任何流在推，或到存储服务器的连接已断开
+    - '24150': 任务开启后10秒，如果收到这个消息，则表示任务开启失败
+  - 当事件类型为 'relay-notify' 时，可用 `function Listener(Error, RelayResult) {}` 类型的函数，函数的参数为 Error 和 [RelayResult](#relayresult)，其中 Error 的 name 属性为服务端返回的错误码，message 属性为错误信息。Error 的 name 有以下可能的值：
+    - '24149': 任务被停止，可能的原因有房间内没有任何流在推，或到推流地址（PushURL）的连接已断开
+    - '24150': 任务开启后10秒，如果收到这个消息，则表示任务开启失败
 
 
 #### 事件名解释：
@@ -340,8 +359,8 @@ user-added | 有其他用户加入房间
 user-removed | 有其他用户离开房间
 stream-added | 有其他用户发布了一条流，当收到此事件通知时，可调用 subscribe 方法订阅该流
 stream-removed | 有其他用户取消发布了一条流
-stream-published | 本地流已发布，可获取该流对应的媒体流来进行播放
-stream-subscribed | 远端流已订阅，可获取该流对应的媒体流来进行播放
+stream-published | 本地流已发布，可在页面中播放该流
+stream-subscribed | 远端流已订阅，可在页面中播放该流
 mute-video | 流的 video 被 mute
 unmute-video | 流的 video 被取消 mute
 mute-audio | 流的 audio 被 mute
@@ -368,9 +387,68 @@ client.off(EventType, Listener)
 - EventType: 参见 on 方法
 - Listener: 为调用 on 方法时绑定的监听函数
 
+<a name="client-play"></a>
+
+### 10. play 方法
+
+播放一条流的音视频，示例代码：
+
+```
+client.play(PlayOptions, callback)
+```
+
+#### 参数说明
+
+- PlayOptions: object 类型，必传，详细类型说明如下
+
+```
+{
+  streamId: string,   // 必填，发布/订阅流的 ID，特别地，对于调用预览方法时的视频，可通过填写 'preview' 进行播放
+  container: HTMLElement | string,  // 必填，指定音视频嵌入的容器元素，或该容器元素的 ID，容器元素一般为一个指定了宽高的 div 元素
+  mute?: boolean,     // 选填，是否进行静音播放，注：由于部分浏览器的限制，播放带声音的音视频时，必须以手势触发，但也可以通过进行静音播放来绕过此限制，此处设置 mute 为 true 时，即为静音播放。不填时，默认为 false
+  mirror?: boolean,   // 选填，播放视频时是否进行镜像翻转，特别地，在播放本地流，且发布本地流时指定的为前置摄像头时，将不受此项影响，直接为镜像翻转。不填时，默认为 false
+  fit?: VideoFitType  // 选填，指定视频播放时的显示模式，VideoFitType 值为 'cover' | 'contain' 两种
+}
+```
+
+> 关于 VideoFitType 的说明：
+> 1. cover 模式：优先保证容器被填满。视频尺寸等比缩放，直至整个容器被视频填满。如果视频长宽与容器不同，则视频流会按照容器的比例进行周边裁剪或图像拉伸后填满容器。
+> 2. contain 模式：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与容器边框对齐。
+> 播放视频流默认使用 cover 模式，屏幕共享默认使用 contain 模式。
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error) {}
+```
+Error 为返回值，为空（undefined) 时，说明已执行成功，否则执行失败，此时，播放元素将会打开控制面板，显示播放按钮等操作工具。
+
+> 注：受浏览器策略影响，在 Chrome 70+ 和 Safari 浏览器上，该方法必须由用户手势触发，请查看 [关于浏览器的自动播放问题的说明及处理](./AutoPlay.md)。
+
+<a name="client-resume"></a>
+
+### 11. resume 方法
+
+恢复一条流的音视频播放，该方法一般在调用 play 失败后，提示用户进行手势触发之后调用（该方法需用手势触发）。 示例代码：
+
+```
+client.resume(StreamId, callback)
+```
+
+#### 参数说明
+
+- StreamId: string 类型，必传，指流的 ID，特别地，恢复播放的流为预览的流时，可传 'preview'。
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error) {}
+```
+Error 为返回值，为空（undefined) 时，说明已执行成功，否则执行失败，此时，播放元素将会打开控制面板，显示播放按钮等操作工具。
+
 <a name="client-muteaudio"></a>
 
-### 10. muteAudio 方法
+### 12. muteAudio 方法
 
 关闭流的音频，示例代码：
 
@@ -391,7 +469,7 @@ const result = client.muteAudio(StreamId)
 
 <a name="client-unmuteaudio"></a>
 
-### 11. unmuteAudio 方法
+### 13. unmuteAudio 方法
 
 启用流的音频，示例代码：
 
@@ -412,7 +490,7 @@ const result = client.unmuteAudio(StreamId)
 
 <a name="client-mutevideo"></a>
 
-### 12. muteVideo 方法
+### 14. muteVideo 方法
 
 关闭流的视频，示例代码：
 
@@ -431,7 +509,7 @@ const result = client.muteVideo(StreamId)
 
 <a name="client-unmutevideo"></a>
 
-### 13. unmuteVideo 方法
+### 15. unmuteVideo 方法
 
 启用流的视频，示例代码：
 
@@ -450,9 +528,9 @@ const result = client.unmuteVideo(StreamId)
 
 <a name="client-startrecording"></a>
 
-### 14. startRecording 方法
+### ~~startRecording 方法 - 已废弃~~
 
-开始录制音视频，示例代码：
+#### 开启录制，请使用 [startRecord](#client-startrecord)
 
 ```
 client.startRecording(RecordOptions, onSuccess, onFailure)
@@ -495,8 +573,6 @@ MixStreamOptions: object 类型，选传，混流相关配置，类型说明如�
 }
 ```
 
-> 注：关于混流风格, 请参见详细的模板说明 [录制混流风格](https://github.com/UCloudDocs/urtc/blob/master/cloudRecord/RecordLaylout.md)
-
 RelayOptions: object 类型，选传，转推相关配置，类型说明如下
 
 ```
@@ -531,9 +607,9 @@ Err 为错误信息
 
 <a name="client-stoprecording"></a>
 
-### 15. stopRecording 方法
+### ~~stopRecording 方法 - 已废弃~~
 
-停止录制音视频，示例代码：
+#### 结束录制，请使用 [stopRecord](#client-stoprecord)
 
 ```
 client.stopRecording(onSuccess, onFailure)
@@ -671,7 +747,7 @@ const result = client.getRemoteStreams()
 
 ### 21. getMediaStream 方法
 
-获取发布（本地）/ 订阅（远端）流对应的媒体流（ 1.4.0 及以上版本支持），获取后，可通过 HtmlMediaElement（如：[video](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video)）进行播放，示例代码：
+获取发布（本地）/ 订阅（远端）流对应的媒体流（ 1.4.0 及以上版本支持），获取后，可通过 HtmlMediaElement（如：[video](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video)）进行播放，建议直接利用 HtmlMediaElement 对本地流进行播放时，需将 HtmlMediaElement 的 muted 属性设为 true，否则会听到自己的声音，感觉像回音，示例代码：
 
 ```
 const result = client.getMediaStream(StreamId)
@@ -953,7 +1029,7 @@ client.setAudioVolume(AudioVolumeOptions, callback)
 ```
 {
   streamId?: string   // 选填，发布/订阅流的 ID，不填时，为第一条发布流
-  element?: HTMLMediaElement // 播放媒体流的 DOM 元素，当需要设置音量的流为发布（本地）流时，不填，为订阅（远端）流，必填
+  element?: HTMLMediaElement // 仅当为订阅（远端）流，且通过直接将 mediaStream 赋值给 element.srcObject 属性进行播放时必填该 element。若为发布（本地）流，或通过 play 方法进行播放的订阅（远端）流时，不需要填写。
   volume: number      // 必填，音量大小，取值范围 [0, 100]
 }
 ```
@@ -1397,9 +1473,9 @@ OldTrack 为返回值，MediaStreamTrack 类型，不为空时，值为被替换
 
 <a name="client-startmix"></a>
 
-### 45. startMix 方法
+### ~~startMix 方法 - 已废弃~~
 
-开启录制或转推，示例代码：
+#### 开启录制，请使用 [startRecord](#client-startrecord)，开启转推，请使用 [startRelay](#client-startrelay)
 
 ```
 client.startMix(MixOptions, callback)
@@ -1420,8 +1496,8 @@ client.startMix(MixOptions, callback)
   audio?: MixAudioOptions     // 选传，录制/转推后的音频的设置，类型说明见下面的 MixAudioOptions 类型，不传时，将使用默认值
   video?: MixVideoOptions     // 选传，录制/转推后的视频的设置，类型说明见下面的 MixVideoOptions 类型，不传时，将使用默认值
 
-  width?: number      // 选传，录制转推后的视频的带宽，不传时，默认为 1280
-  height?: number     // 选传，录制转推后的视频的调试，不传时，默认为 720
+  width?: number      // 选传，录制转推后的视频的宽度，不传时，默认为 1280
+  height?: number     // 选传，录制转推后的视频的高度，不传时，默认为 720
   backgroundColor?: BackgroundColorOptions  // 选传，背景色，类型说明见下面的 BackgroundColorOptions 类型，不传时，默认为 #000 黑色
 
   waterMark?: WaterMarkOptions  // 选传，水印设置，类型说明见下面的 WaterMarkOptions 类型，不传时将不添加水印
@@ -1430,20 +1506,16 @@ client.startMix(MixOptions, callback)
 }
 ```
 
-<a name="mixlayoutoptions"></a>
-
 MixLayoutOptions 类型，类型说明
 
 ```
 {
-  type: MixLayoutType           // MixLayoutType 为 'flow' | 'main' | 'custom'，分别代表：1 流式(均分)布局；2 讲课模式，主讲人占大部分屏幕，其他人小屏居于右侧或底部；3 自定义布局，默认为 'flow'
+  type: MixLayoutType           // MixLayoutType 为 'flow' | 'main' | 'custom'，分别代表：1 平铺风格，流式(均分)布局；2 垂直风格，讲课模式，主讲人占大部分屏幕，其他人小屏居于底部；3 自定义布局；4 模板自适应一；5 模板自适应二；6 单画面；默认为 'flow'
   custom?: Object[]             // type 为 'custom'时，自定义布局填在custom里，格式参照RFC5707 Media Server Markup Language (MSML)
-  mainViewUId?: string          // type 为 'main' 时，指定某用户的流为主画面，默认为当前用户
+  mainViewUId?: string          // 指定某用户的流为主画面，默认为当前用户
   mainViewType?: MainViewType   // 主画面类型，'screen' | 'camera'，默认为用户发布的 'camera'
 }
 ```
-
-<a name="mixaudiooptions"></a>
 
 MixAudioOptions 类型，类型说明
 
@@ -1453,18 +1525,249 @@ MixAudioOptions 类型，类型说明
 }
 ```
 
-<a name="mixvideooptions"></a>
-
 MixVideoOptions 类型，类型说明
 
 ```
 {
   codec: MixVideoCodec    // 视频的编码格式，MixVideoCodec 为 'h264' | 'h265' 其中之一，默认为 'h264'
   quality?: H264Quality   // 视频质量，当 codec 为 h264 时，此项起作用，H264Quality 为 'B' | 'CB' | 'M' | 'E' | 'H' 其中之一，默认为 'CB'
-  frameRate?: number      // 视频码率，默认为 15
+  frameRate?: number      // 视频码率，可选值 6 | 12 | 15 | 24 | 30 | 48 | 60，默认为 15
   bitRate?: number        // 视频比特率，默认为 500
 }
 ```
+
+BackgroundColorOptions 类型，类型说明
+
+```
+{
+  r: number   // r 通道值，默认为 0
+  g: number   // g 通道值，默认为 0
+  b: number   // b 通道值，默认为 0
+}
+```
+
+WaterMarkOptions: object 类型，选传，添加的水印相关配置，类型说明如下
+
+```
+{
+  position?: 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom' // 选传，指定水印的位置，前面四种类型分别对应 左上，左下，右上，右下，默认 'left-top'
+  type?: 'time' | 'image' | 'text' // 选传，水印类型，分别对应时间水印、图片水印、文字水印，默认为 'time'
+  remarks?:  string,   // 选传，水印备注，当为时间水印时，传空字符串，当为图片水印时，此处需为图片的 URL（此时必传），当为文字水印时，此处需为水印文字
+}
+```
+
+MixStream: object 类型，选传，添加的水印相关配置，类型说明如下
+
+```
+{
+  uid: string,        // 用户 ID，指定需要混合的流的用户ID（远端用户）
+  mediaType: string   // 流的媒体类型，指定需要混合的流的媒体类型，有 'camera' 和 'screen' 两种可选，默认为 'camera'
+}
+```
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Result) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+<a name="mixresult"></a>
+
+MixResult: object 类型，类型说明如下
+
+```
+{
+  MixId: string         // 混流 ID
+  FileName?: string     // 混流文件名
+  Type?: MixType        // 混流类型，MixType 为 'relay' | 'record' | 'relay-and-record' | 'update-config'，注：queryMix 操作时会返回此项
+  PushURL?: string[]    // 转推的 URL 列表，注：stopMix 操作时会返回此项
+}
+```
+
+<a name="client-stopmix"></a>
+
+### ~~stopMix 方法 - 已废弃~~
+
+结束录制，请使用 [stopRecord](#client-stoprecord)
+结束转推，请使用 [stopRelay](#client-stoprelay)
+
+```
+client.stopMix(StopMixOptions, callback)
+```
+
+#### 参数说明
+
+- StopMixOptions: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  type?: MixType      // 选传，MixType 为 'relay' | 'record' | 'relay-and-record' 其中之一，分别代表 '转推' | '录制' | '录制并转推'，不传时，默认为 'record'
+  pushURL?: String[]  // 字符串数组，若 type 为 relay 或 relay-and-record 时，可用此参数指定需要停止转推的 URL，或留空停止对所有 URL 的转推
+}
+```
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Result) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+<a name="client-querymix"></a>
+
+### ~~queryMix 方法 - 已废弃~~
+
+查询录制或转推，示例代码：
+
+```
+client.queryMix(callback)
+```
+
+#### 参数说明
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Result) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+<a name="client-addmixstreams"></a>
+
+### ~~addMixStreams 方法 - 已废弃~~
+
+向录制的音视频中添加流，请使用 [updateRecordStreams](#client-updaterecordstreams)
+向转推的音视频中添加流，请使用 [updateRelayStreams](#client-updaterelaystreams)
+
+```
+client.addMixStreams(AddMixStreamsOptions, callback)
+```
+
+#### 参数说明
+
+- AddMixStreamsOptions: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  streams: MixStream[]  // 必传，指定需要混合的新流
+}
+```
+> 点击 [MixStream](#mixstream) 见详细的类型说明
+
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Result) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+
+<a name="client-removemixstreams"></a>
+
+### ~~removeMixStreams 方法 - 已废弃~~
+
+移除录制中的音视频中部分流，请使用 [updateRecordStreams](#client-updaterecordstreams)
+移除转推中的音视频中部分流，请使用 [updateRelayStreams](#client-updaterelaystreams)
+
+```
+client.removeMixStreams(RemoveMixStreamsOptions, callback)
+```
+
+#### 参数说明
+
+- RemoveMixStreamsOptions: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  streams: MixStream[]  // 必传，指定需要混合的新流
+}
+```
+> 点击 [MixStream](#mixstream) 见详细的类型说明
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Result) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+
+<a name="client-setrole"></a>
+
+### 45. setRole 方法
+
+设置用户角色，本方法仅适用于直播模式（live 模式），加入房间前/后，都可通过调用本方法设置用户角色。示例代码：
+
+```
+const result = client.setRole(Role)
+```
+
+#### 参数说明
+
+- Role: "pull" | "push" | "push-and-pull",   // 设置用户角色，可设 "pull" | "push" | "push-and-pull" 三种角色，分别对应拉流、推流、推+拉流，默认为 "push-and-pull"，特别地，当房间类型为连麦模式（rtc）时，此参数将被忽视，会强制为 "push-and-pull"，即推+拉流
+
+#### 返回值说明
+
+- result: boolean 类型，成功时为 true，失败时为 false
+
+
+<a name="client-startrecord"></a>
+
+### 46. startRecord 方法
+
+开启录制，示例代码：
+
+```
+client.startRecord(StartRecordOptions, callback)
+```
+
+#### 参数说明
+
+- StartRecordOptions: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  bucket: string      // 必传，存储的 bucket, URTC 使用 UCloud 的 UFile 产品进行在存储，相关信息见控制台操作文档
+  region: string      // 必传，存储服务所在的地域
+
+  layout?: MixLayoutOptions   // 选传，多路混流时视频的布局设置，类型说明见下面的 MixLayoutOptions 类型，不传时，将使用默认值
+
+  width?: number      // 选传，录制后的视频的宽度，不传时，默认为 1280
+  height?: number     // 选传，录制后的视频的高度，不传时，默认为 720
+  backgroundColor?: BackgroundColorOptions  // 选传，背景色，类型说明见下面的 BackgroundColorOptions 类型，不传时，默认为 #000 黑色
+
+  waterMark?: WaterMarkOptions  // 选传，水印设置，类型说明见下面的 WaterMarkOptions 类型，不传时将不添加水印
+
+  streams?: MixStream[]         // 选传，指定需要录制的流，类型说明见下面的 MixStream 类型。不传或传空数组时，会自动添加房间内所有用户的流，如果指定了流，则仅录制指定的流
+}
+```
+
+<a name="startrecord-mixlayoutoptions"></a>
+
+MixLayoutOptions 类型，类型说明
+
+```
+{
+  type: MixLayoutType           // MixLayoutType 为 'flow' | 'main' | 'custom' | 'customMain' | 'customFlow' | 'single'，分别代表：1 平铺风格，流式（均分）布局；2 垂直风格，讲课模式，主讲人占大部分屏幕，其他人小屏居于右侧或底部；3 自定义布局；4 定制讲课模式布局；5 定制流式（均分）布局；默认为 'flow'；6 单画面布局（只显示主画面，其他不显示）
+  custom?: Object[]             // type 为 'custom'时，自定义布局填在custom里，格式参照RFC5707 Media Server Markup Language (MSML)
+  mainViewUId?: string          // type 为 'main' 或 'customMain' 时，指定某用户的流为主画面，默认为当前用户
+  mainViewType?: MainViewType   // 主画面类型，'screen' | 'camera'，默认为用户发布的 'camera'
+}
+```
+
+> 注：关于布局风格, 请参见详细的混流说明 [混流风格](https://github.com/UCloudDocs/urtc/blob/master/cloudRecord/RecordLaylout.md)
 
 <a name="backgroundcoloroptions"></a>
 
@@ -1504,63 +1807,31 @@ MixStream: object 类型，选传，添加的水印相关配置，类型说明�
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
 ```
-function callback(Err, Result) {}
+function callback(Error, Result) {}
 ```
-Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
 
-Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+Result 为返回值，[RecordResult 类型](#recordresult)，执行失败时，此值为空，执行成功时，此值为执行结果
 
-<a name="mixresult"></a>
+<a name="recordresult"></a>
 
-MixResult: object 类型，类型说明如下
-
-```
-{
-  MixId: string         // 混流 ID
-  FileName?: string     // 混流文件名
-  Type?: MixType        // 混流类型，MixType 为 'relay' | 'record' | 'relay-and-record' | 'update-config'，注：queryMix 操作时会返回此项
-  PushURL?: string[]    // 转推的 URL 列表，注：stopMix 操作时会返回此项
-}
-```
-
-<a name="client-stopmix"></a>
-
-### 46. stopMix 方法
-
-关闭录制或转推，示例代码：
-
-```
-client.stopMix(StopMixOptions, callback)
-```
-
-#### 参数说明
-
-- StopMixOptions: object 类型, 必传，详细的类型说明如下
+RecordResult: object 类型，类型说明如下
 
 ```
 {
-  type?: MixType      // 选传，MixType 为 'relay' | 'record' | 'relay-and-record' 其中之一，分别代表 '转推' | '录制' | '录制并转推'，不传时，默认为 'record'
-  pushURL?: String[]  // 字符串数组，若 type 为 relay 或 relay-and-record 时，可用此参数指定需要停止转推的 URL，或留空停止对所有 URL 的转推
+  Id: string            // 录制 ID
+  FileName?: string     // 录制 文件名
 }
 ```
 
-- callback: function 类型，选传，方法的回调函数，函数说明如下
+<a name="client-stoprecord"></a>
+
+### 47. stopRecord 方法
+
+结束录制，示例代码：
 
 ```
-function callback(Err, Result) {}
-```
-Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
-
-Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
-
-<a name="client-querymix"></a>
-
-### 47. queryMix 方法
-
-查询录制或转推，示例代码：
-
-```
-client.queryMix(callback)
+client.stopRecord(callback)
 ```
 
 #### 参数说明
@@ -1568,73 +1839,199 @@ client.queryMix(callback)
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
 ```
-function callback(Err, Result) {}
+function callback(Error, Result) {}
 ```
-Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
 
-Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+Result 为返回值，[RecordResult 类型](#recordresult)，执行失败时，此值为空，执行成功时，此值为执行结果
 
-<a name="client-addmixstreams"></a>
 
-### 48. addMixStreams 方法
+<a name="client-updaterecordstreams"></a>
 
-可在录制或转推时，为录制或转推添加需要混合的流，示例代码：
+### 48. updateRecordStreams 方法
+
+增加/删除录制的流，示例代码：
 
 ```
-client.addMixStreams(AddMixStreamsOptions, callback)
+client.updateRecordStreams(UpdateMixStreamsOptions, callback)
 ```
 
 #### 参数说明
 
-- AddMixStreamsOptions: object 类型, 必传，详细的类型说明如下
+- UpdateMixStreamsOptions: object 类型, 必传，详细的类型说明如下
+
+<a name="updatemixstreamsoptions"></a>
+
+UpdateMixStreamsOptions 类型，类型说明
 
 ```
 {
-  streams: MixStream[]  // 必传，指定需要混合的新流
+  type: UpdateMixStreamsType    // 必传，操作类型，UpdateMixStreamsType 值为 'add' | 'remove' 之一，分别为添加新流进行录制，移除录制中的部分流
+  streams: MixStream            // 必传，指定需要被添加或移除的流，
 }
 ```
-> 点击 [MixStream](#mixstream) 见详细的类型说明
+
+> MixStream 类型参见 [MixStream](#mixstream)
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Result) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[RecordResult 类型](#recordresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+
+<a name="client-startrelay"></a>
+
+### 49. startRelay 方法
+
+开启转推，示例代码：
+
+```
+client.startRelay(StartRelayOptions, callback)
+```
+
+#### 参数说明
+
+- StartRelayOptions: object 类型, 必传，详细的类型说明如下
+
+```
+{
+  pushURL: string[]           // 必传，为转推到的 RTMP URL 的列表
+
+  layout?: MixLayoutOptions   // 选传，多路混流时视频的布局设置，类型说明见下面的 MixLayoutOptions 类型，不传时，将使用默认值
+
+  audio?: MixAudioOptions     // 选传，转推后的音频的设置，类型说明见下面的 MixAudioOptions 类型，不传时，将使用默认值
+  video?: MixVideoOptions     // 选传，转推后的视频的设置，类型说明见下面的 MixVideoOptions 类型，不传时，将使用默认值
+
+  width?: number      // 选传，转推后的视频的宽度，不传时，默认为 1280
+  height?: number     // 选传，转推后的视频的高度，不传时，默认为 720
+  backgroundColor?: BackgroundColorOptions  // 选传，背景色，类型说明见下面的 BackgroundColorOptions 类型，不传时，默认为 #000 黑色
+
+  waterMark?: WaterMarkOptions  // 选传，水印设置，类型说明见下面的 WaterMarkOptions 类型，不传时将不添加水印
+
+  streams?: MixStream[]         // 选传，指定需要转推的流，类型说明见下面的 MixStream 类型。不传或传空数组时，会自动添加房间内所有用户的流，如果指定了流，则仅转推指定的流
+
+  outputMode?: MixOutputMode    // 选传，转推后输出模式，MixOutputMode 为字符串，有 'audio-video' | 'audio' 两种可填，分别代表：输出音视频 | 只输出音频，不填时，默认为 'audio-video'
+
+  streamAddMode?: MixStreamAddMode  // 选传，转推流的添加模式，MixStreamAddMode 为字符串，有 'automatic' | 'manual' 两种可填，分别代表：自动添加（有新流时） | 手动添加，不填时，默认为 'automatic'
+}
+```
+
+<a name="startrelay-mixlayoutoptions"></a>
+
+MixLayoutOptions 类型，类型说明
+
+```
+{
+  type: MixLayoutType           // MixLayoutType 为 'flow' | 'main' | 'custom' | 'customMain' | 'customFlow' | 'single'，分别代表：1 平铺风格，流式（均分）布局；2 垂直风格，讲课模式，主讲人占大部分屏幕，其他人小屏居于右侧或底部；3 自定义布局；4 定制讲课模式布局；5 定制流式（均分）布局；默认为 'flow'；6 单画面布局（只显示主画面，其他不显示）
+  standbyTypes?: MixLayoutType[]    // 指定待切换的布局，针对直播中有切换布局的需求，可在启动时指定需要切换的布局，未指定的无法切换，且最多可指定两种可切换的类型（不包含 type 中指定的，即一次转推任务最多有三种布局可相互切换），多余的将被忽略，譬如 `{ type: 'flow', standbyTypes: ['main', 'customMain', 'customFlow'] }`，那么 standbyTypes 中的 'customFlow' 将会被忽略。特别地，由于 'custom' 的特殊性，待切换的布局中不可包含该类型的布局，若填写，则会被忽略。
+  custom?: Object[]             // type 为 'custom'时，自定义布局填在custom里，格式参照RFC5707 Media Server Markup Language (MSML)
+  mainViewUId?: string          // type 为 'main' 或 'customMain' 时，指定某用户的流为主画面，默认为当前用户
+  mainViewType?: MainViewType   // 主画面类型，'screen' | 'camera'，默认为用户发布的 'camera'
+}
+```
+
+> 注：关于布局风格, 请参见详细的混流说明 [混流风格](https://github.com/UCloudDocs/urtc/blob/master/cloudRecord/RecordLaylout.md)
+
+
+<a name="mixaudiooptions"></a>
+
+MixAudioOptions 类型，类型说明
+
+```
+{
+  codec: MixAudioCodec    // 音频的编码格式，MixAudioCodec 为 'aac'，不传时默认为 'aac'
+}
+```
+
+<a name="mixvideooptions"></a>
+
+MixVideoOptions 类型，类型说明
+
+```
+{
+  codec: MixVideoCodec    // 视频的编码格式，MixVideoCodec 为 'h264' | 'h265' 其中之一，默认为 'h264'
+  quality?: H264Quality   // 视频质量，当 codec 为 h264 时，此项起作用，H264Quality 为 'B' | 'CB' | 'M' | 'E' | 'H' 其中之一，默认为 'CB'
+  frameRate?: number      // 视频码率，可选值 6 | 12 | 15 | 24 | 30 | 48 | 60，默认为 15
+  bitRate?: number        // 视频比特率，默认为 500
+}
+```
+
+BackgroundColorOptions 类型说明详见 [BackgroundColorOptions](#backgroundcoloroptions)
+
+WaterMarkOptions 类型说明详见 [WaterMarkOptions](#watermarkoptions)
+
+MixStream 类型说明详见 [MixStream](#mixstream)
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Result) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+
+Result 为返回值，[RelayResult 类型](#relayresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+<a name="relayresult"></a>
+
+RelayResult: object 类型，类型说明如下
+
+```
+{
+  Id: string            // 转推 ID
+  PushURL?: string[]    // 转推 URL
+}
+```
+
+<a name="client-stoprelay"></a>
+
+### 50. stopRelay 方法
+
+结束转推，示例代码：
+
+```
+client.stopRelay(callback)
+```
+
+#### 参数说明
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Result) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
+
+Result 为返回值，[RelayResult 类型](#relayresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+
+<a name="client-updaterelaystreams"></a>
+
+### 51. updateRelayStreams 方法
+
+增加/删除转推的流，示例代码：
+
+```
+client.updateRelayStreams(UpdateMixStreamsOptions, callback)
+```
+
+#### 参数说明
+
+- UpdateMixStreamsOptions: object 类型, 必传，详细的类型说明见 [UpdateMixStreamsOptions](#updatemixstreamsoptions)
 
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
 ```
-function callback(Err, Result) {}
+function callback(Error, Result) {}
 ```
-Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
 
-Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+Result 为返回值，[RelayResult 类型](#relayresult)，执行失败时，此值为空，执行成功时，此值为执行结果
 
-
-<a name="client-removemixstreams"></a>
-
-### 49. removeMixStreams 方法
-
-可在录制或转推时，删除录制或转推中混合的流，示例代码：
-
-```
-client.removeMixStreams(RemoveMixStreamsOptions, callback)
-```
-
-#### 参数说明
-
-- RemoveMixStreamsOptions: object 类型, 必传，详细的类型说明如下
-
-```
-{
-  streams: MixStream[]  // 必传，指定需要混合的新流
-}
-```
-> 点击 [MixStream](#mixstream) 见详细的类型说明
-
-- callback: function 类型，选传，方法的回调函数，函数说明如下
-
-```
-function callback(Err, Result) {}
-```
-Err 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
-
-Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
 
 ----
 

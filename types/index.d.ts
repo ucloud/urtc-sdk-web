@@ -9,7 +9,8 @@ export declare type DeviceType = 'audio'|'video';
 export declare type EventType = 'user-added' | 'user-removed' |
   'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' |
   'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' |
-  'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected';
+  'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' |
+  'record-notify' | 'relay-notify';
 
 export declare type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
 
@@ -41,6 +42,8 @@ export interface PublishOptions {
   cameraId?: string     // 摄像头设备ID
   extensionId?: string  // chrome插件ID
   mediaStream?: MediaStream // 自定义的媒体流
+  file?: File,              // 图片流使用的图片文件
+  filePath?: string         // 图片流使用的图片的地址
 }
 
 export interface DeviceOptions {
@@ -183,13 +186,16 @@ export interface ReplaceTrackOptions {
 }
 
 export declare type MixType = 'relay' | 'record' | 'relay-and-record' | 'update-config'
-export declare type MixLayoutType = 'flow' | 'main' | 'custom' | 'customMain' | 'customFlow'
+export declare type MixLayoutType = 'flow' | 'main' | 'custom' | 'customMain' | 'customFlow' | 'single'
 export declare type MixAudioCodec = 'aac'
 export declare type MixVideoCodec = 'h264' | 'h265'
 export declare type H264Quality = 'B' | 'CB' | 'M' | 'E' | 'H'
+export declare type MixOutputMode = 'audio-video' | 'audio'   // 默认为 audio-video
+export declare type MixStreamAddMode = 'automatic' | 'manual' // 默认为 'automatic 自动的
 
 export interface MixLayoutOptions {
   type: MixLayoutType           // layout 类型
+  standbyTypes?: MixLayoutType[]// 待切换的 layout 类型
   custom?: Object[]             // layout 为 'custom'，自定义布局填在custom里，格式参照RFC5707 Media Server Markup Language (MSML)
   mainViewUId?: string          // 指定某用户的流为主画面
   mainViewType?: MainViewType   // 主画面类型
@@ -221,6 +227,7 @@ export interface MixOptions {
   layout?: MixLayoutOptions
   audio?: MixAudioOptions
   video?: MixVideoOptions
+  outputMode?: MixOutputMode
 
   width?: number
   height?: number
@@ -229,6 +236,7 @@ export interface MixOptions {
   waterMark?: WaterMarkOptions
 
   streams?: MixStream[]
+  streamAddMode?: MixStreamAddMode
 }
 
 export interface StopMixOptions {
@@ -254,4 +262,79 @@ export interface AddMixStreamsOptions {
 
 export interface RemoveMixStreamsOptions {
   streams: MixStream[]
+}
+
+// 录制
+export interface StartRecordOptions {
+  bucket: string
+  region: string
+
+  layout?: MixLayoutOptions
+
+  width?: number
+  height?: number
+  backgroundColor?: BackgroundColorOptions
+
+  waterMark?: WaterMarkOptions
+
+  streams?: MixStream[]   // 如果列表为空，会自动添加房间内所有用户的流，如果指定了用户，则只添加该用户的指定流
+}
+
+export interface RecordResult {
+  Id: string
+  FileName?: string
+}
+
+declare type UpdateMixStreamsType = 'add' | 'remove';
+
+export interface UpdateMixStreamsOptions {
+  type: UpdateMixStreamsType,
+  streams: MixStream[]
+}
+
+export interface StartRelayOptions {
+  pushURL?: string[]
+  layout?: MixLayoutOptions
+  audio?: MixAudioOptions
+  video?: MixVideoOptions
+  outputMode?: MixOutputMode
+
+  width?: number
+  height?: number
+  backgroundColor?: BackgroundColorOptions
+
+  waterMark?: WaterMarkOptions
+
+  streams?: MixStream[]
+  streamAddMode?: MixStreamAddMode
+}
+
+export interface RelayResult {
+  Id: string
+  PushURL?: string[]
+}
+
+declare type UpdateRelayPushURLType = 'add' | 'remove';
+
+export interface UpdateRelayPushURLOptions {
+  type: UpdateRelayPushURLType,
+  pushURL: string[]
+}
+
+export interface UpdateRelayLayoutOptions {
+  layout: MixLayoutOptions
+}
+
+export interface UpdateRelayWaterMarkOptions {
+  waterMark: WaterMarkOptions
+}
+
+declare type VideoFitType = 'cover' | 'contain';  // cover 模式：优先保证视窗被填满。contain 模式：优先保证视频内容全部显示。
+
+export interface PlayOptions {
+  streamId: string,
+  container: HTMLElement | string,
+  mute?: boolean,
+  mirror?: boolean,
+  fit?: VideoFitType
 }
