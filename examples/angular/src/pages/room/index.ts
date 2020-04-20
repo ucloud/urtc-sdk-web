@@ -98,18 +98,11 @@ export class RoomComponent implements OnInit, AfterContentInit, AfterViewInit, O
     });
     this.client.on('stream-reconnected', ({ previous, current }) => {
       console.log(`流已断开重连`);
-      if (previous.type === 'publish') {
-        const { localStreams } = this;
-        const idx = localStreams.findIndex(item => item.sid === previous.sid);
-        if (idx >= 0) {
-          localStreams.splice(idx, 1, current);
-        }
-      } else {
-        const { remoteStreams } = this;
-        const idx = remoteStreams.findIndex(item => item.sid === previous.sid);
-        if (idx >= 0) {
-          remoteStreams.splice(idx, 1, current);
-        }
+      const isLocalStream = previous.type === 'publish';
+      const streams = isLocalStream ? this.localStreams : this.remoteStreams;
+      const idx = streams.findIndex(item => item.sid === previous.sid);
+      if (idx >= 0) {
+        streams.splice(idx, 1, current);
       }
     });
 

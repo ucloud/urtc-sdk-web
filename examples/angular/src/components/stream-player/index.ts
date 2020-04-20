@@ -6,8 +6,6 @@ import {
   OnDestroy,
   Input,
   SimpleChanges,
-  ViewChild,
-  ElementRef
 } from '@angular/core';
 import classnames from 'unique-classnames';
 
@@ -21,10 +19,6 @@ interface Stats {
   biggestVideoLost: number;
   rtt: number;
   biggestRTT: number;
-}
-
-function isIOS(): boolean {
-  return /.*iphone.*/i.test(navigator.userAgent);
 }
 
 @Component({
@@ -46,21 +40,17 @@ export class StreamPlayerComponent implements OnInit, OnDestroy, OnChanges, Afte
     videoLost: 0,
     biggestVideoLost: 0,
     rtt: 0,
-    biggestRTT: 0
+    biggestRTT: 0,
   };
 
   private volumeTimer: number;
   private stateTimer: number;
-  private isIOS: boolean;
-
-  @ViewChild('video', {static: true}) videoRef: ElementRef;
 
   private isComponentDestroyed: boolean;
 
   constructor() {
     this.volumeTimer = 0;
     this.stateTimer = 0;
-    this.isIOS = isIOS();
   }
 
   ngOnInit() {
@@ -73,19 +63,19 @@ export class StreamPlayerComponent implements OnInit, OnDestroy, OnChanges, Afte
     const currentValue: Stream = stream.currentValue;
     const previousValue: Stream = stream.previousValue;
     if (stream.firstChange && currentValue.mediaStream) {
-      this.play(currentValue.mediaStream);
+      this.play();
       return;
     }
     if (!currentValue.mediaStream) {
       this.stop();
     } else if (currentValue.mediaStream !== previousValue.mediaStream) {
-      this.play(currentValue.mediaStream);
+      this.play();
     }
   }
 
   ngAfterViewInit() {
     if (this.stream.mediaStream) {
-      this.play(this.stream.mediaStream);
+      this.play();
     }
   }
 
@@ -94,15 +84,25 @@ export class StreamPlayerComponent implements OnInit, OnDestroy, OnChanges, Afte
     this.isComponentDestroyed = true;
   }
 
-  play(mediaStream: MediaStream) {
-    this.videoRef.nativeElement.srcObject = mediaStream;
+  play() {
+    const { client, stream } = this;
+    const mirror: boolean = stream.type === 'publish';
+    client.play({
+      streamId: stream.sid,
+      container: stream.sid,
+      mirror
+    }, (err) => {
+      if (err) {
+        console.log(`播放失败 ${err}`);
+        alert(`播放失败 ${err}`);
+      }
+    });
     this.startGetVolume();
     this.startGetState();
   }
   stop() {
     this.stopGetVolume();
     this.stopGetState();
-    this.videoRef.nativeElement.srcObject = null;
   }
 
   startGetVolume() {

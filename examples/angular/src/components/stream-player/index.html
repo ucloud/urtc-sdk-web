@@ -7,9 +7,6 @@
   <div [hidden]="!stream.mediaStream" style="overflow: 'hidden'; text-overflow: 'ellipsis';">视频丢包率: {{stats.videoLost}}
     %
     &nbsp;&nbsp;&nbsp;&nbsp;网络延时: {{stats.rtt}} ms</div>
-  <div [hidden]="!stream.mediaStream">
-    <video webkit-playsinline autoplay playsinline [controls]="isIOS" #video>
-    </video>
-  </div>
+  <div class="video-container" [id]="stream.sid" [hidden]="!stream.mediaStream"></div>
   <p [hidden]="stream.mediaStream">unsubscribe</p>
 </div>

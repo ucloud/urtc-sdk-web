@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import canAutoplay from 'can-autoplay';
 import PropTypes from 'prop-types';
 import classnames from 'unique-classnames';
 import './index.css';
@@ -32,32 +31,26 @@ export default class MediaPlayer extends Component {
         biggestVideoLost: 0,
         rtt: 0,
         biggestRTT: 0,
-        canAutoplay: true
       },
+      showPlayMask: false
     }
     this.volumeTimer = 0;
     this.stateTimer = 0;
-    this.videoElem = React.createRef();
   }
 
   componentDidMount() {
     this.isComponentMounted = true;
     const { stream } = this.props;
     if (stream.mediaStream) {
-      this.play(stream.mediaStream);
+      this.play();
     }
-    canAutoplay.video().then(res => {
-      this.setState({
-        canAutoplay: res.result
-      });
-    });
   }
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.stream.mediaStream) {
       this.stop();
     } else if (nextProps.stream.mediaStream !== this.props.stream.mediaStream) {
-      this.play(nextProps.stream.mediaStream);
+      this.play();
     }
   }
 
@@ -66,15 +59,26 @@ export default class MediaPlayer extends Component {
     this.isComponentMounted = false;
   }
 
-  play(mediaStream) {
-    this.videoElem.current.srcObject = mediaStream;
+  play() {
+    const { client, stream } = this.props;
+    const mirror = stream.type === 'publish';
+    client.play({
+      streamId: stream.sid,
+      container: stream.sid,
+      mirror: mirror
+    }, (err) => {
+      if (err) {
+        this.setState({
+          showPlayMask: true
+        });
+      }
+    });
     this.startGetVolume();
     this.startGetState();
   }
   stop() {
     this.stopGetVolume();
     this.stopGetState();
-    this.videoElem.current.srcObject = null;
   }
 
   startGetVolume() {
@@ -159,29 +163,29 @@ export default class MediaPlayer extends Component {
   }
 
   handlePlay = () => {
-    if (this.videoElem.current && this.videoElem.current.paused) {
-      this.videoElem.current.play();
-    }
+    const { client, stream } = this.props;
+    client.resume(stream.sid, (err) => {
+      if (err) {
+        console.log(`播放失败 ${err}`);
+        alert(`播放失败 ${err}`);
+      } else {
+        this.setState({
+          showPlayMask: false
+        });
+      }
+    });
   }
 
   renderVideoMask = () => {
-    const { stream } = this.props;
-    if (!stream || stream.type !== 'subscribe') {
-      return null;
-    }
-    if (this.videoElem.current && this.videoElem.current.paused) {
-      if (!this.state.canAutoplay) {
-        return (
-          <div className="play-mask">
-            <div className="mask-content">
-              <div className="hint">由于当前浏览器不支持视频自动播放，请点击下面的按钮来播放</div>
-              <button onClick={this.handlePlay}>播放</button>
-            </div>
-          </div>
-        )
-      }
-    }
-    return null;
+    const { showPlayMask } = this.state;
+    return showPlayMask ? (
+      <div className="play-mask">
+        <div className="mask-content">
+          <div className="hint">由于当前浏览器不支持视频自动播放，请点击下面的按钮来播放</div>
+          <button onClick={this.handlePlay}>播放</button>
+        </div>
+      </div>
+    ) : null;
   }
 
   render() {
@@ -195,13 +199,7 @@ export default class MediaPlayer extends Component {
         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>用户ID: {stream.uid}</div>
         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>流ID: {stream.sid}</div>
         { this.renderStats() }
-        <div className="video-container" style={{ display: hasMediaStream ? 'block' : 'none' }}>
-          <video
-            ref={this.videoElem}
-            webkit-playsinline="true"
-            autoPlay
-            playsInline>
-          </video>
+        <div className="video-container" id={stream.sid} style={{ display: hasMediaStream ? 'block' : 'none' }}>
           { this.renderVideoMask() }
         </div>
         <p style={{ display: hasMediaStream ? 'none' : 'block' }}> unsubscribe </p>

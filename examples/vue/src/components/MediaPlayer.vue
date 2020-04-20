@@ -4,13 +4,7 @@
     <div style="overflow: 'hidden'; text-overflow: 'ellipsis';">流ID: {{stream.sid}}</div>
     <div v-show="stream.mediaStream" style="overflow: 'hidden'; text-overflow: 'ellipsis';">音量: {{volume}} % &nbsp;&nbsp;&nbsp;&nbsp;音频丢包率: {{stats.audioLost}} %</div>
     <div v-show="stream.mediaStream" style="overflow: 'hidden'; text-overflow: 'ellipsis';">视频丢包率: {{stats.videoLost}} % &nbsp;&nbsp;&nbsp;&nbsp;网络延时: {{stats.rtt}} ms</div>
-    <div class="video-container" v-show="stream.mediaStream">
-      <video
-        ref="video"
-        webkit-playsinline
-        autoplay
-        playsinline>
-      </video>
+    <div class="video-container" :id="stream.sid" v-show="stream.mediaStream">
       <div class="play-mask" v-show="showPlayMask">
         <div class="mask-content">
           <div class="hint">由于当前浏览器不支持视频自动播放，请点击下面的按钮来播放</div>
@@ -24,7 +18,6 @@
 
 <script>
 import classnames from 'unique-classnames';
-import canAutoplay from 'can-autoplay';
 
 export default {
   name: 'MediaPlayer',
@@ -42,8 +35,7 @@ export default {
         rtt: 0,
         biggestRTT: 0
       },
-      canAutoplay: true,
-      paused: false
+      showPlayMask: false
     };
   },
   props: {
@@ -75,15 +67,8 @@ export default {
   mounted: function () {
     this.isComponentDestroyed = false;
     if (this.stream.mediaStream) {
-      this.play(this.stream.mediaStream);
+      this.play();
     }
-    this.$refs.video.onplay = (e) => {
-      this.paused = e.target.paused;
-    };
-    this.paused = this.$refs.video.paused;
-    canAutoplay.video().then(res => {
-      this.canAutoplay = res.result;
-    });
   },
   beforeDestroy: function () {
     this.stop();
@@ -95,22 +80,31 @@ export default {
     'stream.mediaStream': function (val, oldVal) {
       console.log('media stream changed: ', val, oldVal);
       if (val) {
-        this.play(val);
+        this.play();
       } else {
         this.stop();
       }
     }
   },
   methods: {
-    play: function (mediaStream) {
-      this.$refs.video.srcObject = mediaStream;
+    play: function () {
+      const { client, stream } = this;
+      const mirror = stream.type === 'publish';
+      client.play({
+        streamId: stream.sid,
+        container: stream.sid,
+        mirror: mirror
+      }, (err) => {
+        if (err) {
+          this.showPlayMask = true;
+        }
+      });
       this.startGetVolume();
       this.startGetState();
     },
     stop: function () {
       this.stopGetVolume();
       this.stopGetState();
-      this.$refs.video.srcObject = null;
     },
     startGetVolume: function () {
       const { client, stream } = this;
@@ -176,20 +170,15 @@ export default {
       onClick && onClick(stream);
     },
     handlePlay: function () {
-      if (this.$refs.video && this.paused) {
-        this.$refs.video.play();
-      }
-    }
-  },
-  computed: {
-    showPlayMask: function () {
-      if (this.stream && this.stream.type !== 'subscribe') {
-        return false;
-      }
-      if (!this.canAutoplay && this.paused) {
-        return true;
-      }
-      return false;
+      const { client, stream } = this;
+      client.resume(stream.sid, (err) => {
+        if (err) {
+          console.log(`播放失败 ${err}`);
+          alert(`播放失败 ${err}`);
+        } else {
+          this.showPlayMask = false;
+        }
+      });
     }
   }
 };
@@ -208,6 +197,7 @@ export default {
 
 .media-player .video-container {
   position: relative;
+  height: 200px;
 }
 
 .media-player .muted-mask,
