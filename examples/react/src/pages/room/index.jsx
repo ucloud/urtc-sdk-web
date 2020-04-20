@@ -84,6 +84,7 @@ export default class Room extends Component {
       const streams = isLocalStream ? this.state.localStreams : this.state.remoteStreams;
       const idx = streams.findIndex(item => item.sid === previous.sid);
       if (idx >= 0) {
+        // 更新流的信息
         streams.splice(idx, 1, current);
       }
       if (isLocalStream) {

@@ -208,6 +208,7 @@ window.onload = function () {
         const streams = isLocalStream ? this.state.localStreams : this.state.remoteStreams;
         const idx = streams.findIndex(item => item.sid === previous.sid);
         if (idx >= 0) {
+          // 更新流的信息
           const oldStream = streams.splice(idx, 1, current)[0];
           this.unrenderStream(oldStream);
           streams.push(current);
