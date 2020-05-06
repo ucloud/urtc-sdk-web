@@ -366,9 +366,9 @@ unmute-video | 流的 video 被取消 mute
 mute-audio | 流的 audio 被 mute
 unmute-audio | 流的 audio 被取消 mute
 screenshare-stopped | 屏幕共享已被手动停止，当收到此事件通知时，需调用 unpublish 方法取消发布本地流
-connection-state-change | 当 URTC client 与服务器的连接状态变化时，会由此事件通知。特别地，当因网络问题导致连接断开时，sdk 将在1分钟内尝试自动重连，此时将收到内容为 `{previous: "OPEN", current: "RECONNECTING"}` 的通知，表示开始重连，若重连成功，将收到内容为 `{previous: "RECONNECTING", current: "OPEN"}` 的通知，若不能重连成功，将收到内容为 `{previous: "RECONNECTING", current: "CLOSED"}` 的通知，表示重连失败，此时需要依次调用 leaveRoom 和 joinRoom 以重新进入房间。
+connection-state-change | 当 URTC client 与服务器的连接状态变化时，会由此事件通知。特别地，当因网络问题导致连接断开时，sdk 将在5-15秒内尝试自动重连，此时将收到内容为 `{previous: "OPEN", current: "RECONNECTING"}` 的通知，表示开始重连，若重连成功，将收到内容为 `{previous: "RECONNECTING", current: "OPEN"}` 的通知，若不能重连成功，将收到内容为 `{previous: "RECONNECTING", current: "CLOSED"}` 的通知，表示重连失败，此时需要依次调用 leaveRoom 和 joinRoom 以重新进入房间。`注意，断线重连后，对于已发布或订阅的流会触发下面的 stream-reconnected 流的重连事件，请处理该事件，对流进行重新播放`
 kick-off | 当前用户被踢出了房间。URTC 限制了多设备同时登录，同一用户（userId）不可同时在多处加入房间，即当同一用户（userId）分别在利用两个设备（譬如电脑、手机等）先后加入房间时，前一个加入房间的设备将在后一个加入房间时收到此事件的通知，此时业务层可提示用户。
-network-quality | 报告本地用户的上下行网络质量。每 2 秒触发一次，报告本地用户当前的上行和下行网络质量。`该功能目前处于实验阶段，网络质量评分仅供参考`
+network-quality | 报告本地用户的上下行网络质量。每 1 秒触发一次，报告本地用户当前的上行和下行网络质量。`该功能目前处于实验阶段，网络质量评分仅供参考。部分浏览器无法获取网络质量数据，评分仅有1，6两值，如 Edge 18 等。`
 stream-reconnected | 当发布/订阅流断开时，会自动重连，发布流会被重新发布，订阅流会被重新订阅，完成后会触发此事件，请注意在此事件的回调函数中更新业务代码中的缓存
 
 
@@ -1744,6 +1744,9 @@ client.startRecord(StartRecordOptions, callback)
 
   layout?: MixLayoutOptions   // 选传，多路混流时视频的布局设置，类型说明见下面的 MixLayoutOptions 类型，不传时，将使用默认值
 
+  audio?: MixAudioOptions     // 选传，录制后的音频的设置，类型说明见下面的 MixAudioOptions 类型，不传时，将使用默认值
+  video?: MixVideoOptions     // 选传，录制后的视频的设置，类型说明见下面的 MixVideoOptions 类型，不传时，将使用默认值
+
   width?: number      // 选传，录制后的视频的宽度，不传时，默认为 1280
   height?: number     // 选传，录制后的视频的高度，不传时，默认为 720
   backgroundColor?: BackgroundColorOptions  // 选传，背景色，类型说明见下面的 BackgroundColorOptions 类型，不传时，默认为 #000 黑色
@@ -1767,6 +1770,28 @@ MixLayoutOptions 类型，类型说明
 }
 ```
 
+<a name="mixaudiooptions"></a>
+
+MixAudioOptions 类型，类型说明
+
+```
+{
+  codec: MixAudioCodec    // 音频的编码格式，MixAudioCodec 为 'aac'，不传时默认为 'aac'
+}
+```
+
+<a name="mixvideooptions"></a>
+
+MixVideoOptions 类型，类型说明
+
+```
+{
+  codec: MixVideoCodec    // 视频的编码格式，MixVideoCodec 为 'h264' | 'h265' 其中之一，默认为 'h264'
+  quality?: H264Quality   // 视频质量，当 codec 为 h264 时，此项起作用，H264Quality 为 'B' | 'CB' | 'M' | 'E' | 'H' 其中之一，默认为 'CB'
+  frameRate?: number      // 视频码率，可选值 6 | 12 | 15 | 24 | 30 | 48 | 60，默认为 15
+  bitRate?: number        // 视频比特率，默认为 500
+}
+```
 > 注：关于布局风格, 请参见详细的混流说明 [混流风格](https://github.com/UCloudDocs/urtc/blob/master/cloudRecord/RecordLaylout.md)
 
 <a name="backgroundcoloroptions"></a>
@@ -1937,28 +1962,9 @@ MixLayoutOptions 类型，类型说明
 > 注：关于布局风格, 请参见详细的混流说明 [混流风格](https://github.com/UCloudDocs/urtc/blob/master/cloudRecord/RecordLaylout.md)
 
 
-<a name="mixaudiooptions"></a>
+MixAudioOptions 类型说明详见 [MixAudiooptions](#mixaudiooptions)
 
-MixAudioOptions 类型，类型说明
-
-```
-{
-  codec: MixAudioCodec    // 音频的编码格式，MixAudioCodec 为 'aac'，不传时默认为 'aac'
-}
-```
-
-<a name="mixvideooptions"></a>
-
-MixVideoOptions 类型，类型说明
-
-```
-{
-  codec: MixVideoCodec    // 视频的编码格式，MixVideoCodec 为 'h264' | 'h265' 其中之一，默认为 'h264'
-  quality?: H264Quality   // 视频质量，当 codec 为 h264 时，此项起作用，H264Quality 为 'B' | 'CB' | 'M' | 'E' | 'H' 其中之一，默认为 'CB'
-  frameRate?: number      // 视频码率，可选值 6 | 12 | 15 | 24 | 30 | 48 | 60，默认为 15
-  bitRate?: number        // 视频比特率，默认为 500
-}
-```
+MixVideoOptions 类型说明详见 [MixVideoOptions](#mixvideooptions)
 
 BackgroundColorOptions 类型说明详见 [BackgroundColorOptions](#backgroundcoloroptions)
 

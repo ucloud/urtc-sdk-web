@@ -24,7 +24,8 @@
 
 ```js
 client.play({
-  streamId: 'xxx'
+  streamId: 'xxx',
+  container: 'xxx',
 }, (err) => {
   if (err) {
     console.log('播放失败', err);
@@ -51,6 +52,7 @@ client.play({
 let unmuteBtn = document.querySelector('#unmuteBtn');
 client.play({
   streamId: 'xxx',
+  container: 'xxx,
   mute: true
 }, (err) => {
   if (err) {
