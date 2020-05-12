@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import sdk, { Client } from 'urtc-sdk';
 
 import config from '../../config';
-import MediaPlayer from '../../components/MediaPlayer';
+import StreamInfo from '../../components/StreamInfo';
 import './index.css';
 
 const { AppId, AppKey } = config;
@@ -45,7 +45,12 @@ export default class Room extends Component {
       console.info('stream-published: ', localStream);
       const { localStreams } = this.state;
       localStreams.push(localStream);
-      this.setState({ localStreams });
+      this.setState({ localStreams }, () => {
+        this.client.play({
+          streamId: localStream.sid,
+          container: localStream.sid,
+        });
+      });
     });
     this.client.on('stream-added', (remoteStream) => {
       console.info('stream-added: ', remoteStream);
@@ -64,7 +69,12 @@ export default class Room extends Component {
       if (idx >= 0 ) {
         remoteStreams.splice(idx, 1, remoteStream);
       }
-      this.setState({ remoteStreams });
+      this.setState({ remoteStreams }, () => {
+        this.client.play({
+          streamId: remoteStream.sid,
+          container: remoteStream.sid,
+        });
+      });
     });
     this.client.on('stream-removed', (remoteStream) => {
       console.info('stream-removed: ', remoteStream);
@@ -87,10 +97,16 @@ export default class Room extends Component {
         // 更新流的信息
         streams.splice(idx, 1, current);
       }
+      const playFunc = () => {
+        this.client.play({
+          streamId: current.sid,
+          container: current.sid,
+        });
+      }
       if (isLocalStream) {
-        this.setState({ localStreams: streams });
+        this.setState({ localStreams: streams }, playFunc);
       } else {
-        this.setState({ remoteStreams: streams });
+        this.setState({ remoteStreams: streams }, playFunc);
       }
     });
 
@@ -212,7 +228,10 @@ export default class Room extends Component {
     const { localStreams } = this.state;
     return localStreams.map(stream => {
       return stream.mediaStream ?
-        <MediaPlayer className="local-stream" key={stream.sid} client={this.client} stream={stream} onClick={this.handleSelectStream}/> :
+        <div className="stream-container" key={stream.sid} onClick={() => this.handleSelectStream(stream)}>
+          <StreamInfo client={this.client} stream={stream}></StreamInfo>
+          <div className="video-container" id={stream.sid}></div>
+        </div> :
         null;
     });
   }
@@ -220,12 +239,11 @@ export default class Room extends Component {
     const { remoteStreams } = this.state;
     return remoteStreams.map(stream => {
       return stream.mediaStream ?
-        <MediaPlayer className="remote-stream" key={stream.sid} client={this.client} stream={stream} onClick={this.handleSelectStream} /> :
-        <div className="media-player remote-stream" key={stream.sid} onClick={() => { this.handleSelectStream(stream) }}>
-          <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>用户ID: {stream.uid}</div>
-          <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>流ID: {stream.sid}</div>
-          <p> unsubscribe </p>
-        </div>;
+        <div className="stream-container" key={stream.sid} onClick={() => this.handleSelectStream(stream)}>
+          <StreamInfo client={this.client} stream={stream}></StreamInfo>
+          <div className="video-container" id={stream.sid}></div>
+        </div> :
+        null;
     });
   }
 
