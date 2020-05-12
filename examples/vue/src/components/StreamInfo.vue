@@ -1,17 +1,9 @@
 <template>
-  <div v-bind:class="classes" v-on:click="handleClick">
+  <div :class="classes">
     <div style="overflow: 'hidden'; text-overflow: 'ellipsis';">用户ID: {{stream.uid}}</div>
     <div style="overflow: 'hidden'; text-overflow: 'ellipsis';">流ID: {{stream.sid}}</div>
     <div v-show="stream.mediaStream" style="overflow: 'hidden'; text-overflow: 'ellipsis';">音量: {{volume}} % &nbsp;&nbsp;&nbsp;&nbsp;音频丢包率: {{stats.audioLost}} %</div>
     <div v-show="stream.mediaStream" style="overflow: 'hidden'; text-overflow: 'ellipsis';">视频丢包率: {{stats.videoLost}} % &nbsp;&nbsp;&nbsp;&nbsp;网络延时: {{stats.rtt}} ms</div>
-    <div class="video-container" :id="stream.sid" v-show="stream.mediaStream">
-      <div class="play-mask" v-show="showPlayMask">
-        <div class="mask-content">
-          <div class="hint">由于当前浏览器不支持视频自动播放，请点击下面的按钮来播放</div>
-          <button @click.stop="handlePlay">播放</button>
-        </div>
-      </div>
-    </div>
     <p v-show="!stream.mediaStream">unsubscribe</p>
   </div>
 </template>
@@ -20,12 +12,12 @@
 import classnames from 'unique-classnames';
 
 export default {
-  name: 'MediaPlayer',
+  name: 'StreamInfo',
   data: function () {
-    const classes = classnames('media-player', this.className);
+    const classes = classnames('stream-info', this.className);
 
     return {
-      classes: classes,
+      classes,
       volume: 0,
       stats: {
         audioLost: 0,
@@ -34,8 +26,7 @@ export default {
         biggestVideoLost: 0,
         rtt: 0,
         biggestRTT: 0
-      },
-      showPlayMask: false
+      }
     };
   },
   props: {
@@ -67,7 +58,7 @@ export default {
   mounted: function () {
     this.isComponentDestroyed = false;
     if (this.stream.mediaStream) {
-      this.play();
+      this.start();
     }
   },
   beforeDestroy: function () {
@@ -80,25 +71,14 @@ export default {
     'stream.mediaStream': function (val, oldVal) {
       console.log('media stream changed: ', val, oldVal);
       if (val) {
-        this.play();
+        this.start();
       } else {
         this.stop();
       }
     }
   },
   methods: {
-    play: function () {
-      const { client, stream } = this;
-      const mirror = stream.type === 'publish';
-      client.play({
-        streamId: stream.sid,
-        container: stream.sid,
-        mirror: mirror
-      }, (err) => {
-        if (err) {
-          this.showPlayMask = true;
-        }
-      });
+    start: function () {
       this.startGetVolume();
       this.startGetState();
     },
@@ -164,21 +144,6 @@ export default {
     },
     stopGetState: function () {
       clearInterval(this.stateTimer);
-    },
-    handleClick: function () {
-      const { stream, onClick } = this;
-      onClick && onClick(stream);
-    },
-    handlePlay: function () {
-      const { client, stream } = this;
-      client.resume(stream.sid, (err) => {
-        if (err) {
-          console.log(`播放失败 ${err}`);
-          alert(`播放失败 ${err}`);
-        } else {
-          this.showPlayMask = false;
-        }
-      });
     }
   }
 };
@@ -186,53 +151,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.media-player {
-  display: inline-block;
-  margin: 2px;
-  width: 300px;
-  text-align: left;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.media-player .video-container {
-  position: relative;
-  height: 200px;
-}
-
-.media-player .muted-mask,
-.media-player .play-mask {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 9;
-  opacity: 0.6;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.muted-mask .mask-content,
-.play-mask .mask-content {
-  max-width: 200px;
-}
-
-.mask-content .hint {
-  margin-bottom: 12px;
-  white-space: break-spaces;
-  font-size: 14px;
-}
-
-.mask-content button {
-  min-height: 50px;
-}
-
-.media-player video {
-  width: 100%;
-  height: 100%;
-}
 </style>

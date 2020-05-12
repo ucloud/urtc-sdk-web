@@ -3,9 +3,15 @@
     <label>房间号：{{roomId}}（{{roomStatus}}）</label>
     <p>当前选中的流：{{selectedStreamStatus}}</p>
     <h3>本地（发布）流</h3>
-    <MediaPlayer v-for="stream in localStreams" :key="stream.sid" className="local-stream" v-bind:client="client" v-bind:stream="stream" v-bind:onClick="handleSelectStream"/>
+    <div class="stream-container" v-for="stream in localStreams" :key="stream.sid" v-on:click="handleSelectStream(stream)">
+      <stream-info v-bind:client="client" v-bind:stream="stream"></stream-info>
+      <div class="video-container" :id="stream.sid"></div>
+    </div>
     <h3>远端（订阅）流</h3>
-    <MediaPlayer v-for="stream in remoteStreams" :key="stream.sid" className="remote-stream" v-bind:client="client" v-bind:stream="stream" v-bind:onClick="handleSelectStream"/>
+    <div class="stream-container" v-for="stream in remoteStreams" :key="stream.sid" v-on:click="handleSelectStream(stream)">
+      <stream-info v-bind:client="client" v-bind:stream="stream"></stream-info>
+      <div class="video-container" :id="stream.sid"></div>
+    </div>
     <h3>操作</h3>
     <button v-on:click="handleJoinRoom">加入房间</button>
     <button v-on:click="handlePublish">发布</button>
@@ -19,9 +25,9 @@
 
 <script>
 import sdk, { Client } from 'urtc-sdk';
+import StreamInfo from '../components/StreamInfo';
 
 import config from '../config';
-import MediaPlayer from '../components/MediaPlayer.vue';
 
 const { AppId, AppKey } = config;
 
@@ -34,7 +40,7 @@ console.log('UCloudRTC sdk version: ', sdk.version);
 export default {
   name: 'Room',
   components: {
-    MediaPlayer
+    StreamInfo
   },
   data: function () {
     return {
@@ -74,6 +80,12 @@ export default {
       console.info('stream-published: ', localStream);
       const { localStreams } = this;
       localStreams.push(localStream);
+      this.$nextTick(() => {
+        this.client.play({
+          streamId: localStream.sid,
+          container: localStream.sid
+        });
+      });
     });
     this.client.on('stream-added', (remoteStream) => {
       console.info('stream-added: ', remoteStream);
@@ -91,6 +103,12 @@ export default {
       if (idx >= 0) {
         remoteStreams.splice(idx, 1, remoteStream);
       }
+      this.$nextTick(() => {
+        this.client.play({
+          streamId: remoteStream.sid,
+          container: remoteStream.sid
+        });
+      });
     });
     this.client.on('stream-removed', (remoteStream) => {
       console.info('stream-removed: ', remoteStream);
@@ -112,6 +130,12 @@ export default {
         // 更新流的信息
         streams.splice(idx, 1, current);
       }
+      this.$nextTick(() => {
+        this.client.play({
+          streamId: current.sid,
+          container: current.sid
+        });
+      });
     });
 
     window.addEventListener('beforeunload', this.handleLeaveRoom);
@@ -248,5 +272,19 @@ export default {
 .room button:hover,
 .room button:active {
   outline: none;
+}
+
+.stream-container {
+  display: inline-block;
+  margin: 2px;
+  width: 300px;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.stream-container .video-container {
+  position: relative;
+  height: 200px;
 }
 </style>
