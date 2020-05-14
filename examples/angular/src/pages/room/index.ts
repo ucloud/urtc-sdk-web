@@ -67,6 +67,12 @@ export class RoomComponent implements OnInit, AfterContentInit, AfterViewInit, O
       console.info('stream-published: ', localStream);
       const { localStreams } = this;
       localStreams.push(localStream);
+      setTimeout(() => {
+        this.client.play({
+          streamId: localStream.sid,
+          container: localStream.sid
+        });
+      }, 0);
     });
     this.client.on('stream-added', (remoteStream) => {
       console.info('stream-added: ', remoteStream);
@@ -84,6 +90,12 @@ export class RoomComponent implements OnInit, AfterContentInit, AfterViewInit, O
       if (idx >= 0) {
         remoteStreams.splice(idx, 1, remoteStream);
       }
+      setTimeout(() => {
+        this.client.play({
+          streamId: remoteStream.sid,
+          container: remoteStream.sid
+        });
+      }, 0);
     });
     this.client.on('stream-removed', (remoteStream) => {
       console.info('stream-removed: ', remoteStream);
@@ -104,6 +116,12 @@ export class RoomComponent implements OnInit, AfterContentInit, AfterViewInit, O
       if (idx >= 0) {
         streams.splice(idx, 1, current);
       }
+      setTimeout(() => {
+        this.client.play({
+          streamId: current.sid,
+          container: current.sid
+        });
+      }, 0);
     });
 
     window.addEventListener('beforeunload', this.leaveRoom);
@@ -209,5 +227,8 @@ export class RoomComponent implements OnInit, AfterContentInit, AfterViewInit, O
   handleSelectStream(stream) {
     console.log('select stream: ', stream);
     this.selectedStream = stream;
+  }
+  trackBySId(index, stream) {
+    return stream.sid;
   }
 }

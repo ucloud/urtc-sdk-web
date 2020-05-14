@@ -26,3 +26,17 @@
 .room button:active {
   outline: none;
 }
+
+.stream-container {
+  display: inline-block;
+  margin: 2px;
+  width: 300px;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.stream-container .video-container {
+  position: relative;
+  height: 200px;
+}

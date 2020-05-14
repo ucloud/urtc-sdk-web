@@ -2,17 +2,17 @@
   <label>房间号：{{roomId}}（{{roomStatus}}）</label>
   <p>当前选中的流：{{selectedStreamStatus}}</p>
   <h3>本地（发布）流</h3>
-  <app-stream-player *ngFor="let stream of localStreams"
-    className="local-stream"
-    [stream]="stream"
-    [client]="client"
-    [onClick]="onSelectStream"></app-stream-player>
+  <div class="stream-container" *ngFor="let stream of localStreams; trackBy: trackBySId"
+    (click)="onSelectStream(stream)">
+    <stream-info [stream]="stream" [client]="client"></stream-info>
+    <div class="video-container" [id]="stream.sid"></div>
+  </div>
   <h3>远端（订阅）流</h3>
-  <app-stream-player *ngFor="let stream of remoteStreams"
-    className="remote-stream"
-    [stream]="stream"
-    [client]="client"
-    [onClick]="onSelectStream"></app-stream-player>
+  <div class="stream-container" *ngFor="let stream of remoteStreams; trackBy: trackBySId"
+    (click)="onSelectStream(stream)">
+    <stream-info [stream]="stream" [client]="client"></stream-info>
+    <div class="video-container" [id]="stream.sid"></div>
+  </div>
   <h3>操作</h3>
   <button (click)="handleJoinRoom()">加入房间</button>
   <button (click)="handlePublish()">发布</button>

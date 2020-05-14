@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 
 import { RoomComponent } from './pages/room';
-import { StreamPlayerComponent } from './components/stream-player';
+import { StreamInfoComponent } from './components/stream-info';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +21,7 @@ class AppComponent {}
 
 @NgModule({
   declarations: [
-    StreamPlayerComponent,
+    StreamInfoComponent,
     RoomComponent,
     AppComponent
   ],

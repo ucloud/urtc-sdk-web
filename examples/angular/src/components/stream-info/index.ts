@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import classnames from 'unique-classnames';
 
-import sdk, { Client } from 'urtc-sdk';
+import { Client } from 'urtc-sdk';
 import { Stream, AudioStats, VideoStats, NetworkStats } from 'urtc-sdk/types';
 
 interface Stats {
@@ -22,15 +22,13 @@ interface Stats {
 }
 
 @Component({
-  selector: 'app-stream-player',
+  selector: 'stream-info',
   templateUrl: './index.html',
-  styleUrls: ['./index.css']
 })
-export class StreamPlayerComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class StreamInfoComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @Input() className: string;
   @Input() stream: Stream;
   @Input() client: Client;
-  @Input() onClick: (stream: Stream) => void;
 
   private classes: string;
   private volume = 0;
@@ -54,28 +52,29 @@ export class StreamPlayerComponent implements OnInit, OnDestroy, OnChanges, Afte
   }
 
   ngOnInit() {
-    this.classes = classnames('media-player', this.className);
+    this.classes = classnames('stream-info', this.className);
     this.isComponentDestroyed = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
     const { stream } = changes;
+
     const currentValue: Stream = stream.currentValue;
     const previousValue: Stream = stream.previousValue;
     if (stream.firstChange && currentValue.mediaStream) {
-      this.play();
+      this.start();
       return;
     }
     if (!currentValue.mediaStream) {
       this.stop();
     } else if (currentValue.mediaStream !== previousValue.mediaStream) {
-      this.play();
+      this.start();
     }
   }
 
   ngAfterViewInit() {
-    if (this.stream.mediaStream) {
-      this.play();
+    if (this.stream && this.stream.mediaStream) {
+      this.start();
     }
   }
 
@@ -84,19 +83,7 @@ export class StreamPlayerComponent implements OnInit, OnDestroy, OnChanges, Afte
     this.isComponentDestroyed = true;
   }
 
-  play() {
-    const { client, stream } = this;
-    const mirror: boolean = stream.type === 'publish';
-    client.play({
-      streamId: stream.sid,
-      container: stream.sid,
-      mirror
-    }, (err) => {
-      if (err) {
-        console.log(`播放失败 ${err}`);
-        alert(`播放失败 ${err}`);
-      }
-    });
+  start() {
     this.startGetVolume();
     this.startGetState();
   }
@@ -163,12 +150,5 @@ export class StreamPlayerComponent implements OnInit, OnDestroy, OnChanges, Afte
   }
   stopGetState() {
     window.clearInterval(this.stateTimer);
-  }
-  handleClick() {
-    console.log('click ', this);
-    const { stream, onClick } = this;
-    if (onClick) {
-      onClick(stream);
-    }
   }
 }
