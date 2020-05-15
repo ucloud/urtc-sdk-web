@@ -106,9 +106,9 @@ new Client(AppId, Token, ClientOptions);
 
 ```
 {
-  type?: "rtc"|"live",  // 选填，设置房间类型，有两种 "live" 和 "rtc" 类型可选 ，分别对应直播模式和连麦模式，默认为 rtc
+  type?: "rtc" | "live",  // 选填，设置房间类型，有两种 "live" 和 "rtc" 类型可选 ，分别对应直播模式和连麦模式，默认为 rtc
   role?: "pull" | "push" | "push-and-pull",   // 选填，设置用户角色，可设 "pull" | "push" | "push-and-pull" 三种角色，分别对应拉流、推流、推+拉流，默认为 "push-and-pull"，特别地，当房间类型为连麦模式（rtc）时，此参数将被忽视，会强制为 "push-and-pull"，即推+拉流
-  codec?: "vp8"|"h264", // 选填，设置视频编码格式，可设 "vp8" 或 "h264"，默认为 "vp8"
+  codec?: "vp8" | "h264", // 选填，设置视频编码格式，可设 "vp8" 或 "h264"，默认为 "vp8"
 }
 ```
 
@@ -325,7 +325,7 @@ client.on(EventType, Listener)
 #### 参数说明
 
 - EventType: string 类型， 必传，目前有 'user-added' | 'user-removed' |
-  'stream-added' |'stream-removed' | 'stream-published' | 'stream-subscribed' |
+  'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' |
   'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' |
   'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' |
   'record-notify' | 'relay-notify' 这些事件可绑定监听函数
@@ -408,6 +408,7 @@ client.play(PlayOptions, callback)
   mute?: boolean,     // 选填，是否进行静音播放，注：由于部分浏览器的限制，播放带声音的音视频时，必须以手势触发，但也可以通过进行静音播放来绕过此限制，此处设置 mute 为 true 时，即为静音播放。不填时，默认为 false
   mirror?: boolean,   // 选填，播放视频时是否进行镜像翻转，特别地，在播放本地流，且发布本地流时指定的为前置摄像头时，将不受此项影响，直接为镜像翻转。不填时，默认为 false
   fit?: VideoFitType  // 选填，指定视频播放时的显示模式，VideoFitType 值为 'cover' | 'contain' 两种
+  controls?: "auto" | "show" | "hide" // 选填，设置播放时内部使用的 <audio> 或 <video> 元素的控制面板的显示或隐藏。"show" 为一直显示，"hide" 为一直隐藏，"auto" 为正常播放时隐藏，没播放时显示，默认为 "auto"
 }
 ```
 
@@ -697,12 +698,12 @@ Stream:
 {
   sid: string                     // 流ID
   uid: string                     // 对应的用户的ID
-  type: 'publish'|'subscribe'     // 流类型，分别为 publish 和 subscribe 两种，
+  type: 'publish' | 'subscribe'   // 流类型，分别为 publish 和 subscribe 两种，
   video: boolean                  // 是否包含音频
   audio: boolean                  // 是否包含视频
   muteAudio: boolean              // 音频轨道是否禁用
   muteVideo: boolean              // 视频轨道是否禁用
-  mediaType?: 'camera'|'screen'   // 流的媒体类型，目前存在两种媒体类型 'camera' 及 'screen'，同一用户可发布的各类型的流只能存在一个，以此来区分不同媒体类型的发布/订阅流
+  mediaType?: 'camera' | 'screen' // 流的媒体类型，目前存在两种媒体类型 'camera' 及 'screen'，同一用户可发布的各类型的流只能存在一个，以此来区分不同媒体类型的发布/订阅流
   mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
 }
 ```

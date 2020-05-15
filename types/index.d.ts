@@ -331,10 +331,13 @@ export interface UpdateRelayWaterMarkOptions {
 
 declare type VideoFitType = 'cover' | 'contain';  // cover 模式：优先保证视窗被填满。contain 模式：优先保证视频内容全部显示。
 
+declare type PlayControlsOption = 'show' | 'hide' | 'auto'; // 默认 auto，正常播放时隐藏，未播放时显示
+
 export interface PlayOptions {
   streamId: string,
   container: HTMLElement | string,
   mute?: boolean,
   mirror?: boolean,
   fit?: VideoFitType
+  controls?: PlayControlsOption
 }
