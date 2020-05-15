@@ -8,7 +8,7 @@ import './index.css';
 const { AppId, AppKey } = config;
 
 // 此处使用固定的房间号的随机的用户ID，请自行替换
-const RoomId = "ssss02";
+const RoomId = "ssss022";
 const UserId = Math.floor(Math.random() * 1000000).toString();
 
 console.log('UCloudRTC sdk version: ', sdk.version);
@@ -247,6 +247,23 @@ export default class Room extends Component {
     });
   }
 
+  handleRecord = () => {
+    console.log('handleRecord')
+  }
+
+  handleStopRecord = () => {
+    console.log('handleStopRecord')
+  }
+
+  handleRelay = () => {
+    console.log('handleRelay')
+  }
+
+  handleStopRelay = () => {
+    console.log('handleStopRelay')
+  }
+
+
   render() {
     const { selectedStream, isJoinedRoom } = this.state;
     return (
@@ -268,6 +285,13 @@ export default class Room extends Component {
         <button onClick={this.handleUnpublish}>取消发布/屏幕共享</button>
         <button onClick={this.handleSubscribe}>订阅</button>
         <button onClick={this.handleUnsubscribe}>取消订阅</button>
+        
+        <button onClick={this.handleRecord}>录制</button>
+        <button onClick={this.handleStopRecord}>停止录制</button>
+
+        <button onClick={this.handleRelay}>转推</button>
+        <button onClick={this.handleStopRelay}>停止转推</button>
+
         <button onClick={this.handleLeaveRoom}>离开房间</button>
       </div>
     )
