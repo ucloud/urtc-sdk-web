@@ -297,63 +297,6 @@ export default class Room extends Component {
     });
   }
 
-  handleRecord = () => {
-    console.log("handleRecord >>>");
-    this.client.startRecord(
-      {
-        bucket: this.bucket,
-        region: this.region,
-      },
-      (error, result) => {
-        if (!error) {
-          console.log("handleRecord success >>>>", result);
-        }else{
-          console.log("handleRecord fail >>>>", error)
-        }
-      }
-    );
-  };
-
-  handleStopRecord = () => {
-    console.log("handleStopRecord");
-    this.client.stopRecord((error, result) => {
-      if (!error) {
-        console.log("handleStopRecord success >>>>", result);
-      }else{
-        console.log("handleStopRecord fail >>>>", error)
-      }
-    });
-  };
-
-  handleRelay = () => {
-    console.log("handleRelay");
-    this.client.startRelay(
-      {
-        pushURL:[
-          'rtmp://rtcpush.ugslb.com/rtclive/112233'
-        ]
-      },
-      (error, result) => {
-        if (!error) {
-          console.log("handleRelay success >>>>", result);
-        }else{
-          console.log("handleRelay fail >>>>", error)
-        }
-      }
-    );
-  };
-
-  handleStopRelay = () => {
-    console.log("handleStopRelay");
-    this.client.stopRelay((error, result) => {
-      if (!error) {
-        console.log("handleStopRelay success >>>>", result);
-      }else{
-        console.log("handleStopRelay fail >>>>", error)
-      }
-    });
-  };
-
   render() {
     const { selectedStream, isJoinedRoom } = this.state;
     return (
@@ -373,13 +316,6 @@ export default class Room extends Component {
         <button onClick={this.handleUnpublish}>取消发布/屏幕共享</button>
         <button onClick={this.handleSubscribe}>订阅</button>
         <button onClick={this.handleUnsubscribe}>取消订阅</button>
-
-        <button onClick={this.handleRecord}>录制</button>
-        <button onClick={this.handleStopRecord}>停止录制</button>
-
-        <button onClick={this.handleRelay}>转推</button>
-        <button onClick={this.handleStopRelay}>停止转推</button>
-
         <button onClick={this.handleLeaveRoom}>离开房间</button>
       </div>
     );
