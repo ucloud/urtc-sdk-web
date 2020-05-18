@@ -11,7 +11,7 @@ sdk.setServers({
 const { AppId, AppKey } = config;
 
 // 此处使用固定的房间号的随机的用户ID，请自行替换
-const RoomId = "ssss12345";
+const RoomId = "ssss123145";
 const UserId = Math.floor(Math.random() * 1000000).toString();
 
 console.log("UCloudRTC sdk version: ", sdk.version);
@@ -121,6 +121,17 @@ export default class Room extends Component {
       }
     });
 
+    this.client.on("record-notify", (Error, RecordResult) => {
+      if (Error !== undefined) {
+        alert(`录制失败: ${Error}`);
+      }
+    });
+
+    this.client.on("relay-notify", (Error, RecordResult) => {
+      if (Error !== undefined) {
+        alert(`转推失败: ${Error}`);
+      }
+    });
     window.addEventListener("beforeunload", this.handleLeaveRoom);
   }
 
@@ -319,7 +330,7 @@ export default class Room extends Component {
     this.client.startRelay(
       {
         pushURL:[
-          'rtmp://xupush.ugslb.com/xuapp/test/textdemo'
+          'rtmp://rtcpush.ugslb.com/rtclive/112233'
         ]
       },
       (error, result) => {
