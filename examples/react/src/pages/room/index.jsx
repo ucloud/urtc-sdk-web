@@ -1,13 +1,8 @@
 import React, { Component } from "react";
 import sdk, { Client } from "urtc-sdk";
-
 import config from "../../config";
 import StreamInfo from "../../components/StreamInfo";
 import "./index.css";
-sdk.setServers({
-  api: "https://pre.urtc.com.cn",
-  wssUrl:'impre.urtc.com.cn:3103'
-});
 const { AppId, AppKey } = config;
 
 // 此处使用固定的房间号的随机的用户ID，请自行替换
