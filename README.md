@@ -343,10 +343,10 @@ client.on(EventType, Listener)
     - '5': 网络质量糟糕
     - '6': 网络连接断开
   - 当事件类型为 'stream-reconnected' 时，可用 `function Listener(Streams) {}` 类型的函数，函数的参数为 `{previous: Stream, current: Stream}`，其中 previous 是重连前的发布/订阅流，current 是重连后的发布/订阅流，请使用 current 来更新业务代码中的缓存。
-  - 当事件类型为 'record-notify' 时，可用 `function Listener(Error, RecordResult) {}` 类型的函数，函数的参数为 Error 和 [RecordResult](#recordresult)，其中 Error 的 name 属性为服务端返回的错误码，message 属性为错误信息。Error 的 name 有以下可能的值：
+  - 当事件类型为 'record-notify' 时，可用 `function Listener(Error, RecordResult) {}` 类型的函数，函数的参数为 Error 和 [RecordResult](#recordresult)，其中 Error 为空（undefined）时，代表已成功录制，非空时，代表由于错误导致录制中止，其 name 属性为服务端返回的错误码，message 属性为错误信息。Error 的 name 有以下可能的值：
     - '24149': 任务被停止，可能的原因有房间内没有任何流在推，或到存储服务器的连接已断开
     - '24150': 任务开启后10秒，如果收到这个消息，则表示任务开启失败
-  - 当事件类型为 'relay-notify' 时，可用 `function Listener(Error, RelayResult) {}` 类型的函数，函数的参数为 Error 和 [RelayResult](#relayresult)，其中 Error 的 name 属性为服务端返回的错误码，message 属性为错误信息。Error 的 name 有以下可能的值：
+  - 当事件类型为 'relay-notify' 时，可用 `function Listener(Error, RelayResult) {}` 类型的函数，函数的参数为 Error 和 [RelayResult](#relayresult)，其中 Error 为空（undefined）时，代表已成功转推，非空时，代表由于错误导致转推中止，其 name 属性为服务端返回的错误码，message 属性为错误信息。Error 的 name 有以下可能的值：
     - '24149': 任务被停止，可能的原因有房间内没有任何流在推，或到推流地址（PushURL）的连接已断开
     - '24150': 任务开启后10秒，如果收到这个消息，则表示任务开启失败
 
@@ -1835,7 +1835,7 @@ MixStream: object 类型，选传，添加的水印相关配置，类型说明�
 ```
 function callback(Error, Result) {}
 ```
-Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+Error 为返回值，为空时，说明录制任务已成功开启，否则为开启失败，值为开启失败的错误信息
 
 Result 为返回值，[RecordResult 类型](#recordresult)，执行失败时，此值为空，执行成功时，此值为执行结果
 
@@ -1849,6 +1849,8 @@ RecordResult: object 类型，类型说明如下
   FileName?: string     // 录制 文件名
 }
 ```
+
+> 注：此处若 Error 为空（undefined）时，只代表录制任务已由服务器开启，并不代表已成功录制，当混流服务器接收到了正确的流并成功录制，或有其他错误导致录制失败时，都将会通过 `record-notify` 事件进行通知。
 
 <a name="client-stoprecord"></a>
 
@@ -1904,7 +1906,7 @@ UpdateMixStreamsOptions 类型，类型说明
 ```
 function callback(Error, Result) {}
 ```
-Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+Error 为返回值，为空时，说明已执行成功，否则为执行失败，值为执行失败的错误信息
 
 Result 为返回值，[RecordResult 类型](#recordresult)，执行失败时，此值为空，执行成功时，此值为执行结果
 
@@ -1978,9 +1980,9 @@ MixStream 类型说明详见 [MixStream](#mixstream)
 ```
 function callback(Error, Result) {}
 ```
-Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
+Error 为返回值，为空（undefined）时，说明转推任务已成功开启，否则为开启失败，值为开启失败的错误信息
 
-Result 为返回值，[RelayResult 类型](#relayresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+Result 为返回值，[RelayResult 类型](#relayresult)，开启失败时，此值为空，开启成功时，此值为执行结果
 
 <a name="relayresult"></a>
 
@@ -1992,6 +1994,8 @@ RelayResult: object 类型，类型说明如下
   PushURL?: string[]    // 转推 URL
 }
 ```
+
+> 注：此处若 Error 为空（undefined）时，只代表转推任务已由服务器开启，并不代表已成功转推，当混流服务器接收到了正确的流并成功转推，或有其他错误导致转推失败，都将会通过 `record-notify` 事件进行通知。
 
 <a name="client-stoprelay"></a>
 
