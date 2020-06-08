@@ -34,6 +34,7 @@ Client 类包含以下方法：
 * [off 方法 - 解绑事件处理函数](#client-off)
 * [play 方法 - 播放一条流的音视频](#client-play)
 * [resume 方法 - 恢复一条流的音视频播放](#client-resume)
+* [stop 方法 - 停止播放一条流的音视频](#client-stop)
 * [muteAudio 方法 - 禁用音频轨道](#client-muteaudio)
 * [unmuteAudio 方法 - 启用音频轨道](#client-unmuteaudio)
 * [muteVideo 方法 - 禁用视频轨道](#client-mutevideo)
@@ -75,16 +76,17 @@ Client 类包含以下方法：
 * [replaceTrack 方法 - 替换音频轨道或视频轨道](#client-replacetrack)
 * [~~startMix 方法 - 已废弃~~](#client-startmix)
 * [~~stopMix 方法 - 已废弃~~](#client-stopmix)
-* [~~queryMix 方法 - 已废弃~~](#client-querymix)
+* [queryMix 方法 - 查询房间内录制或转推任务](#client-querymix)
 * [~~addMixStreams 方法 - 已废弃~~](#client-addmixstreams)
 * [~~removeMixStreams 方法 - 已废弃~~](#client-removemixstreams)
-* [setRole 方法 - 设置用户权限](#client-setrole)
+* [setRole 方法 - 设置用户角色](#client-setrole)
 * [startRecord 方法 - 开启录制](#client-startrecord)
 * [stopRecord 方法 - 结束录制](#client-stoprecord)
 * [updateRecordStreams 方法 - 增加/删除录制的流](#client-updaterecordstreams)
 * [startRelay 方法 - 开启转推](#client-startrelay)
 * [stopRelay 方法 - 结束转推](#client-stoprelay)
 * [updateRelayStreams 方法 - 增加/删除转推的流](#client-updaterelaystreams)
+* [createStream 方法 - 创建一条本地（预览）流](#client-createstream)
 
 <a name="client-constructor"></a>
 
@@ -107,7 +109,7 @@ new Client(AppId, Token, ClientOptions);
 ```
 {
   type?: "rtc" | "live",  // 选填，设置房间类型，有两种 "live" 和 "rtc" 类型可选 ，分别对应直播模式和连麦模式，默认为 rtc
-  role?: "pull" | "push" | "push-and-pull",   // 选填，设置用户权限，可设 "pull" | "push" | "push-and-pull" 三种角色权限，分别对应拉流、推流、推+拉流，默认为 "push-and-pull"，特别地，当房间类型为通话模式（rtc）时，此参数将被忽视，会强制为 "push-and-pull"，即推+拉流
+  role?: "pull" | "push" | "push-and-pull",   // 选填，设置用户角色，可设 "pull" | "push" | "push-and-pull" 三种角色，分别对应拉流、推流、推+拉流，默认为 "push-and-pull"，特别地，当房间类型为连麦模式（rtc）时，此参数将被忽视，会强制为 "push-and-pull"，即推+拉流
   codec?: "vp8" | "h264", // 选填，设置视频编码格式，可设 "vp8" 或 "h264"，默认为 "vp8"
 }
 ```
@@ -190,6 +192,8 @@ client.publish(PublishOptions, onFailure)
 
 #### 参数说明
 
+<a name="publishoptions"></a>
+
 - PublishOptions: object 类型，选传，类型说明如下
 
 ```
@@ -204,6 +208,7 @@ client.publish(PublishOptions, onFailure)
   mediaStream?: MediaStream  // 选填，允许用户发布自定义的媒体流
   file?: File             // 选填，发布时指定使用图片文件生成视频源，具体参数说明可参考 switchImage 接口
   filePath?: string       // 选填，发布时指定使用网络图片生成视频源，具体参数说明可参考 switchImage 接口
+  previewId?: string      // 选填，指定发布一条为 previewId 的本地（预览）流，当指定发布一条本地（预览）流时，上面的参数（包含必填项）皆可不填，也不会生效。previewId 为调用 createStream 方法时由用户自定义的 Id，详见 createStream 方法。
 }
 ```
 
@@ -370,7 +375,8 @@ connection-state-change | 当 URTC client 与服务器的连接状态变化时�
 kick-off | 当前用户被踢出了房间。URTC 限制了多设备同时登录，同一用户（userId）不可同时在多处加入房间，即当同一用户（userId）分别在利用两个设备（譬如电脑、手机等）先后加入房间时，前一个加入房间的设备将在后一个加入房间时收到此事件的通知，此时业务层可提示用户。
 network-quality | 报告本地用户的上下行网络质量。每 1 秒触发一次，报告本地用户当前的上行和下行网络质量。`该功能目前处于实验阶段，网络质量评分仅供参考。部分浏览器无法获取网络质量数据，评分仅有1，6两值，如 Edge 18 等。`
 stream-reconnected | 当发布/订阅流断开时，会自动重连，发布流会被重新发布，订阅流会被重新订阅，完成后会触发此事件，请注意在此事件的回调函数中更新业务代码中的缓存
-
+record-notify | 当房间内开启了录制任务，那么录制任务的成功开启或异常中止，都将通过此事件进行通知，业务上可根据此通知来提示用户录制任务相应的状态
+relay-notify | 当房间内开启了转推任务，那么转推任务的成功开启或异常中止，都将通过此事件进行通知，业务上可根据此通知来提示用户转推任务相应的状态
 
 <a name="client-off"></a>
 
@@ -447,9 +453,30 @@ function callback(Error) {}
 ```
 Error 为返回值，为空（undefined) 时，说明已执行成功，否则执行失败，此时，播放元素将会打开控制面板，显示播放按钮等操作工具。
 
+<a name="client-stop"></a>
+
+### 12. stop 方法
+
+停止播放一条流的音视频。 示例代码：
+
+```
+client.stop(StreamId, callback)
+```
+
+#### 参数说明
+
+- StreamId: string 类型，必传，指流的 ID，特别地，停止播放的流为预览的流时，可传 'preview'。
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error) {}
+```
+Error 为返回值，为空（undefined) 时，说明已执行成功，否则执行失败。
+
 <a name="client-muteaudio"></a>
 
-### 12. muteAudio 方法
+### 13. muteAudio 方法
 
 关闭流的音频，示例代码：
 
@@ -470,7 +497,7 @@ const result = client.muteAudio(StreamId)
 
 <a name="client-unmuteaudio"></a>
 
-### 13. unmuteAudio 方法
+### 14. unmuteAudio 方法
 
 启用流的音频，示例代码：
 
@@ -491,7 +518,7 @@ const result = client.unmuteAudio(StreamId)
 
 <a name="client-mutevideo"></a>
 
-### 14. muteVideo 方法
+### 15. muteVideo 方法
 
 关闭流的视频，示例代码：
 
@@ -510,7 +537,7 @@ const result = client.muteVideo(StreamId)
 
 <a name="client-unmutevideo"></a>
 
-### 15. unmuteVideo 方法
+### 16. unmuteVideo 方法
 
 启用流的视频，示例代码：
 
@@ -634,7 +661,7 @@ Err 为错误信息
 
 <a name="client-getuser"></a>
 
-### 16. getUser 方法
+### 17. getUser 方法
 
 获取本地用户的信息，示例代码：
 
@@ -659,7 +686,7 @@ User:
 
 <a name="client-getusers"></a>
 
-### 17. getUsers 方法
+### 18. getUsers 方法
 
 获取当前加入房间的远端用户的信息，示例代码：
 
@@ -674,7 +701,7 @@ const result = client.getUsers()
 
 <a name="client-getstream"></a>
 
-### 18. getStream 方法
+### 19. getStream 方法
 
 获取单条发布（本地）/订阅（远端）流的信息，示例代码：
 
@@ -705,13 +732,14 @@ Stream:
   muteVideo: boolean              // 视频轨道是否禁用
   mediaType?: 'camera' | 'screen' // 流的媒体类型，目前存在两种媒体类型 'camera' 及 'screen'，同一用户可发布的各类型的流只能存在一个，以此来区分不同媒体类型的发布/订阅流
   mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
+  previewId?: string              // 通过 createStream 方法创建的流将包含此字段（即使该流被发布后）
 }
 ```
 
 
 <a name="client-getlocalstreams"></a>
 
-### 19. getLocalStreams 方法
+### 20. getLocalStreams 方法
 
 获取所有发布（本地）流的信息（ 1.4.0 及以上版本支持），示例代码：
 
@@ -725,7 +753,7 @@ const result = client.getLocalStreams()
 
 <a name="client-getremotestreams"></a>
 
-### 20. getRemoteStreams 方法
+### 21. getRemoteStreams 方法
 
 获取所有订阅流（远端流）的信息（ 1.4.0 及以上版本支持），示例代码：
 
@@ -746,7 +774,7 @@ const result = client.getRemoteStreams()
 
 <a name="client-getmediastream"></a>
 
-### 21. getMediaStream 方法
+### 22. getMediaStream 方法
 
 获取发布（本地）/ 订阅（远端）流对应的媒体流（ 1.4.0 及以上版本支持），获取后，可通过 HtmlMediaElement（如：[video](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video)）进行播放，建议直接利用 HtmlMediaElement 对本地流进行播放时，需将 HtmlMediaElement 的 muted 属性设为 true，否则会听到自己的声音，感觉像回音，示例代码：
 
@@ -779,7 +807,7 @@ const result = client.getMediaStream(StreamId)
 
 <a name="client-getmicrophones"></a>
 
-### 22. getMicrophones 方法
+### 23. getMicrophones 方法
 
 获取麦克风设备，示例代码：
 
@@ -810,7 +838,7 @@ Err 为错误信息
 
 <a name="client-getcameras"></a>
 
-### 23. getCameras 方法
+### 24. getCameras 方法
 
 获取摄像头设备，示例代码：
 
@@ -841,7 +869,7 @@ Err 为错误信息
 
 <a name="client-getloudspeakers"></a>
 
-### 24. getLoudspeakers 方法
+### 25. getLoudspeakers 方法
 
 获取音响/声音输出设备，示例代码：
 
@@ -872,7 +900,7 @@ Err 为错误信息
 
 <a name="client-setvideoprofile"></a>
 
-### 25. setVideoProfile 方法
+### 26. setVideoProfile 方法
 
 设置视频的 profile（通过getSupportProfileNames获取到视频质量的值，不设置时，默认为 "640\*480"）限制 client 使用的视频大小、帧率、带宽等，setVideoProfile须在publish之前设置。示例代码：
 
@@ -898,7 +926,7 @@ Err 为错误信息
 
 <a name="client-switchdevice"></a>
 
-### 26. switchDevice 方法
+### 27. switchDevice 方法
 
 当发布（本地麦克风、摄像头）流已经发布，可通过此方法在不中断当前发布的情况下，用指定的音视频设备采集的音视频流代替正在发布的音视频流，示例代码：
 
@@ -935,7 +963,7 @@ Err 为错误信息
 
 <a name="client-switchscreen"></a>
 
-### 27. switchScreen 方法
+### 28. switchScreen 方法
 
 当屏幕共享流已经发布，可通过此方法在不中断当前发布的情况下，用屏幕共享来代替正在发布的屏幕共享流，示例代码：
 
@@ -962,7 +990,7 @@ Err 为错误信息
 
 <a name="client-switchimage"></a>
 
-### 28. switchImage 方法
+### 29. switchImage 方法
 
 当本地流已经发布，可通过此方法在不中断当前发布的情况下，用静态图片来代替正在发布的视频流，示例代码：
 
@@ -1001,7 +1029,7 @@ Err 为错误信息
 
 <a name="client-getaudiovolume"></a>
 
-### 29. getAudioVolume 方法
+### 30. getAudioVolume 方法
 
 获取音频的音量，返回值范围 [0,100]，示例代码：
 
@@ -1015,7 +1043,7 @@ client.getAudioVolume(StreamId)
 
 <a name="client-setaudiovolume"></a>
 
-### 30. setAudioVolume 方法
+### 31. setAudioVolume 方法
 
 设置音频的音量，可设置的音量范围 [0,100]，示例代码：
 
@@ -1045,7 +1073,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-getaudiostats"></a>
 
-### 31. getAudioStats 方法
+### 32. getAudioStats 方法
 
 获取流的音频状态，示例代码：
 
@@ -1083,7 +1111,7 @@ Err 为错误信息
 
 <a name="client-getvideostats"></a>
 
-### 32. getVideoStats 方法
+### 33. getVideoStats 方法
 
 获取流的视频状态，示例代码：
 
@@ -1123,7 +1151,7 @@ Err 为错误信息
 
 <a name="client-getnetworkstats"></a>
 
-### 33. getNetworkStats 方法
+### 34. getNetworkStats 方法
 
 获取流的网络状态，示例代码：
 
@@ -1157,7 +1185,7 @@ Err 为错误信息
 
 <a name="client-preloadeffect"></a>
 
-### 34. preloadEffect 方法
+### 35. preloadEffect 方法
 
 预加载音效资源，示例代码：
 
@@ -1180,7 +1208,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-unloadeffect"></a>
 
-### 35. unloadEffect 方法
+### 36. unloadEffect 方法
 
 卸载音效资源，示例代码：：
 
@@ -1194,7 +1222,7 @@ client.unloadEffect(EffectId)
 
 <a name="client-playeffect"></a>
 
-### 36. playEffect 方法
+### 37. playEffect 方法
 
 播放音效，示例代码：
 
@@ -1228,7 +1256,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-pauseeffect"></a>
 
-### 37. pauseEffect 方法
+### 38. pauseEffect 方法
 
 暂停播放音效，示例代码：
 
@@ -1256,7 +1284,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-resumeeffect"></a>
 
-### 38. resumeEffect 方法
+### 39. resumeEffect 方法
 
 恢复播放音效，示例代码：
 
@@ -1285,7 +1313,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-stopeffect"></a>
 
-### 39. stopEffect 方法
+### 40. stopEffect 方法
 
 停止播放音效，示例代码：
 
@@ -1313,7 +1341,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-seteffectvolume"></a>
 
-### 40. setEffectVolume 方法
+### 41. setEffectVolume 方法
 
 设置正在播放的音效的音量大小，示例代码：
 
@@ -1342,7 +1370,7 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 
 <a name="client-snapshot"></a>
 
-### 41. snapshot 方法
+### 42. snapshot 方法
 
 可将指定的发布（本地）/订阅（远端）流截屏用于页面展示，或下载截屏图片，示例代码：
 
@@ -1381,7 +1409,7 @@ Err 为错误信息
 
 <a name="client-startpreviewing"></a>
 
-### 42. startPreviewing 方法
+### 43. startPreviewing 方法
 
 启动预览，示例代码：
 
@@ -1424,7 +1452,7 @@ Err 为错误信息
 
 <a name="client-stoppreviewing"></a>
 
-### 43. stopPreviewing 方法
+### 44. stopPreviewing 方法
 
 停止预览，示例代码：
 
@@ -1441,7 +1469,7 @@ client.stopPreviewing();
 
 <a name="client-replacetrack"></a>
 
-### 44. replaceTrack 方法
+### 45. replaceTrack 方法
 
 替换发布流的音频轨道或视频轨道，可在保持发布流的发布状态下，切换音频或视频，示例代码：
 
@@ -1532,7 +1560,7 @@ MixVideoOptions 类型，类型说明
 {
   codec: MixVideoCodec    // 视频的编码格式，MixVideoCodec 为 'h264' | 'h265' 其中之一，默认为 'h264'
   quality?: H264Quality   // 视频质量，当 codec 为 h264 时，此项起作用，H264Quality 为 'B' | 'CB' | 'M' | 'E' | 'H' 其中之一，默认为 'CB'
-  frameRate?: number      // 视频码率，可选值 6 | 12 | 15 | 24 | 30 | 48 | 60，默认为 15
+  frameRate?: number      // 视频帧率，可选值 6 | 12 | 15 | 24 | 30 | 48 | 60，默认为 15
   bitRate?: number        // 视频比特率，默认为 500
 }
 ```
@@ -1621,9 +1649,9 @@ Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值�
 
 <a name="client-querymix"></a>
 
-### ~~queryMix 方法 - 已废弃~~
+### 46. queryMix 方法
 
-查询录制或转推，示例代码：
+查询房间内是否有正在开启的录制或转推任务，示例代码：
 
 ```
 client.queryMix(callback)
@@ -1707,9 +1735,9 @@ Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值�
 
 <a name="client-setrole"></a>
 
-### 45. setRole 方法
+### 47. setRole 方法
 
-设置用户权限，本方法仅适用于直播模式（live 模式），加入房间前/后，都可通过调用本方法设置用户权限。示例代码：
+设置用户角色，本方法仅适用于直播模式（live 模式），加入房间前/后，都可通过调用本方法设置用户角色。示例代码：
 
 ```
 const result = client.setRole(Role)
@@ -1717,7 +1745,7 @@ const result = client.setRole(Role)
 
 #### 参数说明
 
-- Role: "pull" | "push" | "push-and-pull",   // 设置用户权限，可设 "pull" | "push" | "push-and-pull" 三种角色，分别对应拉流、推流、推+拉流，默认为 "push-and-pull"，特别地，当房间类型为通话模式（rtc）时，此参数将被忽视，会强制为 "push-and-pull"，即推+拉流
+- Role: "pull" | "push" | "push-and-pull",   // 设置用户角色，可设 "pull" | "push" | "push-and-pull" 三种角色，分别对应拉流、推流、推+拉流，默认为 "push-and-pull"，特别地，当房间类型为连麦模式（rtc）时，此参数将被忽视，会强制为 "push-and-pull"，即推+拉流
 
 #### 返回值说明
 
@@ -1726,7 +1754,7 @@ const result = client.setRole(Role)
 
 <a name="client-startrecord"></a>
 
-### 46. startRecord 方法
+### 48. startRecord 方法
 
 开启录制，示例代码：
 
@@ -1854,7 +1882,7 @@ RecordResult: object 类型，类型说明如下
 
 <a name="client-stoprecord"></a>
 
-### 47. stopRecord 方法
+### 49. stopRecord 方法
 
 结束录制，示例代码：
 
@@ -1876,7 +1904,7 @@ Result 为返回值，[RecordResult 类型](#recordresult)，执行失败时，�
 
 <a name="client-updaterecordstreams"></a>
 
-### 48. updateRecordStreams 方法
+### 50. updateRecordStreams 方法
 
 增加/删除录制的流，示例代码：
 
@@ -1913,7 +1941,7 @@ Result 为返回值，[RecordResult 类型](#recordresult)，执行失败时，�
 
 <a name="client-startrelay"></a>
 
-### 49. startRelay 方法
+### 51. startRelay 方法
 
 开启转推，示例代码：
 
@@ -1999,7 +2027,7 @@ RelayResult: object 类型，类型说明如下
 
 <a name="client-stoprelay"></a>
 
-### 50. stopRelay 方法
+### 52. stopRelay 方法
 
 结束转推，示例代码：
 
@@ -2021,7 +2049,7 @@ Result 为返回值，[RelayResult 类型](#relayresult)，执行失败时，此
 
 <a name="client-updaterelaystreams"></a>
 
-### 51. updateRelayStreams 方法
+### 53. updateRelayStreams 方法
 
 增加/删除转推的流，示例代码：
 
@@ -2043,6 +2071,46 @@ Error 为返回值，为空时，说明已执行成功，否则执行失败，�
 
 Result 为返回值，[RelayResult 类型](#relayresult)，执行失败时，此值为空，执行成功时，此值为执行结果
 
+<a name="client-createstream"></a>
+
+### 54. createStream 方法
+
+创建一条本地（预览）流，可用于进行预览，也可将其直接发布（publish），示例代码：
+
+```
+client.createStream(PreviewOptions, callback)
+```
+
+#### 参数说明
+
+- PreviewOptions: object 类型，选传，类型说明如下
+
+```
+{
+  previewId: string       // 必填，指定该本地流的预览 ID（后续可通过该 ID 将其直接发布），该 ID 可由用户自定义，非重复、非空的字符串即可
+  audio: boolean          // 必填，指定是否使用麦克风设备。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  video: boolean          // 必填，指定是否使用摄像头设备。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  facingMode?: FacingMode // 选填，在移动设备上，可以设置该参数选择使用前置或后置摄像头。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  screen: boolean         // 必填，指定是否为屏幕共享。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  microphoneId?: string   // 选填，指定使用的麦克风设备的ID。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  cameraId?: string       // 选填，指定使用的摄像头设备的ID。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  extensionId?: string    // 选填，指定使用的 Chrome 插件的 extensionId。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  mediaStream?: MediaStream  // 选填，允许用户发布自定义的媒体流。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  file?: File             // 选填，发布时指定使用图片文件生成视频源。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  filePath?: string       // 选填，发布时指定使用网络图片生成视频源。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+}
+```
+
+> 注: publish 方法的 [PublishOptions](#publishoptions)
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Stream) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
+
+Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空，执行成功时，此值为执行结果
 
 ----
 

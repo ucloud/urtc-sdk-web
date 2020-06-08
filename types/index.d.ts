@@ -36,14 +36,19 @@ declare type FacingMode = 'user' | 'environment' | 'left' | 'right';
 export interface PublishOptions {
   audio: boolean    // 是否开启麦克风
   video: boolean    // 是否开启摄像头
-  facingMode?: FacingMode
   screen: boolean   // 是否共享屏幕
+  facingMode?: FacingMode // 指定使用的摄像头
   microphoneId?: string // 麦克风设备ID
   cameraId?: string     // 摄像头设备ID
   extensionId?: string  // chrome插件ID
   mediaStream?: MediaStream // 自定义的媒体流
   file?: File,              // 图片流使用的图片文件
   filePath?: string         // 图片流使用的图片的地址
+  previewId?: string // 预览流ID
+}
+
+export interface PreviewStreamOptions extends PublishOptions {
+  previewId: string // 预览流ID
 }
 
 export interface DeviceOptions {
@@ -73,9 +78,10 @@ export interface User {
 }
 
 export interface Stream {
+  previewId?: string              // 预览Id
   sid: string                     // 流ID
   uid: string                     // 对应的用户的ID
-  type: 'publish'|'subscribe'     // 流类型
+  type: 'publish'|'subscribe'|'preview'     // 流类型
   mediaType?: 'camera'|'screen'   // 流的媒体类型，用于对发布流的区分
   video: boolean                  // 是否包含音频
   audio: boolean                  // 是否包含视频
