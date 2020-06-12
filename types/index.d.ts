@@ -362,3 +362,8 @@ export interface PlayOptions {
   fit?: VideoFitType;
   controls?: PlayControlsOption;
 }
+
+export interface VideoProfileOptions {
+  previewId?: string;
+  profile: string;
+}

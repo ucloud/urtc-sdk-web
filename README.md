@@ -903,13 +903,27 @@ Err 为错误信息
 
 ### 26. setVideoProfile 方法
 
-设置视频的 profile（通过getSupportProfileNames获取到视频质量的值，不设置时，默认为 "640\*480"）限制 client 使用的视频大小、帧率、带宽等，setVideoProfile须在publish之前设置。示例代码：
+设置视频的 profile（通过getSupportProfileNames获取到视频质量的值，不设置时，默认为 "640\*480"）限制 client 使用的视频大小、帧率、带宽等。示例代码：
 
 ```
-client.setVideoProfile(Profile, onSuccess, onFailure)
+client.setVideoProfile(VideoProfileOptions, onSuccess, onFailure)
 ```
 
 #### 参数说明
+
+- VideoProfileOptions: object 类型，必传，详细类型说明如下
+
+```
+{
+  previewId?: string   // 选填，本地（预览）流的 previewId，不填时，为修改全局的 video profile 设置，供后续创建或发布的流使用
+  profile: string      // 必填，指定 video profile
+}
+```
+
+> 注：
+> 1. previewId 填时，仅针对其对应的流生效，特别地，previewId 指定的必须是尚未发布的本地流。
+> 2. previewId 不填时，为设置全局的 video profile，后续通过 createStream 或 publish 时生成的流，都将使用该设置。
+> 3. 已发布的流，不可变更 video profile，故此方法对已发布的流不生效。
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
