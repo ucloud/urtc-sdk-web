@@ -87,6 +87,7 @@ Client 类包含以下方法：
 * [stopRelay 方法 - 结束转推](#client-stoprelay)
 * [updateRelayStreams 方法 - 增加/删除转推的流](#client-updaterelaystreams)
 * [createStream 方法 - 创建一条本地（预览）流](#client-createstream)
+* [removeStream 方法 - 删除一条本地（预览）流](#client-removestream)
 
 <a name="client-constructor"></a>
 
@@ -725,14 +726,14 @@ Stream:
 {
   sid: string                     // 流ID
   uid: string                     // 对应的用户的ID
-  type: 'publish' | 'subscribe'   // 流类型，分别为 publish 和 subscribe 两种，
+  type: 'publish' | 'subscribe'   // 流类型，为 publish 和 subscribe 两种，分别对应本地流和远端流
   video: boolean                  // 是否包含音频
   audio: boolean                  // 是否包含视频
   muteAudio: boolean              // 音频轨道是否禁用
   muteVideo: boolean              // 视频轨道是否禁用
   mediaType?: 'camera' | 'screen' // 流的媒体类型，目前存在两种媒体类型 'camera' 及 'screen'，同一用户可发布的各类型的流只能存在一个，以此来区分不同媒体类型的发布/订阅流
   mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
-  previewId?: string              // 通过 createStream 方法创建的流将包含此字段（即使该流被发布后）
+  previewId?: string              // 通过 createStream 方法创建的流将包含此字段（即使该流被发布后），且在未发布之前会与 sid 相同，当流被发布之后 sid 将被替换为服务器生成的流 ID，而 previewId 仍为用户自定义的 ID
 }
 ```
 
@@ -2101,7 +2102,10 @@ client.createStream(PreviewOptions, callback)
 }
 ```
 
-> 注: publish 方法的 [PublishOptions](#publishoptions)
+> 注:
+> 1. publish 方法的 [PublishOptions](#publishoptions)
+> 2. 当创建的本地（预览）流被发布成功后，该流将会被自动销毁，若该流已在播放（使用 play 方法播放），内部将自动调用 stop 方法停止对其播放，
+> 3. 发布成功后，将新创建本地（发布）流（可由 stream-published 的事件通知），然后可对其进行播放
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
@@ -2111,6 +2115,29 @@ function callback(Error, Stream) {}
 Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
 
 Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+<a name="client-removestream"></a>
+
+### 55. removeStream 方法
+
+删除一条本地（预览）流（必须为未被发布的本地流，已被发布的本地流的删除请调用 unpublish 方法），示例代码：
+
+```
+client.createStream(previewId, callback)
+```
+
+#### 参数说明
+
+- previewId: string 类型，必传，为调用 createStream 时传的 previewId
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
+
+> 注: 当一条本地（预览）流已经被播放（通过调用 play 方法进行播放），此删除操作将自动停止该流的播放，无须额外调用 stop 方法
 
 ----
 
