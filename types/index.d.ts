@@ -306,7 +306,7 @@ export interface RecordResult {
   FileName?: string;
 }
 
-declare type UpdateMixStreamsType = 'add' | 'remove';
+declare type UpdateMixStreamsType = 'add' | 'remove' | 'replace';
 
 export interface UpdateMixStreamsOptions {
   type: UpdateMixStreamsType;
@@ -335,7 +335,7 @@ export interface RelayResult {
   PushURL?: string[];
 }
 
-declare type UpdateRelayPushURLType = 'add' | 'remove';
+declare type UpdateRelayPushURLType = 'add' | 'remove' | 'replace';
 
 export interface UpdateRelayPushURLOptions {
   type: UpdateRelayPushURLType;

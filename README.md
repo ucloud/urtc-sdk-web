@@ -1937,8 +1937,8 @@ UpdateMixStreamsOptions 类型，类型说明
 
 ```
 {
-  type: UpdateMixStreamsType    // 必传，操作类型，UpdateMixStreamsType 值为 'add' | 'remove' 之一，分别为添加新流进行录制，移除录制中的部分流
-  streams: MixStream            // 必传，指定需要被添加或移除的流，
+  type: UpdateMixStreamsType    // 必传，操作类型，UpdateMixStreamsType 值为 'add' | 'remove' | 'replace' 之一，分别对应：'add' - 添加新流进行录制/转推，'remove' - 移除录制/转推中的部分流，'replace' - 用新流替换掉正在录制/转推的流，即移除录制/转推中全部的流并添加新流进行录制/转推
+  streams: MixStream[]          // 必传，MixStream 类型的数组，可指定需要被添加、移除的流或替换的流
 }
 ```
 
