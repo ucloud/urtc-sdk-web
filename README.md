@@ -86,8 +86,10 @@ Client 类包含以下方法：
 * [startRelay 方法 - 开启转推](#client-startrelay)
 * [stopRelay 方法 - 结束转推](#client-stoprelay)
 * [updateRelayStreams 方法 - 增加/删除转推的流](#client-updaterelaystreams)
-* [createStream 方法 - 创建一条本地（预览）流](#client-createstream)
-* [removeStream 方法 - 删除一条本地（预览）流](#client-removestream)
+* [createStream 方法 - 创建一条本地流](#client-createstream)
+* [publishStream 方法 - 发布一条本地流](#client-publishstream)
+* [unpublishStream 方法 - 取消发布一条本地流](#client-unpublishstream)
+* [destroyStream 方法 - 销毁一条本地流](#client-destroystream)
 
 <a name="client-constructor"></a>
 
@@ -209,7 +211,6 @@ client.publish(PublishOptions, onFailure)
   mediaStream?: MediaStream  // 选填，允许用户发布自定义的媒体流
   file?: File             // 选填，发布时指定使用图片文件生成视频源，具体参数说明可参考 switchImage 接口
   filePath?: string       // 选填，发布时指定使用网络图片生成视频源，具体参数说明可参考 switchImage 接口
-  previewId?: string      // 选填，指定发布一条为 previewId 的本地（预览）流，当指定发布一条本地（预览）流时，上面的参数（包含必填项）皆可不填，也不会生效。previewId 为调用 createStream 方法时由用户自定义的 Id，详见 createStream 方法。
 }
 ```
 
@@ -733,7 +734,7 @@ Stream:
   muteVideo: boolean              // 视频轨道是否禁用
   mediaType?: 'camera' | 'screen' // 流的媒体类型，目前存在两种媒体类型 'camera' 及 'screen'，同一用户可发布的各类型的流只能存在一个，以此来区分不同媒体类型的发布/订阅流
   mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
-  previewId?: string              // 通过 createStream 方法创建的流将包含此字段（即使该流被发布后），且在未发布之前会与 sid 相同，当流被发布之后 sid 将被替换为服务器生成的流 ID，而 previewId 仍为用户自定义的 ID
+  previewId?: string              // 通过 createStream 方法创建的流将包含此字段，且未发布状态时会与 sid 相同，当流被发布之后 sid 将被替换为服务器生成的流 ID，而 previewId 仍为用户自定义的 ID
 }
 ```
 
@@ -921,9 +922,10 @@ client.setVideoProfile(VideoProfileOptions, onSuccess, onFailure)
 ```
 
 > 注：
-> 1. previewId 填时，仅针对其对应的流生效，特别地，previewId 指定的必须是尚未发布的本地流。
-> 2. previewId 不填时，为设置全局的 video profile，后续通过 createStream 或 publish 时生成的流，都将使用该设置。
-> 3. 已发布的流，不可变更 video profile，故此方法对已发布的流不生效。
+> 1. 此方法在 1.5.8 版本进行了升级，但向前兼容，之前的调用方式仍可使用，如 client.setVideoProfile('640*480', onSuccess, onFailure)。
+> 2. previewId 填时，仅针对其对应的流生效，特别地，previewId 指定的必须是尚未发布的本地流。
+> 3. previewId 不填时，为设置全局的 video profile，后续通过 createStream 或 publish 时生成的本地流，都将使用该设置。
+> 4. 已发布的流，不可变更 video profile，故此方法对为发布状态的流不生效。
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -2090,7 +2092,7 @@ Result 为返回值，[RelayResult 类型](#relayresult)，执行失败时，此
 
 ### 54. createStream 方法
 
-创建一条本地（预览）流，可用于进行预览，也可将其直接发布（publish），示例代码：
+创建一条本地流，可用于进行预览，也可将其直接发布（publishStream），示例代码：
 
 ```
 client.createStream(PreviewOptions, callback)
@@ -2105,7 +2107,7 @@ client.createStream(PreviewOptions, callback)
   previewId: string       // 必填，指定该本地流的预览 ID（后续可通过该 ID 将其直接发布），该 ID 可由用户自定义，非重复、非空的字符串即可
   audio: boolean          // 必填，指定是否使用麦克风设备。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   video: boolean          // 必填，指定是否使用摄像头设备。具体参数说明可参考 publish 方法 PublishOptions 的对应项
-  facingMode?: FacingMode // 选填，在移动设备上，可以设置该参数选择使用前置或后置摄像头。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  facingMode?: FacingMode // 选填，在移动设备上，可以设置该参数选择使用前置或后置摄像头。具体参数说明可参考 publish 方法 PublishOptions （见注1）的对应项
   screen: boolean         // 必填，指定是否为屏幕共享。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   microphoneId?: string   // 选填，指定使用的麦克风设备的ID。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   cameraId?: string       // 选填，指定使用的摄像头设备的ID。具体参数说明可参考 publish 方法 PublishOptions 的对应项
@@ -2116,10 +2118,34 @@ client.createStream(PreviewOptions, callback)
 }
 ```
 
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Stream) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
+
+Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空，执行成功时，此值为执行结果
+
 > 注:
-> 1. publish 方法的 [PublishOptions](#publishoptions)
-> 2. 当创建的本地（预览）流被发布成功后，该流将会被自动销毁，若该流已在播放（使用 play 方法播放），内部将自动调用 stop 方法停止对其播放，
-> 3. 发布成功后，将新创建本地（发布）流（可由 stream-published 的事件通知），然后可对其进行播放
+> 1. [PublishOptions](#publishoptions)
+> 2. 传入的 previewId 不可重复
+> 3. 创建成功后，流的 sid 将和 previewId 相同，可使用 play 方法传入该值进行播放
+
+
+<a name="client-publishstream"></a>
+
+### 55. publishStream 方法
+
+发布一条本地（预览）流，示例代码：
+
+```
+client.publishStream(previewId, callback)
+```
+
+#### 参数说明
+
+- previewId: string 类型，必传，为调用 createStream 时传的 previewId
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
@@ -2130,14 +2156,20 @@ Error 为返回值，为空时，说明已执行成功，否则执行失败，�
 
 Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空，执行成功时，此值为执行结果
 
-<a name="client-removestream"></a>
+> 注:
+> 1. 发布的流必须为使用通过 createStream 方法创建并为非发布状态的本地流。
+> 2. 当该本地（预览）流被发布成功后，流的数据将更新，特别的，sid 将被替换为服务器创建的流 ID，previewId 仍保持创建时传入的值。
+> 3. 若发布前该流已经被播放（通过调用 play 方法进行播放），发布成功后将被自动停止，请使用更新后的流的数据进行重新播放。
 
-### 55. removeStream 方法
 
-删除一条本地（预览）流（必须为未被发布的本地流，已被发布的本地流的删除请调用 unpublish 方法），示例代码：
+<a name="client-unpublishstream"></a>
+
+### 56. unpublishStream 方法
+
+取消发布一条本地（预览）流（须为使用 createStream 方法创建并为发布状态的本地流），示例代码：
 
 ```
-client.createStream(previewId, callback)
+client.unpublishStream(previewId, callback)
 ```
 
 #### 参数说明
@@ -2151,7 +2183,36 @@ function callback(Error) {}
 ```
 Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
 
-> 注: 当一条本地（预览）流已经被播放（通过调用 play 方法进行播放），此删除操作将自动停止该流的播放，无须额外调用 stop 方法
+> 注:
+> 1. 取消发布的流必须为使用通过 createStream 方法创建并为发布状态的本地流。
+> 2. 通过 publish 方法直接发布时生成的本地流，请使用 unpublish 方法进行取消发布。
+> 3. 取消发布后，流的数据将更新，sid 也将被替换为其 previewId 的值，若之前该流已经被播放（通过调用 play 方法进行播放），取消发布后将被自动停止，请使用更新后的流的数据进行重新播放。
+
+
+<a name="client-destroystream"></a>
+
+### 57. destroyStream 方法
+
+销毁一条本地（预览）流（须为非发布状态的本地流），示例代码：
+
+```
+client.destroyStream(previewId, callback)
+```
+
+#### 参数说明
+
+- previewId: string 类型，必传，为调用 createStream 时传的 previewId
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
+
+> 注:
+> 1. 被销毁的流必须为未发布状态的本地（预览）流，要么为通过 createStream 方法创建但并未发布的本地流，要么为使用 unpublishStream 方法取消发布了的本地流。
+> 2. 当一条本地（预览）流已经被播放（通过调用 play 方法进行播放），此销毁操作将自动停止该流的播放，无须额外调用 stop 方法。
 
 ----
 
