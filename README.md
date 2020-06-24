@@ -1626,7 +1626,7 @@ MixResult: object 类型，类型说明如下
 
 ```
 {
-  MixId: string         // 混流 ID
+  MixId?: string        // 混流 ID
   FileName?: string     // 混流文件名
   Type?: MixType        // 混流类型，MixType 为 'relay' | 'record' | 'relay-and-record' | 'update-config'，注：queryMix 操作时会返回此项
   PushURL?: string[]    // 转推的 URL 列表，注：stopMix 操作时会返回此项
@@ -1683,7 +1683,7 @@ function callback(Error, Result) {}
 ```
 Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误信息
 
-Result 为返回值，[MixResult 类型](#mixresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+Result 为返回值，[MixResult 类型](#mixresult)，此值为执行结果，若 Result 中的 MixId 为空（undefined），则说明房间没有开启录制/转推任务。
 
 <a name="client-addmixstreams"></a>
 
