@@ -266,7 +266,7 @@ export interface StopMixOptions {
 }
 
 export interface MixResult {
-  MixId?: string;
+  MixId: string;
   FileName?: string;
   Type?: MixType;
   PushURL?: string[];
