@@ -1946,6 +1946,8 @@ UpdateMixStreamsOptions 类型，类型说明
 
 > MixStream 类型参见 [MixStream](#mixstream)
 
+> 注：关于 replace - 替换流，由于是进行全部代替，那么将使用 streams 里的第一条流作为主画面，若在有指定某条流作为主画面的需求，请务必将该流放在 streams 数组中的第一个。
+
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
 ```
@@ -2078,6 +2080,7 @@ client.updateRelayStreams(UpdateMixStreamsOptions, callback)
 
 - UpdateMixStreamsOptions: object 类型, 必传，详细的类型说明见 [UpdateMixStreamsOptions](#updatemixstreamsoptions)
 
+> 注：关于 replace - 替换流，由于是进行全部代替，那么将使用 streams 里的第一条流作为主画面，若在有指定某条流作为主画面的需求，请务必将该流放在 streams 数组中的第一个。
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
