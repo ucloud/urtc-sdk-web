@@ -1533,7 +1533,7 @@ client.startMix(MixOptions, callback)
 
 ```
 {
-  type?: MixType  // 选传，MixType 为 'relay' | 'record' | 'relay-and-record' | 'update-config' 其中之一，分别代表 '转推' | '录制' | '录制并转推' | '更改设置'，不传时，默认为 'record' 录制。
+  type?: MixType  // 选传，MixType 为 'relay' | 'record' | 'relay-and-record' 其中之一，分别代表 '转推' | '录制' | '录制并转推'，不传时，默认为 'record' 录制。
   bucket?: string  // 当 type 为 '录制' 和 '录制并转推时'，必传，存储的 bucket, URTC 使用 UCloud 的 UFile 产品进行在存储，相关信息见控制台操作文档
   region?: string  // 当 type 为 '录制' 和 '录制并转推时'，必传，存储服务所在的地域
 
@@ -1628,7 +1628,7 @@ MixResult: object 类型，类型说明如下
 {
   MixId?: string        // 混流 ID
   FileName?: string     // 混流文件名
-  Type?: MixType        // 混流类型，MixType 为 'relay' | 'record' | 'relay-and-record' | 'update-config'，注：queryMix 操作时会返回此项
+  Type?: MixType        // 混流类型，MixType 为 'relay' | 'record' | 'relay-and-record'，注：queryMix 操作时会返回此项
   PushURL?: string[]    // 转推的 URL 列表，注：stopMix 操作时会返回此项
 }
 ```

@@ -1,8 +1,9 @@
 {
   "name": "urtc-sdk",
-  "version": "1.5.15",
+  "version": "1.5.16",
   "description": "UCloud RTC javascript SDK",
   "main": "lib/index.js",
+  "types": "types",
   "repository": {
     "type": "git",
     "url": "https://github.com/ucloud/urtc-sdk-web.git"
