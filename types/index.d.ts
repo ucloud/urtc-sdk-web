@@ -367,3 +367,8 @@ export interface VideoProfileOptions {
   previewId?: string;
   profile: string;
 }
+
+export interface MixNotification {
+  code: string;
+  message: string;
+}
