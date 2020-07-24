@@ -90,6 +90,7 @@ Client 类包含以下方法：
 * [publishStream 方法 - 发布一条本地流](#client-publishstream)
 * [unpublishStream 方法 - 取消发布一条本地流](#client-unpublishstream)
 * [destroyStream 方法 - 销毁一条本地流](#client-destroystream)
+* [enableAudioVolumeIndicator 方法 - 开启远程流音量指示器](#client-enableaudiovolumeindicator)
 
 <a name="client-constructor"></a>
 
@@ -205,6 +206,7 @@ client.publish(PublishOptions, onFailure)
   video: boolean          // 必填，指定是否使用摄像头设备。若传了 mediaStream 参数，将不再采集摄像头的视频，直接使用 mediaStream 中的视频；若传了 file 或 filePath 参数，将不再采集摄像头的视频，直接使用图片生成的视频。
   facingMode?: FacingMode // 选填，在移动设备上，可以设置该参数选择使用前置或后置摄像头，其中，FacingMode 为 'user'（前置摄像头）或 'environment'（后置摄像头），注：1. 请务必确定是在移动设备上设置该参数，否则可能会报 'OverConstrainedError［无法满足要求错误]' 的错误；2. 当在设备上使用前置摄像头时，设备（如苹果设备，以及没有设置摄像头为 "自拍镜像" 的 Android 设备）本地显示的图像是左右相反的（以 Y 轴对称），此时可为 video 元素添加样式 'transform: rotateY(180deg);' 来指定视频在本地显示的时候做镜像翻转。
   screen: boolean         // 必填，指定是否为屏幕共享，audio, video, screen 不可同时为 true，更不可同时为 false
+  screenAudio?: boolean   // 选填，指定是否采集屏幕共享的音频（部分浏览器支持），默认为 false
   microphoneId?: string   // 选填，指定使用的麦克风设备的ID，可通过 getMicrophones 方法查询获得该ID，不填时，将使用默认麦克风设备
   cameraId?: string       // 选填，指定使用的摄像头设备的ID，可以通过 getCameras 方法查询获得该ID，不填时，将使用默认的摄像头设备
   extensionId?: string    // 选填，指定使用的 Chrome 插件的 extensionId，可使 72 以下版本的 Chrome 浏览器进行屏幕共享。
@@ -215,8 +217,6 @@ client.publish(PublishOptions, onFailure)
 ```
 
 > 对于屏幕共享各浏览器兼容性，请参见 [getDisplayMedia](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia) 。
-> 特别地，使用 Chrome 浏览器屏幕共享 Tab（浏览器标签）页时，有分享 Tab 页中音频功能（分享弹出框左下脚勾选，Chrome 74 及以上版本可不用安装插件）。
->
 > 此外，对于推流时所传参数的生效将采用此类优先级：mediaStream > file > filePath > video = screen；即用户指定媒体流（MediaStream）时，该媒体流将被发布，不再考虑其他情况生成的流；若指定了 file ，而没指定媒体流（MediaStream），那么将用 file 生成图片媒体流并被发布，依次类推。
 > file 和 filePath 参数说明，请参见 [switchImage](#client-switchimage) 接口的参数说明。
 
@@ -335,7 +335,7 @@ client.on(EventType, Listener)
   'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' |
   'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' |
   'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' |
-  'record-notify' | 'relay-notify' 这些事件可绑定监听函数
+  'record-notify' | 'relay-notify' | 'volume-indicator' 这些事件可绑定监听函数
 - Listener: function 类型，事件监听函数
 
   - 当事件类型为 'user-added' | 'user-removed' | 'kick-off' 时，可用 `function Listener(User) {}` 类型的函数，其中函数的参数类型见 [User](#user)
@@ -362,6 +362,7 @@ client.on(EventType, Listener)
     - '24149': （异常）任务被停止，可能的原因有房间内所有用户的推流已停止，或到推流地址（PushURL）的连接已断开
     - '24150': （异常）任务开启后10秒，如果收到这个消息，则表示任务开启失败
     - '24152': （异常）表示加流失败
+  - 当事件类型为 'volume-indicator' 时（通过 [enableAudioVolumeIndicator](#client-enableaudiovolumeindicator) 方法开启），可用 `function Listener(VolumeIndication[]) {}` 类型的函数，函数参数为 VolumeIndication 类型的数组（已按 volume 的值进行了降序排序，第一个为音量最大的），VolumeIndication 为 `{ sid: string, uid: string, mediaType: string, volume: number }`，其中 mediaType 为 'camera' 或 'screen' 两种之一，volume 为 0 - 100 的值，通常在列表中音量大于 5 的用户为持续说话的人。
 
 
 #### 事件名解释：
@@ -381,10 +382,11 @@ unmute-audio | 流的 audio 被取消 mute
 screenshare-stopped | 屏幕共享已被手动停止，当收到此事件通知时，需调用 unpublish 方法取消发布本地流
 connection-state-change | 当 URTC client 与服务器的连接状态变化时，会由此事件通知。特别地，当因网络问题导致连接断开时，sdk 将在5-15秒内尝试自动重连，此时将收到内容为 `{previous: "OPEN", current: "RECONNECTING"}` 的通知，表示开始重连，若重连成功，将收到内容为 `{previous: "RECONNECTING", current: "OPEN"}` 的通知，若不能重连成功，将收到内容为 `{previous: "RECONNECTING", current: "CLOSED"}` 的通知，表示重连失败，此时需要依次调用 leaveRoom 和 joinRoom 以重新进入房间。`注意，断线重连后，对于已发布或订阅的流会触发下面的 stream-reconnected 流的重连事件，请处理该事件，对流进行重新播放`
 kick-off | 当前用户被踢出了房间。URTC 限制了多设备同时登录，同一用户（userId）不可同时在多处加入房间，即当同一用户（userId）分别在利用两个设备（譬如电脑、手机等）先后加入房间时，前一个加入房间的设备将在后一个加入房间时收到此事件的通知，此时业务层可提示用户。
-network-quality | 报告本地用户的上下行网络质量。每 1 秒触发一次，报告本地用户当前的上行和下行网络质量。`该功能目前处于实验阶段，网络质量评分仅供参考。部分浏览器无法获取网络质量数据，评分仅有1，6两值，如 Edge 18 等。`
+network-quality | 报告本地用户的上下行网络质量。每 1 秒触发一次，报告本地用户当前的上行和下行网络质量。`该功能目前处于实验阶段，网络质量评分仅供参考。部分浏览器无法获取网络质量数据，评分仅有1，6两值，如 Edge 79 以下等。`
 stream-reconnected | 当发布/订阅流断开时，会自动重连，发布流会被重新发布，订阅流会被重新订阅，完成后会触发此事件，请注意在此事件的回调函数中更新业务代码中的缓存
 record-notify | 当房间内开启了录制任务，那么录制任务的成功开启或异常中止，都将通过此事件进行通知，业务上可根据此通知来提示用户录制任务相应的状态
 relay-notify | 当房间内开启了转推任务，那么转推任务的成功开启或异常中止，都将通过此事件进行通知，业务上可根据此通知来提示用户转推任务相应的状态
+volume-indicator | 当通过 enableAudioVolumeIndicator 方法开启了远端流音量指示器，那么可以通过此通知来获取各远端流的当前音量
 
 <a name="client-off"></a>
 
@@ -2118,6 +2120,7 @@ client.createStream(PreviewOptions, callback)
   video: boolean          // 必填，指定是否使用摄像头设备。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   facingMode?: FacingMode // 选填，在移动设备上，可以设置该参数选择使用前置或后置摄像头。具体参数说明可参考 publish 方法 PublishOptions （见注1）的对应项
   screen: boolean         // 必填，指定是否为屏幕共享。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  screenAudio?: boolean   // 选填，指定是否采集屏幕共享的音频。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   microphoneId?: string   // 选填，指定使用的麦克风设备的ID。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   cameraId?: string       // 选填，指定使用的摄像头设备的ID。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   extensionId?: string    // 选填，指定使用的 Chrome 插件的 extensionId。具体参数说明可参考 publish 方法 PublishOptions 的对应项
@@ -2223,6 +2226,24 @@ Error 为返回值，为空时，说明已执行成功，否则执行失败，�
 > 1. 被销毁的流必须为未发布状态的本地（预览）流，要么为通过 createStream 方法创建但并未发布的本地流，要么为使用 unpublishStream 方法取消发布了的本地流。
 > 2. 当一条本地（预览）流已经被播放（通过调用 play 方法进行播放），此销毁操作将自动停止该流的播放，无须额外调用 stop 方法。
 
+<a name="client-enableaudiovolumeindicator"></a>
+
+### 58. enableAudioVolumeIndicator 方法
+
+开启远程流音量指示器，开启后将通过 'volume-indicator' 事件定时报告有音频的远端（订阅）流的音量，示例代码：
+
+```
+client.enableAudioVolumeIndicator(interval)
+```
+
+#### 参数说明
+
+- interval: number 类型，选传，指定收集音量的时间间隔，单位 ms，须为大于等于 200 的整数，不填时，默认为 2000ms
+
+> 注:
+> 1. 调用该方法后，请通过监听 'volume-indicator' 事件，以获取各远端流的音量。
+> 2. 为了开启此功能时，不占用过多的系统资源，interval 的值不可小于 200，否则对该方法的调用将不生效。
+
 ----
 
 <a name='getdevices'></a>
@@ -2269,7 +2290,7 @@ const profileNames = UCloudRTC.getSupportProfileNames();
 
 #### 返回值说明
 
-- profileNames: String 类型的数组，如当前可用的 ["240\*180", "320\*180", "320\*240", "480\*360", "640\*360", "640\*480", "1280\*720", "1280\*720_1", "1280\*720_2", "1920\*1080", "1920\*1080_1", "1920\*1080_2"]
+- profileNames: String 类型的数组，如当前可用的 ["240\*180", "320\*180", "320\*240", "480\*360", "640\*360", "640\*480", "640\*480_1", "1280\*720", "1280\*720_1", "1280\*720_2", "1280\*720_3", "1920\*1080", "1920\*1080_1", "1920\*1080_2", "1920\*1080_3"]
 
 名称 | 视频宽高 | 帧率 | 视频最小带宽 | 视频最大带宽
 :-: | :-: | :-: | :-: | :-:
@@ -2279,12 +2300,15 @@ const profileNames = UCloudRTC.getSupportProfileNames();
 "480\*360" | 480\*360 | 20 | 100 | 400
 "640\*360" | 640\*360 | 20 | 100 | 500
 "640\*480" | 640\*480 | 20 | 100 | 600
+"640\*480_1" | 640\*480 | 5 | 100 | 600
 "1280\*720" | 1280\*720 | 15 | 120 | 1000
 "1280\*720_1" | 1280\*720 | 15 | 120 | 1500
 "1280\*720_2" | 1280\*720 | 30 | 120 | 2000
+"1280\*720_3" | 1280\*720 | 5 | 120 | 1000
 "1920\*1080" | 1920\*1080 | 15 | 120 | 1500
 "1920\*1080_1" | 1920\*1080 | 15 | 120 | 2000
 "1920\*1080_2" | 1920\*1080 | 30 | 120 | 2500
+"1920\*1080_3" | 1920\*1080 | 5 | 120 | 1500
 
 ---
 

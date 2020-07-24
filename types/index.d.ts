@@ -23,7 +23,8 @@ export declare type EventType =
   | 'network-quality'
   | 'stream-reconnected'
   | 'record-notify'
-  | 'relay-notify';
+  | 'relay-notify'
+  | 'volume-indicator';
 
 export declare type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
 
@@ -49,6 +50,7 @@ declare type FacingMode = 'user' | 'environment' | 'left' | 'right';
 export interface PublishOptions {
   audio: boolean; // 是否开启麦克风
   video: boolean; // 是否开启摄像头
+  screenAudio?: boolean; // 是否获取屏幕共享的音频
   screen: boolean; // 是否共享屏幕
   facingMode?: FacingMode; // 指定使用的摄像头
   microphoneId?: string; // 麦克风设备ID
@@ -371,4 +373,11 @@ export interface VideoProfileOptions {
 export interface MixNotification {
   code: string;
   message: string;
+}
+
+export interface AudioVolume {
+  sid: string; // 流ID
+  uid: string; // 对应的用户的ID
+  mediaType: 'camera' | 'screen'; // 流的媒体类型，用于对发布流的区分
+  volume: number;
 }
