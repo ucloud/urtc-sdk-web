@@ -86,6 +86,8 @@ Client 类包含以下方法：
 * [startRelay 方法 - 开启转推](#client-startrelay)
 * [stopRelay 方法 - 结束转推](#client-stoprelay)
 * [updateRelayStreams 方法 - 增加/删除转推的流](#client-updaterelaystreams)
+* [updateRelayPushURL 方法 - 增加/删除转推地址](#client-updaterelaypushurl)
+* [updateRelayLayout 方法 - 更换转推的布局](#client-updaterelaylayout)
 * [createStream 方法 - 创建一条本地流](#client-createstream)
 * [publishStream 方法 - 发布一条本地流](#client-publishstream)
 * [unpublishStream 方法 - 取消发布一条本地流](#client-unpublishstream)
@@ -2099,9 +2101,69 @@ Error 为返回值，为空时，说明已执行成功，否则执行失败，�
 
 Result 为返回值，[RelayResult 类型](#relayresult)，执行失败时，此值为空，执行成功时，此值为执行结果
 
+<a name="client-updaterelaypushurl"></a>
+
+### 54. updateRelayPushURL 方法
+
+增加/删除转推地址，示例代码：
+
+```
+client.updateRelayPushURL(UpdateRelayPushURLOptions, callback)
+```
+
+#### 参数说明
+
+- UpdateRelayPushURLOptions: object 类型, 必传，详细的类型说明：
+
+```
+{
+  type: UpdateRelayPushURLType, // 必传，值为 'add' | 'remove'，分别对应 增加 | 删除 转推地址。
+  pushURL: string[]             // 必传，转推地址（转推到的 URL）的列表，指定需要新增或删除转推的 URL；删除时如果留空会停止对所有 URL 的转推
+}
+```
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Result) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
+
+Result 为返回值，[RelayResult 类型](#relayresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
+<a name="client-updaterelaylayout"></a>
+
+### 55. updateRelayLayout 方法
+
+更换转推的布局，示例代码：
+
+```
+client.updateRelayLayout(UpdateRelayLayoutOptions, callback)
+```
+
+#### 参数说明
+
+- UpdateRelayLayoutOptions: object 类型, 必传，详细的类型说明：
+```
+{
+  layout: MixLayoutOptions  // 必传，转推多路时视频的布局设置，类型说明见下面的 MixLayoutOptions 类型
+}
+```
+
+> 注：MixLayoutOptions 类型说明详见 [MixLayoutOptions](#startrelay-mixlayoutoptions)
+
+- callback: function 类型，选传，方法的回调函数，函数说明如下
+
+```
+function callback(Error, Result) {}
+```
+Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
+
+Result 为返回值，[RelayResult 类型](#relayresult)，执行失败时，此值为空，执行成功时，此值为执行结果
+
 <a name="client-createstream"></a>
 
-### 54. createStream 方法
+### 56. createStream 方法
 
 创建一条本地流，可用于进行预览，也可将其直接发布（publishStream），示例代码：
 
@@ -2147,7 +2209,7 @@ Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空�
 
 <a name="client-publishstream"></a>
 
-### 55. publishStream 方法
+### 57. publishStream 方法
 
 发布一条本地（预览）流，示例代码：
 
@@ -2176,7 +2238,7 @@ Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空�
 
 <a name="client-unpublishstream"></a>
 
-### 56. unpublishStream 方法
+### 58. unpublishStream 方法
 
 取消发布一条本地（预览）流（须为使用 createStream 方法创建并为发布状态的本地流），示例代码：
 
@@ -2203,7 +2265,7 @@ Error 为返回值，为空时，说明已执行成功，否则执行失败，�
 
 <a name="client-destroystream"></a>
 
-### 57. destroyStream 方法
+### 59. destroyStream 方法
 
 销毁一条本地（预览）流（须为非发布状态的本地流），示例代码：
 
@@ -2228,7 +2290,7 @@ Error 为返回值，为空时，说明已执行成功，否则执行失败，�
 
 <a name="client-enableaudiovolumeindicator"></a>
 
-### 58. enableAudioVolumeIndicator 方法
+### 60. enableAudioVolumeIndicator 方法
 
 开启远程流音量指示器，开启后将通过 'volume-indicator' 事件定时报告有音频的远端（订阅）流的音量，示例代码：
 
