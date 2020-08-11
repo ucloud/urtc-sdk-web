@@ -365,9 +365,16 @@ export interface PlayOptions {
   controls?: PlayControlsOption;
 }
 
+export interface CustomVideoProfile {
+  width: number; // 640, 视频宽度
+  height: number; // 480, 视频高度
+  framerate: number; // 15, 帧率
+  bitrate: number; // 500, 比特率 kbps
+}
+
 export interface VideoProfileOptions {
   previewId?: string;
-  profile: string;
+  profile: string | CustomVideoProfile;
 }
 
 export interface MixNotification {
