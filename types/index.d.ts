@@ -260,6 +260,7 @@ export interface MixOptions {
   streamAddMode?: MixStreamAddMode;
 
   timeoutPeriod?: number; // 超时周期，任务检测到没有（指定）流后超过此时间，将自动停止，单位是s，最长24小时
+  keyUser?: string; // 指定关键用户，退出房间后，录制/转推任务自动关闭
 }
 
 export interface StopMixOptions {

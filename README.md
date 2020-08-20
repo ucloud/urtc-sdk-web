@@ -1825,6 +1825,8 @@ client.startRecord(StartRecordOptions, callback)
   waterMark?: WaterMarkOptions  // 选传，水印设置，类型说明见下面的 WaterMarkOptions 类型，不传时将不添加水印
 
   streams?: MixStream[]         // 选传，指定需要录制的流，类型说明见下面的 MixStream 类型。不传或传空数组时，会自动添加房间内所有用户的流，如果指定了流，则仅录制指定的流
+
+  keyUser?: string;             // 选传，用户ID，指定关键用户（userId）不再推流后，录制任务自动关闭，不填时，默认为房间内没有用户推流后录制任务自动关闭
 }
 ```
 
@@ -2017,6 +2019,8 @@ client.startRelay(StartRelayOptions, callback)
   outputMode?: MixOutputMode    // 选传，转推后输出模式，MixOutputMode 为字符串，有 'audio-video' | 'audio' 两种可填，分别代表：输出音视频 | 只输出音频，不填时，默认为 'audio-video'
 
   streamAddMode?: MixStreamAddMode  // 选传，转推流的添加模式，MixStreamAddMode 为字符串，有 'automatic' | 'manual' 两种可填，分别代表：自动添加（有新流时） | 手动添加，不填时，默认为 'automatic'
+
+  keyUser?: string;             // 选传，用户ID，指定关键用户（userId）不再推流后，转推任务自动关闭，不填时，默认为房间内没有用户推流后转推任务自动关闭
 }
 ```
 
@@ -2268,9 +2272,11 @@ client.unpublishStream(previewId, callback)
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
 ```js
-function callback(Error) {}
+function callback(Error, Stream) {}
 ```
 Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
+
+Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空，执行成功时，此值为执行结果
 
 > 注:
 > 1. 取消发布的流必须为使用通过 createStream 方法创建并为发布状态的本地流。
