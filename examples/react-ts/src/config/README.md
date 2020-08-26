@@ -1,4 +1,4 @@
-本目录中需要创建 index.js 文件，并配置 AppId 和 AppKey，示例代码：
+本目录中需要创建 index.ts 文件，并配置 AppId 和 AppKey，示例代码：
 
 ```
 const config = {
