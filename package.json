@@ -1,9 +1,9 @@
 {
   "name": "urtc-sdk",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "UCloud RTC javascript SDK",
   "main": "lib/index.js",
-  "types": "types",
+  "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/ucloud/urtc-sdk-web.git"
@@ -25,7 +25,7 @@
   ],
   "files": [
     "lib/index.js",
-    "types/index.d.ts",
+    "lib/index.d.ts",
     "Manual.md"
   ],
   "homepaage": "https://docs.ucloud.cn/video/urtc/overview"
