@@ -20,9 +20,9 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "classnames": "^2.2.6",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
-    "unique-classnames": "^1.0.6",
     "urtc-sdk": "latest",
     "zone.js": "~0.9.1"
   },

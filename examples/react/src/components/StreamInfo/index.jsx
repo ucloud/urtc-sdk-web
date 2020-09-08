@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'unique-classnames';
+import classnames from 'classnames';
 
 export default class StreamInfo extends Component {
   static propTypes = {

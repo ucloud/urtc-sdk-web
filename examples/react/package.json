@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "UCloud RTC react 版本的 demo",
   "dependencies": {
+    "classnames": "^2.2.6",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "unique-classnames": "^1.0.6",
     "urtc-sdk": "latest"
   },
   "scripts": {
@@ -31,6 +31,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/helper-call-delegate": "^7.11.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",

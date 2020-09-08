@@ -7,10 +7,15 @@ import {
   Input,
   SimpleChanges,
 } from '@angular/core';
-import classnames from 'unique-classnames';
+import classnames from 'classnames';
 
-import { Client } from 'urtc-sdk';
-import { Stream, AudioStats, VideoStats, NetworkStats } from 'urtc-sdk/types';
+import {
+  Client,
+  Stream,
+  AudioStats,
+  VideoStats,
+  NetworkStats
+} from 'urtc-sdk';
 
 interface Stats {
   audioLost: number;

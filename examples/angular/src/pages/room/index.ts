@@ -6,8 +6,10 @@ import {
   OnDestroy,
 } from '@angular/core';
 
-import sdk, { Client } from 'urtc-sdk';
-import { Stream } from 'urtc-sdk/types';
+import sdk, {
+  Client,
+  Stream
+} from 'urtc-sdk';
 
 // 注：实际使用时，请自行在 config 目录下创建 index.ts 配置文件
 import config from '../../config';
@@ -71,6 +73,10 @@ export class RoomComponent implements OnInit, AfterContentInit, AfterViewInit, O
         this.client.play({
           streamId: localStream.sid,
           container: localStream.sid
+        }, (err?: Error) => {
+          if (err) {
+            console.log('play error ', err);
+          }
         });
       }, 0);
     });
@@ -94,6 +100,10 @@ export class RoomComponent implements OnInit, AfterContentInit, AfterViewInit, O
         this.client.play({
           streamId: remoteStream.sid,
           container: remoteStream.sid
+        }, (err?: Error) => {
+          if (err) {
+            console.log('play error ', err);
+          }
         });
       }, 0);
     });
@@ -120,6 +130,10 @@ export class RoomComponent implements OnInit, AfterContentInit, AfterViewInit, O
         this.client.play({
           streamId: current.sid,
           container: current.sid
+        }, (err?: Error) => {
+          if (err) {
+            console.log('play error ', err);
+          }
         });
       }, 0);
     });
@@ -155,7 +169,7 @@ export class RoomComponent implements OnInit, AfterContentInit, AfterViewInit, O
     });
   }
   handlePublish() {
-    this.client.publish(err => {
+    this.client.publish({audio: true, video: true, screen: false}, err => {
       console.error(`发布失败：错误码 - ${err.name}，错误信息 - ${err.message}`);
     });
   }
@@ -214,7 +228,7 @@ export class RoomComponent implements OnInit, AfterContentInit, AfterViewInit, O
     if (!isJoinedRoom) {
       return;
     }
-    this.client.leaveRoom(() => {
+    this.client.leaveRoom(undefined, () => {
       console.info('离开房间成功');
       this.selectedStream = null;
       this.localStreams = [];
