@@ -8,8 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "core-js": "^3.4.3",
-    "unique-classnames": "^1.0.6",
     "urtc-sdk": "latest",
     "vue": "^2.6.10"
   },

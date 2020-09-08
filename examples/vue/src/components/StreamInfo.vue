@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import classnames from 'unique-classnames';
+import classnames from 'classnames';
 
 export default {
   name: 'StreamInfo',
