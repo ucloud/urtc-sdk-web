@@ -116,17 +116,6 @@ export default class Room extends Component {
       }
     });
 
-    this.client.on("record-notify", (Error, RecordResult) => {
-      if (Error !== undefined) {
-        alert(`录制失败: ${Error}`);
-      }
-    });
-
-    this.client.on("relay-notify", (Error, RecordResult) => {
-      if (Error !== undefined) {
-        alert(`转推失败: ${Error}`);
-      }
-    });
     window.addEventListener("beforeunload", this.handleLeaveRoom);
   }
 
