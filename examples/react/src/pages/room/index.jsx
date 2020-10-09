@@ -6,7 +6,7 @@ import "./index.css";
 const { AppId, AppKey } = config;
 
 // 此处使用固定的房间号的随机的用户ID，请自行替换
-const RoomId = "ssss123145";
+const RoomId = "test";
 const UserId = Math.floor(Math.random() * 1000000).toString();
 
 console.log("UCloudRTC sdk version: ", sdk.version);
@@ -22,8 +22,6 @@ export default class Room extends Component {
       localStreams: [],
       remoteStreams: [],
     };
-    this.bucket = "urtc-test";
-    this.region = "cn-bj";
   }
 
   componentDidMount() {

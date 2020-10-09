@@ -17,7 +17,7 @@ import config from '../../config';
 const { AppId, AppKey } = config;
 
 // 此处使用固定的房间号的随机的用户ID，请自行替换
-const RoomId = 'ssss02';
+const RoomId = 'test';
 const UserId = Math.floor(Math.random() * 1000000).toString();
 
 console.log('UCloudRTC sdk version: ', sdk.version);
