@@ -135,7 +135,7 @@ declare module '__urtc-sdk/client' {
     removeStream(previewId: string, callback: (err?: Error) => void): void;
     destroyStream(previewId: string, callback: (err?: Error) => void): void;
     enableAudioVolumeIndicator(interval?: number): void;
-    logoff(kind: 'reconnect' | 'switchSignal' | 'refreshSignal', users: string[], callback: (err?: Error) => void): void;
+    logoff(action: 'quit' | 'reconnect' | 'switch' | 'refresh', users: string[], callback: (err?: Error) => void): void;
   }
 }
 
@@ -295,7 +295,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.6.5";
+  export const version = "1.6.6";
 }
 
 declare module '__urtc-sdk/token' {
