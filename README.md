@@ -160,18 +160,10 @@ Err 为错误信息
 离开房间，示例代码：
 
 ```js
-client.leaveRoom(LeaveRoomOptions, onSuccess, onFailure)
+client.leaveRoom(onSuccess, onFailure)
 ```
 
 #### 参数说明
-
-- LeaveRoomOptions，object 类型，选传，类型说明如下
-
-```js
-{
-  keepRecording: boolean  // 是否保持服务端录制，默认不保持。使用场景：课堂管理员开启房间内的流进行服务端录制后，不需要等待课堂结束即可直接退出房间，并使在房间内的流继续录制。
-}
-```
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
