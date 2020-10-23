@@ -329,7 +329,7 @@ client.on(EventType, Listener)
   'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' |
   'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' |
   'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' |
-  'record-notify' | 'relay-notify' | 'volume-indicator' 这些事件可绑定监听函数
+  'record-notify' | 'relay-notify' | 'volume-indicator' | 'error-notify' 这些事件可绑定监听函数
 - Listener: function 类型，事件监听函数
 
   - 当事件类型为 'user-added' | 'user-removed' | 'kick-off' 时，可用 `function Listener(User) {}` 类型的函数，其中函数的参数类型见 [User](#user)
@@ -357,6 +357,8 @@ client.on(EventType, Listener)
     - '24150': （异常）任务开启后10秒，如果收到这个消息，则表示任务开启失败
     - '24152': （异常）表示加流失败
   - 当事件类型为 'volume-indicator' 时（通过 [enableAudioVolumeIndicator](#client-enableaudiovolumeindicator) 方法开启），可用 `function Listener(VolumeIndication[]) {}` 类型的函数，函数参数为 VolumeIndication 类型的数组（已按 volume 的值进行了降序排序，第一个为音量最大的），VolumeIndication 为 `{ sid: string, uid: string, mediaType: string, volume: number }`，其中 mediaType 为 'camera' 或 'screen' 两种之一，volume 为 0 - 100 的值，通常在列表中音量大于 5 的用户为持续说话的人。
+  - 当事件类型为 'error-notify' 时，可用 `function Listener(ErrorNotification) ()` 类型的函数，函数的参数为 ErrorNotification 的 `{ code: string, message: string }`，code 有以下可能的值：
+    - '24147': 10秒内连续操作 mute/unmute audio 或 video 次数超过了150次的次数限制，服务器拒绝执行（一般不会达到次数限制，可忽略此事件）
 
 
 #### 事件名解释：
@@ -381,6 +383,7 @@ stream-reconnected | 当发布/订阅流断开时，会自动重连，发布流�
 record-notify | 当房间内开启了录制任务，那么录制任务的成功开启或异常中止，都将通过此事件进行通知，业务上可根据此通知来提示用户录制任务相应的状态
 relay-notify | 当房间内开启了转推任务，那么转推任务的成功开启或异常中止，都将通过此事件进行通知，业务上可根据此通知来提示用户转推任务相应的状态
 volume-indicator | 当通过 enableAudioVolumeIndicator 方法开启了远端流音量指示器，那么可以通过此通知来获取各远端流的当前音量
+error-notify | 当房间内有错误时，将通过此方法进行通知
 
 <a name="client-off"></a>
 
