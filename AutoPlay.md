@@ -23,22 +23,11 @@
 此时可引导用户点击页面上的某个位置，譬如模态框上的确定按钮，再在该  `click`  事件的监听函数里调用 `resume` 方法。示例代码：
 
 ```js
-client.play({
-  streamId: 'xxx',
-  container: 'xxx',
-}, (err) => {
-  if (err) {
-    console.log('播放失败', err);
-    client.resume('xxx', (err) => {
-      if (err) {
-        console.log('恢复播放失败', err);
-      }
-    });
-  }
+stream.play(container).catch((err) => {
+  console.log(`播放失败 ${err}`);
+  // 弹出模态弹，引导用户点击按钮调用 `stream.resume().catch((err) => console.log(`恢复播放失败 ${err}`))`
 });
 ```
-
-> 注：在调用 URTC sdk 的 `play` 方法失败时，会自动显示音视频播放元素的控制面板，面板里会有播放按钮等操作工具，您也可以不调用 `resume` 方法，仅提示用户点击音视频播放元素的控制面板上的播放按钮进行播放。
 
 2. 直接绕开 autoplay 的限制
 
@@ -50,27 +39,20 @@ client.play({
 
 ```js
 let unmuteBtn = document.querySelector('#unmuteBtn');
-client.play({
-  streamId: 'xxx',
-  container: 'xxx,
-  mute: true
-}, (err) => {
-  if (err) {
-    console.log('播放失败', err);
-  }
+stream.play(container, { mute: true }).catch((err) => {
+  console.log(`播放失败 ${err}`);
 });
 unmuteBtn.onclick = function() {
-  client.resume('xxx', (err) => {
-    if (err) {
-      console.log('恢复播放失败', err);
-    }
+  stream.stop();
+  stream.play(container).catch((err) => {
+    console.log(`播放失败 ${err}`);
   });
 }
 ```
 
 3. 提前检测浏览器是否能自动播放
 
-在用 URTC 创建 client 前，可使用 [can-autoplay](https://www.npmjs.com/package/can-autoplay) 第三方库进行检测，若不支持，可引导用户点击页面上的某个位置（譬如模态框上的确定按钮）来触发用户与页面的交互（即解锁 `the user didn’t interact with the document first`），然后再用 URTC 创建 client 并 joinRoom。示例代码：
+在用 URTC 创建 client 前，可使用 [can-autoplay](https://www.npmjs.com/package/can-autoplay) 第三方库进行检测，若不支持，可引导用户点击页面上的某个位置（譬如模态框上的确定按钮）来触发用户与页面的交互（即解锁 `the user didn’t interact with the document first`），然后再用 URTC 创建 client 并加入房间。示例代码：
 
 ```js
 canAutoplay.video().then(res => {

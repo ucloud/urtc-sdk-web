@@ -1,6 +1,6 @@
 {
-  "name": "urtc-sdk",
-  "version": "1.6.9",
+  "name": "@urtc/sdk-web",
+  "version": "2.0.0-alpha.0",
   "description": "UCloud RTC javascript SDK",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -19,14 +19,15 @@
     "UCloud",
     "RTC",
     "URTC",
-    "UCLoudRTC",
+    "WebRTC",
     "javascript",
     "sdk"
   ],
   "files": [
     "lib/index.js",
     "lib/index.d.ts",
-    "Manual.md"
+    "Manual.md",
+    "AutoPlay.md"
   ],
-  "homepaage": "https://docs.ucloud.cn/video/urtc/overview"
+  "homepage": "https://docs.ucloud.cn/video/urtc/overview"
 }
