@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/ucloud/urtc-sdk-web.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/ucloud/urtc-sdk-web/issues"
   },
