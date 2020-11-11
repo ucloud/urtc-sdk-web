@@ -735,13 +735,19 @@ Stream:
   type: 'publish' | 'subscribe'   // 流类型，为 publish 和 subscribe 两种，分别对应本地流和远端流
   video: boolean                  // 是否包含音频
   audio: boolean                  // 是否包含视频
-  muteAudio: boolean              // 音频轨道是否禁用
-  muteVideo: boolean              // 视频轨道是否禁用
+  muteAudio: boolean              // 音频轨道是否禁用，已废弃
+  muteVideo: boolean              // 视频轨道是否禁用，已废弃
+  audioMuted: boolean             // 音频本地是否已 mute，本地/发布流 mute 时，将不推音频数据到服务器，远端/订阅流 mute 时，将不从服务器拉取音频数据
+  videoMuted: boolean             // 视频本地是否已 mute，本地/发布流 mute 时，将不推视频数据到服务器，远端/订阅流 mute 时，将不从服务器拉取视频数据
+  sourceAudioMuted?: boolean      // 音频源是否已 mute，只针对远端流有效（本地流无此属性），代表远端流的音频源是否已 mute（不推数据）
+  sourceVideoMuted?: boolean      // 视频源是否已 mute，只针对远端流有效（本地流无此属性），代表远端流的视频源是否已 mute（不推数据）
   mediaType?: 'camera' | 'screen' // 流的媒体类型，目前存在两种媒体类型 'camera' 及 'screen'，同一用户可发布的各类型的流只能存在一个，以此来区分不同媒体类型的发布/订阅流
   mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
   previewId?: string              // 通过 createStream 方法创建的流将包含此字段，且未发布状态时会与 sid 相同，当流被发布之后 sid 将被替换为服务器生成的流 ID，而 previewId 仍为用户自定义的 ID
 }
 ```
+
+注：原 muteAudio 和 muteVideo 已废弃，请使用 audioMuted 和 videoMuted，以及 sourceAudioMuted 和 sourceVideoMuted 更准确的判断流的 mute 状态
 
 
 <a name="client-getlocalstreams"></a>
@@ -946,6 +952,7 @@ VideoProfileOptions 指定流的视频 Profile:
 > 1. 参数为预定义 Profile 或 CustomVideoProfile 时，为全局生效，后续创建/发布的流的视频都将设置为此 Profile。
 > 2. 参数为 VideoProfileOptions 类型时，只对 previewId 对应的流生效，可使用预定义的 Profile 或 自定义的 Profile。
 > 3. 已发布的流，不可变更 video profile，故请在 publish 前调用此方法。
+> 4. 屏幕共享流创建后，亦无法变更 video profile，故通过 createStream 方法创建屏幕共享流时，请在创建前调用 setVideoProfile。
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -1820,6 +1827,10 @@ client.startRecord(StartRecordOptions, callback)
   waterMark?: WaterMarkOptions  // 选传，水印设置，类型说明见下面的 WaterMarkOptions 类型，不传时将不添加水印
 
   streams?: MixStream[]         // 选传，指定需要录制的流，类型说明见下面的 MixStream 类型。不传或传空数组时，会自动添加房间内所有用户的流，如果指定了流，则仅录制指定的流
+
+  outputMode?: MixOutputMode    // 选传，录制时输出模式，MixOutputMode 为字符串，有 'audio-video' | 'audio' 两种可填，分别代表：输出音视频 | 只输出音频，不填时，默认为 'audio-video'
+
+  streamAddMode?: MixStreamAddMode  // 选传，录制时流的添加模式，MixStreamAddMode 为字符串，有 'automatic' | 'manual' 两种可填，分别代表：自动添加（有新流时） | 手动添加，不填时，默认为 'automatic'
 
   keyUser?: string;             // 选传，用户ID，指定关键用户（userId）不再推流后，录制任务自动关闭，不填时，默认为房间内没有用户推流后录制任务自动关闭
 }

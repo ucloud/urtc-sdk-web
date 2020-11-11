@@ -295,7 +295,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.6.9";
+  export const version = "1.6.10";
 }
 
 declare module '__urtc-sdk/token' {
@@ -382,6 +382,10 @@ declare module '__urtc-sdk/types' {
     muteAudio: boolean;
     muteVideo: boolean;
     mediaStream?: MediaStream;
+    sourceAudioMuted?: boolean;
+    sourceVideoMuted?: boolean;
+    audioMuted: boolean;
+    videoMuted: boolean;
   }
   export interface LeaveRoomOptions {
     keepRecording: boolean;
