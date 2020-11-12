@@ -349,17 +349,19 @@
 								<div class="lead">
 									<p>mute 当前流的音频</p>
 									<ul>
-										<li>本地流调用此方法时，远端用户将收到 <code>mute-audio</code> 的事件通知，流的 audioMuted 状态也将改变</li>
-										<li>远端流调用此方法时，仅为不从服务器拉取音频数据，并无事件通知用户，且不改变流的 audioMuted 状态</li>
+										<li>本地流调用此方法时，将不向服务器推送音频数据，远端用户将收到 <code>mute-audio</code> 的事件通知</li>
+										<li>远端流调用此方法时，仅为不从服务器拉取音频数据，并无事件通知远端用户</li>
 									</ul>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><pre><code class="language-js"><span class="hljs-keyword">const</span> result = stream.muteAudio();</code></pre>
+									<dd><pre><code class="language-js"><span class="hljs-keyword">const</span> result = stream.muteAudio();
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">`stream&#x27;audio is muted <span class="hljs-subst">${stream.audioMuted}</span>`</span>);</code></pre>
 									</dd>
 								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>操作是否成功</p>
 						</li>
 					</ul>
 				</section>
@@ -377,17 +379,19 @@
 								<div class="lead">
 									<p>mute 当前流的视频</p>
 									<ul>
-										<li>本地流调用此方法时，远端用户将收到 <code>mute-video</code> 的事件通知，流的 videoMuted 状态也将改变</li>
-										<li>远端流调用此方法时，仅为不从服务器拉取视频数据，并无事件通知用户，且不改变流的 videoMuted 状态</li>
+										<li>本地流调用此方法时，将不向服务器推送视频数据，远端用户将收到 <code>mute-video</code> 的事件通知</li>
+										<li>远端流调用此方法时，仅为不从服务器拉取视频数据，并无事件通知远端用户</li>
 									</ul>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><pre><code class="language-js"><span class="hljs-keyword">const</span> result = stream.muteVideo();</code></pre>
+									<dd><pre><code class="language-js"><span class="hljs-keyword">const</span> result = stream.muteVideo();
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">`stream&#x27;s video is muted <span class="hljs-subst">${stream.videoMuted}</span>`</span>);</code></pre>
 									</dd>
 								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>操作是否成功</p>
 						</li>
 					</ul>
 				</section>
@@ -586,17 +590,19 @@ stream
 								<div class="lead">
 									<p>unmute 当前流的音频</p>
 									<ul>
-										<li>本地流调用此方法时，远端用户将收到 <code>unmute-audio</code> 的事件通知，流的 audioMuted 状态也将改变</li>
-										<li>远端流调用此方法时，会从服务器拉取音频数据，并无事件通知用户，且不改变流的 audioMuted 状态</li>
+										<li>本地流调用此方法时，将向服务器推送音频数据，远端用户将收到 <code>unmute-audio</code> 的事件通知</li>
+										<li>远端流调用此方法时，会从服务器拉取音频数据，并无事件通知远端用户</li>
 									</ul>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><pre><code class="language-js"><span class="hljs-keyword">const</span> result = stream.unmuteAudio();</code></pre>
+									<dd><pre><code class="language-js"><span class="hljs-keyword">const</span> result = stream.unmuteAudio();
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">`stream&#x27;s audio is muted <span class="hljs-subst">${stream.audioMuted}</span>`</span>);</code></pre>
 									</dd>
 								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>操作是否成功</p>
 						</li>
 					</ul>
 				</section>
@@ -614,17 +620,19 @@ stream
 								<div class="lead">
 									<p>unmute 当前流的视频</p>
 									<ul>
-										<li>本地流调用此方法时，远端用户将收到 <code>unmute-video</code> 的事件通知，流的 videoMuted 状态也将改变</li>
-										<li>远端流调用此方法时，会从服务器拉取视频数据，并无事件通知用户，且不改变流的 videoMuted 状态</li>
+										<li>本地流调用此方法时，将向服务器推送视频数据，远端用户将收到 <code>unmute-video</code> 的事件通知</li>
+										<li>远端流调用此方法时，会从服务器拉取视频数据，并无事件通知远端用户</li>
 									</ul>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><pre><code class="language-js"><span class="hljs-keyword">const</span> result = stream.unmuteVideo();</code></pre>
+									<dd><pre><code class="language-js"><span class="hljs-keyword">const</span> result = stream.unmuteVideo();
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">`stream&#x27;s video is muted <span class="hljs-subst">${stream.videoMuted}</span>`</span>);</code></pre>
 									</dd>
 								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>操作是否成功</p>
 						</li>
 					</ul>
 				</section>

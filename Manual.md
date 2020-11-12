@@ -111,7 +111,7 @@ client.unsubscribe(remoteStream).catch((err) => { // 此方法仅处理本端主
 });
 ```
 
-## 5. 退出房间
+## 6. 退出房间
 
 ```js
 client.leave().then(() => {

@@ -588,7 +588,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>当前 sdk 的版本</p>
+							<p>当前 sdk 的版本号</p>
 						</div>
 					</div>
 				</section>
@@ -649,7 +649,7 @@ client
 					<a name="createstream" class="tsd-anchor"></a>
 					<h3>create<wbr>Stream</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Stream<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><a href="interfaces/localstreamoptions.html" class="tsd-signature-type">LocalStreamOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes/localstream.html" class="tsd-signature-type">LocalStream</a></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Stream<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><a href="interfaces/localstreamoptions.html" class="tsd-signature-type">LocalStreamOptions</a>, id<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes/localstream.html" class="tsd-signature-type">LocalStream</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -657,7 +657,7 @@ client
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>创建并返回本地音视频流对象</p>
+									<p>创建本地流</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
@@ -683,7 +683,7 @@ localStream
 								<li>
 									<h5>opts: <a href="interfaces/localstreamoptions.html" class="tsd-signature-type">LocalStreamOptions</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>定义本地音视频流的属性</p>
+										<p>必传，定义本地音视频流的属性</p>
 										<blockquote>
 											<p>注：</p>
 											<ol>
@@ -693,6 +693,12 @@ localStream
 												<li>screenAudio 在不同浏览器上表现不同，参见 <a href="interfaces/localstreamoptions.html">LocalStreamOptions</a></li>
 											</ol>
 										</blockquote>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> id: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>选传，指定本地流的 ID，请注意创建多条流时，不可传入重复值</p>
 									</div>
 								</li>
 							</ul>
@@ -990,7 +996,7 @@ client.join(<span class="hljs-string">&#x27;roomId&#x27;</span>, <span class="hl
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>上报操作/错误/状态日志，未调用时，默认开启上报日志</p>
+									<p>开启/关闭操作/错误/状态日志的上报，未调用时，默认开启上报日志</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
@@ -1023,7 +1029,7 @@ client.join(<span class="hljs-string">&#x27;roomId&#x27;</span>, <span class="hl
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>设置日志打印级别</p>
+									<p>设置日志打印级别，用于打印出更多日志来调试或定位问题</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>

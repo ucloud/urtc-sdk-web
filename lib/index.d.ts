@@ -26,13 +26,14 @@ declare module '@urtc/sdk-web' {
     */
   export function createClient(appId: string, opts?: ClientOptions): Client;
   /**
-    * 创建并返回本地音视频流对象
-    * @param opts - 定义本地音视频流的属性
+    * 创建本地流
+    * @param opts - 必传，定义本地音视频流的属性
     * > 注：
     * > 1. video, screen 不可同时为 true
     * > 2. audio, video, screen 不可同时为 false
     * > 3. 若指定了 file，则 init 时将优先使用 file 来创建初始化本地流的视频
     * > 4. screenAudio 在不同浏览器上表现不同，参见 {@link LocalStreamOptions}
+    * @param id - 选传，指定本地流的 ID，请注意创建多条流时，不可传入重复值
     * @example
     * ```js
     * const localStream = createStream({ audio: true, video: true, screen: false });
@@ -49,9 +50,9 @@ declare module '@urtc/sdk-web' {
     * ```
     * @throws {@link RtcError}
     */
-  export function createStream(opts: LocalStreamOptions): LocalStream;
+  export function createStream(opts: LocalStreamOptions, id?: string): LocalStream;
   /**
-    * 设置日志打印级别
+    * 设置日志打印级别，用于打印出更多日志来调试或定位问题
     * @param level - 日志级别，有 'debug', 'info', 'warn', 'error' 级别;
     * @example
     * ```js
@@ -60,7 +61,7 @@ declare module '@urtc/sdk-web' {
     */
   export function setLogLevel(level: LogLevel): void;
   /**
-    * 上报操作/错误/状态日志，未调用时，默认开启上报日志
+    * 开启/关闭操作/错误/状态日志的上报，未调用时，默认开启上报日志
     * @param enable - 是否开启上报
     * @example
     * ```js
@@ -159,7 +160,7 @@ declare module '__@urtc/sdk-web/client' {
         */
       leave(): Promise<void>;
       /**
-        * 监听 Client 对象事件
+        * 监听 Client 对象的事件
         * @param type - 事件类型
         * @param listener - 事件监听函数
         * @example
@@ -177,7 +178,7 @@ declare module '__@urtc/sdk-web/client' {
         */
       on<T extends RtcEventType>(type: T, listener: Listener<T>): void;
       /**
-        * 取消监听 Client 对象事件
+        * 取消监听 Client 对象的事件
         * @param type - 事件类型，特别的，可以使用 * 来一次性取消对所有事件的监听
         * @param listener - 事件监听函数
         * @example
@@ -314,7 +315,7 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
     */
   export class LocalStream extends Stream {
       /**
-        * 初始化本地音视频流对象
+        * 初始化本地流对象，将读取麦克风、摄像头、屏幕共享等来初始化媒体流
         * @example
         * ```js
         * const stream = createStream({audio: true, video: true, screen: false});
@@ -744,7 +745,7 @@ declare module '__@urtc/sdk-web/event' {
 declare module '__@urtc/sdk-web/error' {
   export * from '__@urtc/sdk-web/error/codes';
   /**
-    * RTC 错误 类型
+    * URTC 错误信息
     *
     * 通用错误及代码
     * - 1000 - 非法参数
@@ -796,7 +797,7 @@ declare module '__@urtc/sdk-web/error' {
 
 declare module '__@urtc/sdk-web/user/user' {
   /**
-    * 用户
+    * 用户信息
     */
   export class User {
       /**
@@ -964,42 +965,50 @@ declare module '__@urtc/sdk-web/stream/stream' {
       hasVideo(): boolean;
       /**
         * mute 当前流的音频
-        * * 本地流调用此方法时，远端用户将收到 `mute-audio` 的事件通知，流的 audioMuted 状态也将改变
-        * * 远端流调用此方法时，仅为不从服务器拉取音频数据，并无事件通知用户，且不改变流的 audioMuted 状态
+        * * 本地流调用此方法时，将不向服务器推送音频数据，远端用户将收到 `mute-audio` 的事件通知
+        * * 远端流调用此方法时，仅为不从服务器拉取音频数据，并无事件通知远端用户
         * @example
         * ```js
         * const result = stream.muteAudio();
+        * console.log(`stream'audio is muted ${stream.audioMuted}`);
         * ```
+        * @returns 操作是否成功
         */
       muteAudio(): boolean;
       /**
         * unmute 当前流的音频
-        * * 本地流调用此方法时，远端用户将收到 `unmute-audio` 的事件通知，流的 audioMuted 状态也将改变
-        * * 远端流调用此方法时，会从服务器拉取音频数据，并无事件通知用户，且不改变流的 audioMuted 状态
+        * * 本地流调用此方法时，将向服务器推送音频数据，远端用户将收到 `unmute-audio` 的事件通知
+        * * 远端流调用此方法时，会从服务器拉取音频数据，并无事件通知远端用户
         * @example
         * ```js
         * const result = stream.unmuteAudio();
+        * console.log(`stream's audio is muted ${stream.audioMuted}`);
         * ```
+        * @returns 操作是否成功
         */
       unmuteAudio(): boolean;
       /**
         * mute 当前流的视频
-        * * 本地流调用此方法时，远端用户将收到 `mute-video` 的事件通知，流的 videoMuted 状态也将改变
-        * * 远端流调用此方法时，仅为不从服务器拉取视频数据，并无事件通知用户，且不改变流的 videoMuted 状态
+        * * 本地流调用此方法时，将不向服务器推送视频数据，远端用户将收到 `mute-video` 的事件通知
+        * * 远端流调用此方法时，仅为不从服务器拉取视频数据，并无事件通知远端用户
         * @example
         * ```js
         * const result = stream.muteVideo();
+        * console.log(`stream's video is muted ${stream.videoMuted}`);
         * ```
+        * @returns 操作是否成功
         */
       muteVideo(): boolean;
       /**
         * unmute 当前流的视频
-        * * 本地流调用此方法时，远端用户将收到 `unmute-video` 的事件通知，流的 videoMuted 状态也将改变
-        * * 远端流调用此方法时，会从服务器拉取视频数据，并无事件通知用户，且不改变流的 videoMuted 状态
+        * * 本地流调用此方法时，将向服务器推送视频数据，远端用户将收到 `unmute-video` 的事件通知
+        * * 远端流调用此方法时，会从服务器拉取视频数据，并无事件通知远端用户
         * @example
         * ```js
         * const result = stream.unmuteVideo();
+        * console.log(`stream's video is muted ${stream.videoMuted}`);
         * ```
+        * @returns 操作是否成功
         */
       unmuteVideo(): boolean;
       /**
@@ -1078,9 +1087,17 @@ declare module '__@urtc/sdk-web/stream/stream' {
 declare module '__@urtc/sdk-web/stream/remote-stream' {
   import { Stream } from '__@urtc/sdk-web/stream/stream';
   /**
-    * @public
+    * 远端流，房间内其他用户发布的流，可通过 client 进行订阅
     */
   export class RemoteStream extends Stream {
+      /**
+        * 音频源是否已 mute，当源端 mute/unmute 音频时，本端将收到 `mute-audio` 或 `unmute-audio` 事件的通知，同时此值将变为对应值
+        */
+      sourceAudioMuted: boolean;
+      /**
+        * 视频源是否已 mute，当源端 mute/unmute 视频时，本端将收到 `mute-video` 或 `unmute-video` 事件的通知，同时此值将变为对应值
+        */
+      sourceVideoMuted: boolean;
       /**
         * 该流所属用户的ID
         */
@@ -1144,7 +1161,7 @@ declare module '__@urtc/sdk-web/server' {
 
 declare module '__@urtc/sdk-web/version' {
   /**
-    * 当前 sdk 的版本
+    * 当前 sdk 的版本号
     */
   export const version: string;
 }
@@ -1289,13 +1306,14 @@ declare module '__@urtc/sdk-web/' {
     */
   export function createClient(appId: string, opts?: ClientOptions): Client;
   /**
-    * 创建并返回本地音视频流对象
-    * @param opts - 定义本地音视频流的属性
+    * 创建本地流
+    * @param opts - 必传，定义本地音视频流的属性
     * > 注：
     * > 1. video, screen 不可同时为 true
     * > 2. audio, video, screen 不可同时为 false
     * > 3. 若指定了 file，则 init 时将优先使用 file 来创建初始化本地流的视频
     * > 4. screenAudio 在不同浏览器上表现不同，参见 {@link LocalStreamOptions}
+    * @param id - 选传，指定本地流的 ID，请注意创建多条流时，不可传入重复值
     * @example
     * ```js
     * const localStream = createStream({ audio: true, video: true, screen: false });
@@ -1312,9 +1330,9 @@ declare module '__@urtc/sdk-web/' {
     * ```
     * @throws {@link RtcError}
     */
-  export function createStream(opts: LocalStreamOptions): LocalStream;
+  export function createStream(opts: LocalStreamOptions, id?: string): LocalStream;
   /**
-    * 设置日志打印级别
+    * 设置日志打印级别，用于打印出更多日志来调试或定位问题
     * @param level - 日志级别，有 'debug', 'info', 'warn', 'error' 级别;
     * @example
     * ```js
@@ -1323,7 +1341,7 @@ declare module '__@urtc/sdk-web/' {
     */
   export function setLogLevel(level: LogLevel): void;
   /**
-    * 上报操作/错误/状态日志，未调用时，默认开启上报日志
+    * 开启/关闭操作/错误/状态日志的上报，未调用时，默认开启上报日志
     * @param enable - 是否开启上报
     * @example
     * ```js
