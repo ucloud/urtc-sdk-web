@@ -67,52 +67,9 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>URTC 错误信息</p>
+						<p>URTC 错误信息
+						错误代码参见 <a href="../index.html#errorcode">ErrorCode</a></p>
 					</div>
-					<p>通用错误及代码</p>
-					<ul>
-						<li>1000 - 非法参数</li>
-						<li>1001 - 非法操作</li>
-						<li>1002 - 不支持</li>
-						<li>1003 - 不存在</li>
-						<li>1004 - 请求失败</li>
-						<li>1999 - 其他错误</li>
-					</ul>
-					<p>房间相关错误及代码</p>
-					<ul>
-						<li>2000 - 网关不可达</li>
-						<li>2001 - 获取 Access Token 失败</li>
-						<li>2002 - Access Token 非法</li>
-						<li>2003 - Websocket 连接失败</li>
-						<li>2004 - 加入房间失败</li>
-						<li>2005 - 未加入房间</li>
-						<li>2006 - 正在加入房间</li>
-						<li>2007 - 正在离开房间,</li>
-						<li>2008 - 角色类型不匹配</li>
-						<li>2009 - 信令服务器地址错误</li>
-					</ul>
-					<p>流相关错误及代码</p>
-					<ul>
-						<li>3000 - 流不存在</li>
-						<li>3001 - 同类型的流已存在</li>
-						<li>3002 - 音频不存在</li>
-						<li>3003 - 视频不存在</li>
-						<li>3004 - [中止错误] 尽管用户和操作系统都授予了访问设备硬件的权利，而且未出现可能抛出NotReadableError异常的硬件问题，但仍然有一些问题的出现导致了设备无法被使用。</li>
-						<li>3005 - [拒绝错误] 用户拒绝了当前的浏览器实例的访问请求；或者用户拒绝了当前会话的访问；或者用户在全局范围内拒绝了所有媒体访问请求。</li>
-						<li>3006 - [找不到错误] 找不到满足请求参数的媒体类型。</li>
-						<li>3007 - [无法读取错误] 尽管用户已经授权使用相应的设备，操作系统上某个硬件、浏览器或者网页层面发生的错误导致设备无法被访问。</li>
-						<li>3008 - [无法满足要求错误] 指定的要求无法被设备满足。</li>
-						<li>3009 - 流连接失败</li>
-						<li>3010 - 流正在重连</li>
-						<li>3011 - 流尚未发布</li>
-						<li>3012 - 流正在发布</li>
-						<li>3013 - 流正在取消发布</li>
-						<li>3014 - 流已经发布</li>
-						<li>3015 - 流尚未订阅</li>
-						<li>3016 - 流正在订阅</li>
-						<li>3017 - 流正在取消订阅</li>
-						<li>3018 - 流已经订阅</li>
-					</ul>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -141,16 +98,52 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="rtcerror.html#code" class="tsd-kind-icon">code</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rtcerror.html#message" class="tsd-kind-icon">message</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rtcerror.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited tsd-is-external"><a href="rtcerror.html#stack" class="tsd-kind-icon">stack</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#abort_error" class="tsd-kind-icon">ABORT_<wbr>ERROR</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#access_token_invalid" class="tsd-kind-icon">ACCESS_<wbr>TOKEN_<wbr>INVALID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#audio_not_exists" class="tsd-kind-icon">AUDIO_<wbr>NOT_<wbr>EXISTS</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#bad_request" class="tsd-kind-icon">BAD_<wbr>REQUEST</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#connection_failed" class="tsd-kind-icon">CONNECTION_<wbr>FAILED</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#error" class="tsd-kind-icon">Error</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#get_access_token_failed" class="tsd-kind-icon">GET_<wbr>ACCESS_<wbr>TOKEN_<wbr>FAILED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#gw_unreachable" class="tsd-kind-icon">GW_<wbr>UNREACHABLE</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#invalid_operation" class="tsd-kind-icon">INVALID_<wbr>OPERATION</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#invalid_parameter" class="tsd-kind-icon">INVALID_<wbr>PARAMETER</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#is_joining" class="tsd-kind-icon">IS_<wbr>JOINING</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#is_leaving" class="tsd-kind-icon">IS_<wbr>LEAVING</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#is_published" class="tsd-kind-icon">IS_<wbr>PUBLISHED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#is_publishing" class="tsd-kind-icon">IS_<wbr>PUBLISHING</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#is_reconnecting" class="tsd-kind-icon">IS_<wbr>RECONNECTING</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#is_subscribed" class="tsd-kind-icon">IS_<wbr>SUBSCRIBED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#is_subscribing" class="tsd-kind-icon">IS_<wbr>SUBSCRIBING</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#is_unpublished" class="tsd-kind-icon">IS_<wbr>UNPUBLISHED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#is_unpublishing" class="tsd-kind-icon">IS_<wbr>UNPUBLISHING</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#is_unsubscribed" class="tsd-kind-icon">IS_<wbr>UNSUBSCRIBED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#is_unsubscribing" class="tsd-kind-icon">IS_<wbr>UNSUBSCRIBING</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#join_failed" class="tsd-kind-icon">JOIN_<wbr>FAILED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#not_allowed_error" class="tsd-kind-icon">NOT_<wbr>ALLOWED_<wbr>ERROR</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#not_exists" class="tsd-kind-icon">NOT_<wbr>EXISTS</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#not_found_error" class="tsd-kind-icon">NOT_<wbr>FOUND_<wbr>ERROR</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#not_join" class="tsd-kind-icon">NOT_<wbr>JOIN</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#not_readable_error" class="tsd-kind-icon">NOT_<wbr>READABLE_<wbr>ERROR</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#not_support" class="tsd-kind-icon">NOT_<wbr>SUPPORT</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#others" class="tsd-kind-icon">OTHERS</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#over_constrained_error" class="tsd-kind-icon">OVER_<wbr>CONSTRAINED_<wbr>ERROR</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#peerconnection_failed" class="tsd-kind-icon">PEERCONNECTION_<wbr>FAILED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#play_not_allowed" class="tsd-kind-icon">PLAY_<wbr>NOT_<wbr>ALLOWED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#role_type_not_match" class="tsd-kind-icon">ROLE_<wbr>TYPE_<wbr>NOT_<wbr>MATCH</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#signal_address_invalid" class="tsd-kind-icon">SIGNAL_<wbr>ADDRESS_<wbr>INVALID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#stream_exists" class="tsd-kind-icon">STREAM_<wbr>EXISTS</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#stream_not_exists" class="tsd-kind-icon">STREAM_<wbr>NOT_<wbr>EXISTS</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="rtcerror.html#video_not_exists" class="tsd-kind-icon">VIDEO_<wbr>NOT_<wbr>EXISTS</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rtcerror.html#getcode" class="tsd-kind-icon">get<wbr>Code</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rtcerror.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 							</ul>
 						</section>
@@ -163,7 +156,7 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Rtc<wbr>Error<span class="tsd-signature-symbol">(</span>code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rtcerror.html" class="tsd-signature-type">RtcError</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Rtc<wbr>Error<span class="tsd-signature-symbol">(</span>code<span class="tsd-signature-symbol">: </span><a href="../index.html#errorcode" class="tsd-signature-type">ErrorCode</a>, message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rtcerror.html" class="tsd-signature-type">RtcError</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -172,7 +165,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>code: <span class="tsd-signature-type">number</span></h5>
+									<h5>code: <a href="../index.html#errorcode" class="tsd-signature-type">ErrorCode</a></h5>
 								</li>
 								<li>
 									<h5>message: <span class="tsd-signature-type">string</span></h5>
@@ -185,6 +178,13 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="code" class="tsd-anchor"></a>
+					<h3>code</h3>
+					<div class="tsd-signature tsd-kind-icon">code<span class="tsd-signature-symbol">:</span> <a href="../index.html#errorcode" class="tsd-signature-type">ErrorCode</a></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="message" class="tsd-anchor"></a>
 					<h3>message</h3>
@@ -211,29 +211,447 @@
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="abort_error" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> ABORT_<wbr>ERROR</h3>
+					<div class="tsd-signature tsd-kind-icon">ABORT_<wbr>ERROR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3004"</span><span class="tsd-signature-symbol"> = &quot;3004&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3004 - [中止错误] 尽管用户和操作系统都授予了访问设备硬件的权利，而且未出现可能抛出NotReadableError异常的硬件问题，但仍然有一些问题的出现导致了设备无法被使用。</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="access_token_invalid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> ACCESS_<wbr>TOKEN_<wbr>INVALID</h3>
+					<div class="tsd-signature tsd-kind-icon">ACCESS_<wbr>TOKEN_<wbr>INVALID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"2002"</span><span class="tsd-signature-symbol"> = &quot;2002&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>2002 - Access Token 非法</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="audio_not_exists" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> AUDIO_<wbr>NOT_<wbr>EXISTS</h3>
+					<div class="tsd-signature tsd-kind-icon">AUDIO_<wbr>NOT_<wbr>EXISTS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3002"</span><span class="tsd-signature-symbol"> = &quot;3002&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3002 - 音频不存在</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="bad_request" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> BAD_<wbr>REQUEST</h3>
+					<div class="tsd-signature tsd-kind-icon">BAD_<wbr>REQUEST<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"1004"</span><span class="tsd-signature-symbol"> = &quot;1004&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>1004 - 请求失败</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="connection_failed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> CONNECTION_<wbr>FAILED</h3>
+					<div class="tsd-signature tsd-kind-icon">CONNECTION_<wbr>FAILED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"2003"</span><span class="tsd-signature-symbol"> = &quot;2003&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>2003 - Websocket 连接失败</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="error" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> Error</h3>
 					<div class="tsd-signature tsd-kind-icon">Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ErrorConstructor</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="get_access_token_failed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> GET_<wbr>ACCESS_<wbr>TOKEN_<wbr>FAILED</h3>
+					<div class="tsd-signature tsd-kind-icon">GET_<wbr>ACCESS_<wbr>TOKEN_<wbr>FAILED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"2001"</span><span class="tsd-signature-symbol"> = &quot;2001&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>2001 - 获取 Access Token 失败</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="gw_unreachable" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> GW_<wbr>UNREACHABLE</h3>
+					<div class="tsd-signature tsd-kind-icon">GW_<wbr>UNREACHABLE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"2000"</span><span class="tsd-signature-symbol"> = &quot;2000&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>2000 - 网关不可达</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="invalid_operation" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> INVALID_<wbr>OPERATION</h3>
+					<div class="tsd-signature tsd-kind-icon">INVALID_<wbr>OPERATION<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"1001"</span><span class="tsd-signature-symbol"> = &quot;1001&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>1001 - 非法操作</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="invalid_parameter" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> INVALID_<wbr>PARAMETER</h3>
+					<div class="tsd-signature tsd-kind-icon">INVALID_<wbr>PARAMETER<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"1000"</span><span class="tsd-signature-symbol"> = &quot;1000&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>1000 - 非法参数</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="is_joining" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> IS_<wbr>JOINING</h3>
+					<div class="tsd-signature tsd-kind-icon">IS_<wbr>JOINING<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"2006"</span><span class="tsd-signature-symbol"> = &quot;2006&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>2006 - 正在加入房间</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="is_leaving" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> IS_<wbr>LEAVING</h3>
+					<div class="tsd-signature tsd-kind-icon">IS_<wbr>LEAVING<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"2007"</span><span class="tsd-signature-symbol"> = &quot;2007&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>2007 - 正在离开房间</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="is_published" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> IS_<wbr>PUBLISHED</h3>
+					<div class="tsd-signature tsd-kind-icon">IS_<wbr>PUBLISHED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3014"</span><span class="tsd-signature-symbol"> = &quot;3014&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3014 - 流已经发布</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="is_publishing" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> IS_<wbr>PUBLISHING</h3>
+					<div class="tsd-signature tsd-kind-icon">IS_<wbr>PUBLISHING<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3012"</span><span class="tsd-signature-symbol"> = &quot;3012&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3012 - 流正在发布</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="is_reconnecting" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> IS_<wbr>RECONNECTING</h3>
+					<div class="tsd-signature tsd-kind-icon">IS_<wbr>RECONNECTING<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3010"</span><span class="tsd-signature-symbol"> = &quot;3010&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3010 - 流正在重连</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="is_subscribed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> IS_<wbr>SUBSCRIBED</h3>
+					<div class="tsd-signature tsd-kind-icon">IS_<wbr>SUBSCRIBED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3018"</span><span class="tsd-signature-symbol"> = &quot;3018&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3018 - 流已经订阅</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="is_subscribing" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> IS_<wbr>SUBSCRIBING</h3>
+					<div class="tsd-signature tsd-kind-icon">IS_<wbr>SUBSCRIBING<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3016"</span><span class="tsd-signature-symbol"> = &quot;3016&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3016 - 流正在订阅</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="is_unpublished" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> IS_<wbr>UNPUBLISHED</h3>
+					<div class="tsd-signature tsd-kind-icon">IS_<wbr>UNPUBLISHED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3011"</span><span class="tsd-signature-symbol"> = &quot;3011&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3011 - 流尚未发布</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="is_unpublishing" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> IS_<wbr>UNPUBLISHING</h3>
+					<div class="tsd-signature tsd-kind-icon">IS_<wbr>UNPUBLISHING<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3013"</span><span class="tsd-signature-symbol"> = &quot;3013&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3013 - 流正在取消发布</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="is_unsubscribed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> IS_<wbr>UNSUBSCRIBED</h3>
+					<div class="tsd-signature tsd-kind-icon">IS_<wbr>UNSUBSCRIBED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3015"</span><span class="tsd-signature-symbol"> = &quot;3015&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3015 - 流尚未订阅</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="is_unsubscribing" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> IS_<wbr>UNSUBSCRIBING</h3>
+					<div class="tsd-signature tsd-kind-icon">IS_<wbr>UNSUBSCRIBING<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3017"</span><span class="tsd-signature-symbol"> = &quot;3017&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3017 - 流正在取消订阅</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="join_failed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> JOIN_<wbr>FAILED</h3>
+					<div class="tsd-signature tsd-kind-icon">JOIN_<wbr>FAILED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"2004"</span><span class="tsd-signature-symbol"> = &quot;2004&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>2004 - 加入房间失败</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="not_allowed_error" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> NOT_<wbr>ALLOWED_<wbr>ERROR</h3>
+					<div class="tsd-signature tsd-kind-icon">NOT_<wbr>ALLOWED_<wbr>ERROR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3005"</span><span class="tsd-signature-symbol"> = &quot;3005&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3005 - [拒绝错误] 用户拒绝了当前的浏览器实例的访问请求；或者用户拒绝了当前会话的访问；或者用户在全局范围内拒绝了所有媒体访问请求。</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="not_exists" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> NOT_<wbr>EXISTS</h3>
+					<div class="tsd-signature tsd-kind-icon">NOT_<wbr>EXISTS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"1003"</span><span class="tsd-signature-symbol"> = &quot;1003&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>1003 - 不存在</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="not_found_error" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> NOT_<wbr>FOUND_<wbr>ERROR</h3>
+					<div class="tsd-signature tsd-kind-icon">NOT_<wbr>FOUND_<wbr>ERROR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3006"</span><span class="tsd-signature-symbol"> = &quot;3006&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3006 - [找不到错误] 找不到满足请求参数的媒体类型。</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="not_join" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> NOT_<wbr>JOIN</h3>
+					<div class="tsd-signature tsd-kind-icon">NOT_<wbr>JOIN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"2005"</span><span class="tsd-signature-symbol"> = &quot;2005&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>2005 - 未加入房间</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="not_readable_error" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> NOT_<wbr>READABLE_<wbr>ERROR</h3>
+					<div class="tsd-signature tsd-kind-icon">NOT_<wbr>READABLE_<wbr>ERROR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3007"</span><span class="tsd-signature-symbol"> = &quot;3007&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3007 - [无法读取错误] 尽管用户已经授权使用相应的设备，操作系统上某个硬件、浏览器或者网页层面发生的错误导致设备无法被访问。</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="not_support" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> NOT_<wbr>SUPPORT</h3>
+					<div class="tsd-signature tsd-kind-icon">NOT_<wbr>SUPPORT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"1002"</span><span class="tsd-signature-symbol"> = &quot;1002&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>1002 - 不支持</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="others" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> OTHERS</h3>
+					<div class="tsd-signature tsd-kind-icon">OTHERS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"1999"</span><span class="tsd-signature-symbol"> = &quot;1999&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>1999 - 其他错误</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="over_constrained_error" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> OVER_<wbr>CONSTRAINED_<wbr>ERROR</h3>
+					<div class="tsd-signature tsd-kind-icon">OVER_<wbr>CONSTRAINED_<wbr>ERROR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3008"</span><span class="tsd-signature-symbol"> = &quot;3008&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3008 - [无法满足要求错误] 指定的要求无法被设备满足。</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="peerconnection_failed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> PEERCONNECTION_<wbr>FAILED</h3>
+					<div class="tsd-signature tsd-kind-icon">PEERCONNECTION_<wbr>FAILED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3009"</span><span class="tsd-signature-symbol"> = &quot;3009&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3009 - 流连接失败</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="play_not_allowed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> PLAY_<wbr>NOT_<wbr>ALLOWED</h3>
+					<div class="tsd-signature tsd-kind-icon">PLAY_<wbr>NOT_<wbr>ALLOWED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3019"</span><span class="tsd-signature-symbol"> = &quot;3019&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3019 - 自动播放被禁止错误</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="role_type_not_match" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> ROLE_<wbr>TYPE_<wbr>NOT_<wbr>MATCH</h3>
+					<div class="tsd-signature tsd-kind-icon">ROLE_<wbr>TYPE_<wbr>NOT_<wbr>MATCH<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"2008"</span><span class="tsd-signature-symbol"> = &quot;2008&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>2008 - 角色类型不匹配</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="signal_address_invalid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> SIGNAL_<wbr>ADDRESS_<wbr>INVALID</h3>
+					<div class="tsd-signature tsd-kind-icon">SIGNAL_<wbr>ADDRESS_<wbr>INVALID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"2009"</span><span class="tsd-signature-symbol"> = &quot;2009&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>2009 - 信令服务器地址错误</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="stream_exists" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> STREAM_<wbr>EXISTS</h3>
+					<div class="tsd-signature tsd-kind-icon">STREAM_<wbr>EXISTS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3001"</span><span class="tsd-signature-symbol"> = &quot;3001&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3001 - 同类型的流已存在</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="stream_not_exists" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> STREAM_<wbr>NOT_<wbr>EXISTS</h3>
+					<div class="tsd-signature tsd-kind-icon">STREAM_<wbr>NOT_<wbr>EXISTS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3000"</span><span class="tsd-signature-symbol"> = &quot;3000&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3000 - 流不存在</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="video_not_exists" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> VIDEO_<wbr>NOT_<wbr>EXISTS</h3>
+					<div class="tsd-signature tsd-kind-icon">VIDEO_<wbr>NOT_<wbr>EXISTS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"3003"</span><span class="tsd-signature-symbol"> = &quot;3003&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>3003 - 视频不存在</p>
+						</div>
+					</div>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="getcode" class="tsd-anchor"></a>
-					<h3>get<wbr>Code</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Code<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="tostring" class="tsd-anchor"></a>
 					<h3>to<wbr>String</h3>
@@ -268,6 +686,9 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
 								<a href="rtcerror.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="rtcerror.html#code" class="tsd-kind-icon">code</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="rtcerror.html#message" class="tsd-kind-icon">message</a>
 							</li>
@@ -278,10 +699,115 @@
 								<a href="rtcerror.html#stack" class="tsd-kind-icon">stack</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#abort_error" class="tsd-kind-icon">ABORT_<wbr>ERROR</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#access_token_invalid" class="tsd-kind-icon">ACCESS_<wbr>TOKEN_<wbr>INVALID</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#audio_not_exists" class="tsd-kind-icon">AUDIO_<wbr>NOT_<wbr>EXISTS</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#bad_request" class="tsd-kind-icon">BAD_<wbr>REQUEST</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#connection_failed" class="tsd-kind-icon">CONNECTION_<wbr>FAILED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="rtcerror.html#error" class="tsd-kind-icon">Error</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="rtcerror.html#getcode" class="tsd-kind-icon">get<wbr>Code</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#get_access_token_failed" class="tsd-kind-icon">GET_<wbr>ACCESS_<wbr>TOKEN_<wbr>FAILED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#gw_unreachable" class="tsd-kind-icon">GW_<wbr>UNREACHABLE</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#invalid_operation" class="tsd-kind-icon">INVALID_<wbr>OPERATION</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#invalid_parameter" class="tsd-kind-icon">INVALID_<wbr>PARAMETER</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#is_joining" class="tsd-kind-icon">IS_<wbr>JOINING</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#is_leaving" class="tsd-kind-icon">IS_<wbr>LEAVING</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#is_published" class="tsd-kind-icon">IS_<wbr>PUBLISHED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#is_publishing" class="tsd-kind-icon">IS_<wbr>PUBLISHING</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#is_reconnecting" class="tsd-kind-icon">IS_<wbr>RECONNECTING</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#is_subscribed" class="tsd-kind-icon">IS_<wbr>SUBSCRIBED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#is_subscribing" class="tsd-kind-icon">IS_<wbr>SUBSCRIBING</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#is_unpublished" class="tsd-kind-icon">IS_<wbr>UNPUBLISHED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#is_unpublishing" class="tsd-kind-icon">IS_<wbr>UNPUBLISHING</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#is_unsubscribed" class="tsd-kind-icon">IS_<wbr>UNSUBSCRIBED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#is_unsubscribing" class="tsd-kind-icon">IS_<wbr>UNSUBSCRIBING</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#join_failed" class="tsd-kind-icon">JOIN_<wbr>FAILED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#not_allowed_error" class="tsd-kind-icon">NOT_<wbr>ALLOWED_<wbr>ERROR</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#not_exists" class="tsd-kind-icon">NOT_<wbr>EXISTS</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#not_found_error" class="tsd-kind-icon">NOT_<wbr>FOUND_<wbr>ERROR</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#not_join" class="tsd-kind-icon">NOT_<wbr>JOIN</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#not_readable_error" class="tsd-kind-icon">NOT_<wbr>READABLE_<wbr>ERROR</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#not_support" class="tsd-kind-icon">NOT_<wbr>SUPPORT</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#others" class="tsd-kind-icon">OTHERS</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#over_constrained_error" class="tsd-kind-icon">OVER_<wbr>CONSTRAINED_<wbr>ERROR</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#peerconnection_failed" class="tsd-kind-icon">PEERCONNECTION_<wbr>FAILED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#play_not_allowed" class="tsd-kind-icon">PLAY_<wbr>NOT_<wbr>ALLOWED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#role_type_not_match" class="tsd-kind-icon">ROLE_<wbr>TYPE_<wbr>NOT_<wbr>MATCH</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#signal_address_invalid" class="tsd-kind-icon">SIGNAL_<wbr>ADDRESS_<wbr>INVALID</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#stream_exists" class="tsd-kind-icon">STREAM_<wbr>EXISTS</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#stream_not_exists" class="tsd-kind-icon">STREAM_<wbr>NOT_<wbr>EXISTS</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="rtcerror.html#video_not_exists" class="tsd-kind-icon">VIDEO_<wbr>NOT_<wbr>EXISTS</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="rtcerror.html#tostring" class="tsd-kind-icon">to<wbr>String</a>

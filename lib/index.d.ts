@@ -268,7 +268,7 @@ declare module '__@urtc/sdk-web/client' {
 }
 
 declare module '__@urtc/sdk-web/stream/local-stream' {
-  import { Stream } from '__@urtc/sdk-web/stream/stream';
+  import { Stream, StreamPlugin } from '__@urtc/sdk-web/stream/stream';
   import { PlayOptions } from '__@urtc/sdk-web/types';
   import { SwitchDeviceType } from '__@urtc/sdk-web/stream/types';
   import { VideoProfile, ScreenProfile, CustomVideoProfile } from '__@urtc/sdk-web/stream/profile';
@@ -314,6 +314,11 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
     * 本地流，可用于本地预览，也可用 client 进行发布
     */
   export class LocalStream extends Stream {
+      /**
+        * 加载流插件，使用插件功能
+        * @param plugins - 插件
+        */
+      static use(...plugins: StreamPlugin[]): void;
       /**
         * 初始化本地流对象，将读取麦克风、摄像头、屏幕共享等来初始化媒体流
         * @example
@@ -743,9 +748,161 @@ declare module '__@urtc/sdk-web/event' {
 }
 
 declare module '__@urtc/sdk-web/error' {
-  export * from '__@urtc/sdk-web/error/codes';
   /**
     * URTC 错误信息
+    * 错误代码参见 {@link ErrorCode}
+    */
+  export class RtcError extends Error {
+      constructor(code: ErrorCode, message: string);
+      code: ErrorCode;
+      toString(): string;
+      /**
+        * 1000 - 非法参数
+        */
+      static readonly INVALID_PARAMETER = "1000";
+      /**
+        * 1001 - 非法操作
+        */
+      static readonly INVALID_OPERATION = "1001";
+      /**
+        * 1002 - 不支持
+        */
+      static readonly NOT_SUPPORT = "1002";
+      /**
+        * 1003 - 不存在
+        */
+      static readonly NOT_EXISTS = "1003";
+      /**
+        * 1004 - 请求失败
+        */
+      static readonly BAD_REQUEST = "1004";
+      /**
+        * 1999 - 其他错误
+        */
+      static readonly OTHERS = "1999";
+      /**
+        * 2000 - 网关不可达
+        */
+      static readonly GW_UNREACHABLE = "2000";
+      /**
+        * 2001 - 获取 Access Token 失败
+        */
+      static readonly GET_ACCESS_TOKEN_FAILED = "2001";
+      /**
+        * 2002 - Access Token 非法
+        */
+      static readonly ACCESS_TOKEN_INVALID = "2002";
+      /**
+        * 2003 - Websocket 连接失败
+        */
+      static readonly CONNECTION_FAILED = "2003";
+      /**
+        * 2004 - 加入房间失败
+        */
+      static readonly JOIN_FAILED = "2004";
+      /**
+        * 2005 - 未加入房间
+        */
+      static readonly NOT_JOIN = "2005";
+      /**
+        * 2006 - 正在加入房间
+        */
+      static readonly IS_JOINING = "2006";
+      /**
+        * 2007 - 正在离开房间
+        */
+      static readonly IS_LEAVING = "2007";
+      /**
+        * 2008 - 角色类型不匹配
+        */
+      static readonly ROLE_TYPE_NOT_MATCH = "2008";
+      /**
+        * 2009 - 信令服务器地址错误
+        */
+      static readonly SIGNAL_ADDRESS_INVALID = "2009";
+      /**
+        * 3000 - 流不存在
+        */
+      static readonly STREAM_NOT_EXISTS = "3000";
+      /**
+        * 3001 - 同类型的流已存在
+        */
+      static readonly STREAM_EXISTS = "3001";
+      /**
+        * 3002 - 音频不存在
+        */
+      static readonly AUDIO_NOT_EXISTS = "3002";
+      /**
+        * 3003 - 视频不存在
+        */
+      static readonly VIDEO_NOT_EXISTS = "3003";
+      /**
+        * 3004 - [中止错误] 尽管用户和操作系统都授予了访问设备硬件的权利，而且未出现可能抛出NotReadableError异常的硬件问题，但仍然有一些问题的出现导致了设备无法被使用。
+        */
+      static readonly ABORT_ERROR = "3004";
+      /**
+        * 3005 - [拒绝错误] 用户拒绝了当前的浏览器实例的访问请求；或者用户拒绝了当前会话的访问；或者用户在全局范围内拒绝了所有媒体访问请求。
+        */
+      static readonly NOT_ALLOWED_ERROR = "3005";
+      /**
+        * 3006 - [找不到错误] 找不到满足请求参数的媒体类型。
+        */
+      static readonly NOT_FOUND_ERROR = "3006";
+      /**
+        * 3007 - [无法读取错误] 尽管用户已经授权使用相应的设备，操作系统上某个硬件、浏览器或者网页层面发生的错误导致设备无法被访问。
+        */
+      static readonly NOT_READABLE_ERROR = "3007";
+      /**
+        * 3008 - [无法满足要求错误] 指定的要求无法被设备满足。
+        */
+      static readonly OVER_CONSTRAINED_ERROR = "3008";
+      /**
+        * 3009 - 流连接失败
+        */
+      static readonly PEERCONNECTION_FAILED = "3009";
+      /**
+        * 3010 - 流正在重连
+        */
+      static readonly IS_RECONNECTING = "3010";
+      /**
+        * 3011 - 流尚未发布
+        */
+      static readonly IS_UNPUBLISHED = "3011";
+      /**
+        * 3012 - 流正在发布
+        */
+      static readonly IS_PUBLISHING = "3012";
+      /**
+        * 3013 - 流正在取消发布
+        */
+      static readonly IS_UNPUBLISHING = "3013";
+      /**
+        * 3014 - 流已经发布
+        */
+      static readonly IS_PUBLISHED = "3014";
+      /**
+        * 3015 - 流尚未订阅
+        */
+      static readonly IS_UNSUBSCRIBED = "3015";
+      /**
+        * 3016 - 流正在订阅
+        */
+      static readonly IS_SUBSCRIBING = "3016";
+      /**
+        * 3017 - 流正在取消订阅
+        */
+      static readonly IS_UNSUBSCRIBING = "3017";
+      /**
+        * 3018 - 流已经订阅
+        */
+      static readonly IS_SUBSCRIBED = "3018";
+      /**
+        * 3019 - 自动播放被禁止错误
+        */
+      static readonly PLAY_NOT_ALLOWED = "3019";
+  }
+  /**
+    * URTC 错误代码
     *
     * 通用错误及代码
     * - 1000 - 非法参数
@@ -763,7 +920,7 @@ declare module '__@urtc/sdk-web/error' {
     * - 2004 - 加入房间失败
     * - 2005 - 未加入房间
     * - 2006 - 正在加入房间
-    * - 2007 - 正在离开房间,
+    * - 2007 - 正在离开房间
     * - 2008 - 角色类型不匹配
     * - 2009 - 信令服务器地址错误
     *
@@ -787,12 +944,9 @@ declare module '__@urtc/sdk-web/error' {
     * - 3016 - 流正在订阅
     * - 3017 - 流正在取消订阅
     * - 3018 - 流已经订阅
+    * - 3019 - 自动播放被禁止错误
     */
-  export class RtcError extends Error {
-    constructor(code: number, message: string);
-    getCode(): string;
-    toString(): string;
-  }
+  export type ErrorCode = typeof RtcError[Exclude<keyof typeof RtcError, 'prototype' | 'getCode' | 'stackTraceLimit' | 'prepareStackTrace' | 'captureStackTrace'>];
 }
 
 declare module '__@urtc/sdk-web/user/user' {
@@ -912,17 +1066,12 @@ declare module '__@urtc/sdk-web/stream/stream' {
     */
   export interface StreamPlugin {
       name: string;
-      init(stream: Stream): void;
+      install: Function;
   }
   /**
-    * @public
+    * LocalStream 和 RemoteStream 的基类
     */
   export class Stream extends EventEmitter {
-      /**
-        * 加载某个插件，使用插件功能
-        * @param plugins - 插件
-        */
-      static use(...plugins: StreamPlugin[]): void;
       /**
         * 当前流ID
         */
@@ -1085,11 +1234,16 @@ declare module '__@urtc/sdk-web/stream/stream' {
 }
 
 declare module '__@urtc/sdk-web/stream/remote-stream' {
-  import { Stream } from '__@urtc/sdk-web/stream/stream';
+  import { Stream, StreamPlugin } from '__@urtc/sdk-web/stream/stream';
   /**
     * 远端流，房间内其他用户发布的流，可通过 client 进行订阅
     */
   export class RemoteStream extends Stream {
+      /**
+        * 加载流插件，使用插件功能
+        * @param plugins - 插件
+        */
+      static use(...plugins: StreamPlugin[]): void;
       /**
         * 音频源是否已 mute，当源端 mute/unmute 音频时，本端将收到 `mute-audio` 或 `unmute-audio` 事件的通知，同时此值将变为对应值
         */
@@ -1267,7 +1421,7 @@ declare module '__@urtc/sdk-web/connection/types' {
     * - OPEN - 已连接
     * - CONNECTING - 连接中
     * - CLOSING - 断开中
-    * - RECONNECTING- 开始重连
+    * - RECONNECTING - 重连中
     * - CLOSED - 已断开
     */
   export type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
@@ -1365,9 +1519,5 @@ declare module '__@urtc/sdk-web/' {
   /************** 4 plugin ****************/
   export { LocalStream };
   export { RemoteStream } from '__@urtc/sdk-web/stream/remote-stream';
-}
-
-declare module '__@urtc/sdk-web/error/codes' {
-  export {};
 }
 

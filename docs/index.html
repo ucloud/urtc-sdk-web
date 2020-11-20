@@ -101,6 +101,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-is-external"><a href="index.html#audiocodec" class="tsd-kind-icon">Audio<wbr>Codec</a></li>
 								<li class="tsd-kind-type-alias tsd-is-external"><a href="index.html#connectionstate" class="tsd-kind-icon">Connection<wbr>State</a></li>
+								<li class="tsd-kind-type-alias tsd-is-external"><a href="index.html#errorcode" class="tsd-kind-icon">Error<wbr>Code</a></li>
 								<li class="tsd-kind-type-alias tsd-is-external"><a href="index.html#loglevel" class="tsd-kind-icon">Log<wbr>Level</a></li>
 								<li class="tsd-kind-type-alias tsd-is-external"><a href="index.html#mediatype" class="tsd-kind-icon">Media<wbr>Type</a></li>
 								<li class="tsd-kind-type-alias tsd-is-external"><a href="index.html#playervideofittype" class="tsd-kind-icon">Player<wbr>Video<wbr>Fit<wbr>Type</a></li>
@@ -173,10 +174,67 @@
 								<li>OPEN - 已连接</li>
 								<li>CONNECTING - 连接中</li>
 								<li>CLOSING - 断开中</li>
-								<li>RECONNECTING- 开始重连</li>
+								<li>RECONNECTING - 重连中</li>
 								<li>CLOSED - 已断开</li>
 							</ul>
 						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-is-external">
+					<a name="errorcode" class="tsd-anchor"></a>
+					<h3>Error<wbr>Code</h3>
+					<div class="tsd-signature tsd-kind-icon">Error<wbr>Code<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">typeof </span><span class="tsd-signature-type">RtcError</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Exclude</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-symbol">typeof </span><span class="tsd-signature-type">RtcError</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"prototype"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"getCode"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"stackTraceLimit"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"prepareStackTrace"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"captureStackTrace"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>URTC 错误代码</p>
+						</div>
+						<p>通用错误及代码</p>
+						<ul>
+							<li>1000 - 非法参数</li>
+							<li>1001 - 非法操作</li>
+							<li>1002 - 不支持</li>
+							<li>1003 - 不存在</li>
+							<li>1004 - 请求失败</li>
+							<li>1999 - 其他错误</li>
+						</ul>
+						<p>房间相关错误及代码</p>
+						<ul>
+							<li>2000 - 网关不可达</li>
+							<li>2001 - 获取 Access Token 失败</li>
+							<li>2002 - Access Token 非法</li>
+							<li>2003 - Websocket 连接失败</li>
+							<li>2004 - 加入房间失败</li>
+							<li>2005 - 未加入房间</li>
+							<li>2006 - 正在加入房间</li>
+							<li>2007 - 正在离开房间</li>
+							<li>2008 - 角色类型不匹配</li>
+							<li>2009 - 信令服务器地址错误</li>
+						</ul>
+						<p>流相关错误及代码</p>
+						<ul>
+							<li>3000 - 流不存在</li>
+							<li>3001 - 同类型的流已存在</li>
+							<li>3002 - 音频不存在</li>
+							<li>3003 - 视频不存在</li>
+							<li>3004 - [中止错误] 尽管用户和操作系统都授予了访问设备硬件的权利，而且未出现可能抛出NotReadableError异常的硬件问题，但仍然有一些问题的出现导致了设备无法被使用。</li>
+							<li>3005 - [拒绝错误] 用户拒绝了当前的浏览器实例的访问请求；或者用户拒绝了当前会话的访问；或者用户在全局范围内拒绝了所有媒体访问请求。</li>
+							<li>3006 - [找不到错误] 找不到满足请求参数的媒体类型。</li>
+							<li>3007 - [无法读取错误] 尽管用户已经授权使用相应的设备，操作系统上某个硬件、浏览器或者网页层面发生的错误导致设备无法被访问。</li>
+							<li>3008 - [无法满足要求错误] 指定的要求无法被设备满足。</li>
+							<li>3009 - 流连接失败</li>
+							<li>3010 - 流正在重连</li>
+							<li>3011 - 流尚未发布</li>
+							<li>3012 - 流正在发布</li>
+							<li>3013 - 流正在取消发布</li>
+							<li>3014 - 流已经发布</li>
+							<li>3015 - 流尚未订阅</li>
+							<li>3016 - 流正在订阅</li>
+							<li>3017 - 流正在取消订阅</li>
+							<li>3018 - 流已经订阅</li>
+							<li>3019 - 自动播放被禁止错误</li>
+						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-is-external">
@@ -1174,6 +1232,9 @@ client.join(<span class="hljs-string">&#x27;roomId&#x27;</span>, <span class="hl
 					</li>
 					<li class=" tsd-kind-type-alias tsd-is-external">
 						<a href="index.html#connectionstate" class="tsd-kind-icon">Connection<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-external">
+						<a href="index.html#errorcode" class="tsd-kind-icon">Error<wbr>Code</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-is-external">
 						<a href="index.html#loglevel" class="tsd-kind-icon">Log<wbr>Level</a>
