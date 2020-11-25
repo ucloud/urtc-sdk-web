@@ -316,9 +316,10 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
   export class LocalStream extends Stream {
       /**
         * 加载流插件，使用插件功能
-        * @param plugins - 插件
+        * @param plugin - 插件
+        * @param options - 插件初始化参数
         */
-      static use(...plugins: StreamPlugin[]): void;
+      static use(plugin: StreamPlugin, options?: any): void;
       /**
         * 初始化本地流对象，将读取麦克风、摄像头、屏幕共享等来初始化媒体流
         * @example
@@ -1241,9 +1242,10 @@ declare module '__@urtc/sdk-web/stream/remote-stream' {
   export class RemoteStream extends Stream {
       /**
         * 加载流插件，使用插件功能
-        * @param plugins - 插件
+        * @param plugin - 插件
+        * @param options - 插件初始化参数
         */
-      static use(...plugins: StreamPlugin[]): void;
+      static use(plugin: StreamPlugin, options?: any): void;
       /**
         * 音频源是否已 mute，当源端 mute/unmute 音频时，本端将收到 `mute-audio` 或 `unmute-audio` 事件的通知，同时此值将变为对应值
         */
