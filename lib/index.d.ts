@@ -81,8 +81,10 @@ declare module '@urtc/sdk-web' {
   export * from '__@urtc/sdk-web/stream/local-stream';
   export * from '__@urtc/sdk-web/stream/remote-stream';
   export * from '__@urtc/sdk-web/server';
+  export * from '__@urtc/sdk-web/plugin';
   export * from '__@urtc/sdk-web/version';
   /************** 4 plugin ****************/
+  export { Client };
   export { LocalStream };
   export { RemoteStream } from '__@urtc/sdk-web/stream/remote-stream';
 }
@@ -94,10 +96,17 @@ declare module '__@urtc/sdk-web/client' {
   import { RemoteStream } from '__@urtc/sdk-web/stream/remote-stream';
   import { User } from '__@urtc/sdk-web/user/user';
   import { JoinOptions, RoleType } from '__@urtc/sdk-web/types';
+  import { ClientPlugin } from '__@urtc/sdk-web/plugin';
   /**
     * URTC 客户端，可进行加入、离开房间，发布、订阅流等操作。
     */
   export class Client {
+      /**
+        * 加载 Client 插件，使用插件功能
+        * @param plugin - 插件
+        * @param options - 插件初始化参数
+        */
+      static use(plugin: ClientPlugin, options?: any): void;
       /**
         * 获取远端用户信息
         * @example
@@ -268,10 +277,11 @@ declare module '__@urtc/sdk-web/client' {
 }
 
 declare module '__@urtc/sdk-web/stream/local-stream' {
-  import { Stream, StreamPlugin } from '__@urtc/sdk-web/stream/stream';
+  import { Stream } from '__@urtc/sdk-web/stream/stream';
   import { PlayOptions } from '__@urtc/sdk-web/types';
   import { SwitchDeviceType } from '__@urtc/sdk-web/stream/types';
   import { VideoProfile, ScreenProfile, CustomVideoProfile } from '__@urtc/sdk-web/stream/profile';
+  import { StreamPlugin } from '__@urtc/sdk-web/plugin';
   /**
     * 创建本地流的参数
     */
@@ -1063,13 +1073,6 @@ declare module '__@urtc/sdk-web/stream/stream' {
   import { PlayOptions } from '__@urtc/sdk-web/types';
   import { MediaType, StreamStats } from '__@urtc/sdk-web/stream/types';
   /**
-    * @public
-    */
-  export interface StreamPlugin {
-      name: string;
-      install: Function;
-  }
-  /**
     * LocalStream 和 RemoteStream 的基类
     */
   export class Stream extends EventEmitter {
@@ -1235,7 +1238,8 @@ declare module '__@urtc/sdk-web/stream/stream' {
 }
 
 declare module '__@urtc/sdk-web/stream/remote-stream' {
-  import { Stream, StreamPlugin } from '__@urtc/sdk-web/stream/stream';
+  import { Stream } from '__@urtc/sdk-web/stream/stream';
+  import { StreamPlugin } from '__@urtc/sdk-web/plugin';
   /**
     * 远端流，房间内其他用户发布的流，可通过 client 进行订阅
     */
@@ -1313,6 +1317,23 @@ declare module '__@urtc/sdk-web/server' {
     * @throws {@link RtcError}
     */
   export function setServers(conf: ServerConfig): void;
+}
+
+declare module '__@urtc/sdk-web/plugin' {
+  /**
+    * @public
+    */
+  export interface StreamPlugin {
+      name: string;
+      install: Function;
+  }
+  /**
+    * @public
+    */
+  export interface ClientPlugin {
+      name: string;
+      install: Function;
+  }
 }
 
 declare module '__@urtc/sdk-web/version' {
@@ -1517,8 +1538,10 @@ declare module '__@urtc/sdk-web/' {
   export * from '__@urtc/sdk-web/stream/local-stream';
   export * from '__@urtc/sdk-web/stream/remote-stream';
   export * from '__@urtc/sdk-web/server';
+  export * from '__@urtc/sdk-web/plugin';
   export * from '__@urtc/sdk-web/version';
   /************** 4 plugin ****************/
+  export { Client };
   export { LocalStream };
   export { RemoteStream } from '__@urtc/sdk-web/stream/remote-stream';
 }
