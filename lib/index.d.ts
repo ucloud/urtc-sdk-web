@@ -295,7 +295,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.6.12";
+  export const version = "1.6.13";
 }
 
 declare module '__urtc-sdk/token' {
@@ -602,6 +602,7 @@ declare module '__urtc-sdk/types' {
     bitrate: number;
   }
   export interface VideoProfileOptions {
+    streamId?: string;
     previewId?: string;
     profile: string | CustomVideoProfile;
   }

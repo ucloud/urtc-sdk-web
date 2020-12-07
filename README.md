@@ -926,7 +926,7 @@ client.setVideoProfile(Profile, onSuccess, onFailure)
 - Profile 为 string 或 CustomVideoProfile 或 VideoProfileOptions 类型，必传，类型说明如下
   - 为 string 类型时，使用预定义的视频 Profile（可用 getSupportProfileNames 获取预定义的 Profile），如 `client.setVideoProfile('640*480', onSuccess, onFailure)`;
   - 为 CustomVideoProfile 时，使用用户自定义的视频 Profile，如 `client.setVideoProfile({width:640, height:480, framerate:20, bitrate:500}, onSuccess, onFailure)`，具体参见下面说明;
-  - 为 VideoProfileOptions 时，对指定的本地（预览）流设置视频 Profile，如 `client.setVideoProfile({previewId: 'xxx', profile: '640*480'}, onSuccess, onFailure)`，具体参见下面说明;
+  - 为 VideoProfileOptions 时，对指定的本地（预览）流设置视频 Profile，如 `client.setVideoProfile({streamId: 'xxx', profile: '640*480'}, onSuccess, onFailure)`，具体参见下面说明;
 
 CustomVideoProfile 自定义视频 Profile:
 
@@ -943,16 +943,16 @@ VideoProfileOptions 指定流的视频 Profile:
 
 ```js
 {
-  previewId: string                     // 必填，本地（预览）流的 previewId
+  streamId: string                      // 必填，本地流的流 ID (sid)
   profile: string | CustomVideoProfile  // 必填，指定 video profile，可用预定义或自定义的 Profile
 }
 ```
 
 > 注：
-> 1. 参数为预定义 Profile 或 CustomVideoProfile 时，为全局生效，后续创建/发布的流的视频都将设置为此 Profile。
-> 2. 参数为 VideoProfileOptions 类型时，只对 previewId 对应的流生效，可使用预定义的 Profile 或 自定义的 Profile。
-> 3. 已发布的流，不可变更 video profile，故请在 publish 前调用此方法。
-> 4. 屏幕共享流创建后，亦无法变更 video profile，故通过 createStream 方法创建屏幕共享流时，请在创建前调用 setVideoProfile。
+> 1. 参数为预定义 Profile 或 CustomVideoProfile 时，为全局生效，后续创建的流的视频都将设置为此 Profile。
+> 2. 屏幕共享流创建后，无法变更 video profile，故请在创建前通过更改全局的 Profile。
+> 3. 参数为 VideoProfileOptions 类型时，只对指定流ID的流生效。
+> 4. 原 VideoProfileOptions 中指定流 ID 所使用的 previewId 已废弃，请使用 streamId 代替。
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
