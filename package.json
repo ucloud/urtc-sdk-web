@@ -1,6 +1,6 @@
 {
   "name": "urtc-sdk",
-  "version": "1.6.16",
+  "version": "1.6.17",
   "description": "UCloud RTC javascript SDK",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

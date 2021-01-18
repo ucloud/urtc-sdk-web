@@ -52,9 +52,11 @@ declare module '__urtc-sdk/logger' {
     info(...args: any[]): void;
     warn(...args: any[]): void;
     error(...args: any[]): void;
+    report(...args: any[]): void;
     onLog({}: {}): void;
     onWarn({}: {}): void;
     onError({}: {}): void;
+    onReport({}: {}): void;
   }
   const _default: Logger;
   export default _default;
@@ -81,6 +83,7 @@ declare module '__urtc-sdk/client' {
     stopRecording(onSuccess?: () => void, onFailure?: (data?: any) => void): void;
     getUser(): User | undefined;
     getUsers(): User[];
+    sync(cb: (err?: Error) => void): void;
     getStream(streamId?: string): Stream | undefined;
     getLocalStreams(): Stream[];
     getRemoteStreams(): Stream[];
@@ -295,7 +298,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.6.16";
+  export const version = "1.6.17";
 }
 
 declare module '__urtc-sdk/token' {
@@ -316,7 +319,7 @@ declare module '__urtc-sdk/types' {
   export type RoomType = 'rtc' | 'live';
   export type UserRole = 'pull' | 'push' | 'push-and-pull';
   export type DeviceType = 'audio' | 'video';
-  export type EventType = 'user-added' | 'user-removed' | 'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' | 'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' | 'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' | 'record-notify' | 'relay-notify' | 'volume-indicator' | 'error-notify';
+  export type EventType = 'user-added' | 'user-removed' | 'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' | 'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' | 'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' | 'record-notify' | 'relay-notify' | 'volume-indicator' | 'error-notify' | 'stream-playing' | 'stream-paused';
   export type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
   export type WaterMarkPosition = 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom';
   export type WaterMarkType = 'time' | 'image' | 'text';
