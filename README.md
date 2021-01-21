@@ -952,7 +952,7 @@ VideoProfileOptions 指定流的视频 Profile:
 > 1. 参数为预定义 Profile 或 CustomVideoProfile 时，为全局生效，后续创建的流的视频都将设置为此 Profile。
 > 2. 屏幕共享流创建后，无法变更 video profile，故请在创建前通过更改全局的 Profile。
 > 3. 参数为 VideoProfileOptions 类型时，只对指定流ID的流生效。
-> 4. 原 VideoProfileOptions 中指定流 ID 所使用的 previewId 已废弃，请使用 streamId 代替。
+> 4. VideoProfileOptions 中指定流 ID 在 1.6.12 及以下版本时需使用 previewId 作为属性名，1.6.13 及以上版本也可使用 previewId 但更建议使用 streamId。
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
