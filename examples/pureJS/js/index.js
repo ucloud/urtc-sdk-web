@@ -17,7 +17,7 @@ window.onload = function () {
     return;
   }
 
-  console.log('UCloudRTC sdk version: ', UCloudRTC.version);
+  console.log('UCloudRTC sdk version:',UCloudRTC);
 
   const Player = function(client, stream, selectFunc) {
     this.client = client;
