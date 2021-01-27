@@ -17,7 +17,7 @@ window.onload = function () {
     return;
   }
 
-  console.log('UCloudRTC sdk version:',UCloudRTC);
+  console.log('UCloudRTC sdk version:',UCloudRTC.version);
 
   const Player = function(client, stream, selectFunc) {
     this.client = client;
@@ -243,6 +243,7 @@ window.onload = function () {
       }
       this.client.joinRoom(roomId, userId, () => {
         console.info('加入房间成功');
+        this.state.isJoinedRoom = true
         this.renderRoomStatus(true);
       }, (err) => {
         console.error('加入房间失败： ', err);
@@ -320,6 +321,8 @@ window.onload = function () {
       const {
         isJoinedRoom
       } = this.state;
+      console.log("离开房间:isJoinedRoom",isJoinedRoom)
+
       if (!isJoinedRoom) {
         return;
       }
