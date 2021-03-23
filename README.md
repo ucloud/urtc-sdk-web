@@ -735,8 +735,8 @@ Stream:
   sid: string                     // 流ID
   uid: string                     // 对应的用户的ID
   type: 'publish' | 'subscribe'   // 流类型，为 publish 和 subscribe 两种，分别对应本地流和远端流
-  video: boolean                  // 是否包含音频
-  audio: boolean                  // 是否包含视频
+  audio: boolean                  // 是否包含音频
+  video: boolean                  // 是否包含视频
   muteAudio: boolean              // 音频轨道是否禁用，已废弃
   muteVideo: boolean              // 视频轨道是否禁用，已废弃
   audioMuted: boolean             // 音频本地是否已 mute，本地/发布流 mute 时，将不推音频数据到服务器，远端/订阅流 mute 时，将不从服务器拉取音频数据
@@ -826,13 +826,15 @@ const result = client.getMediaStream(StreamId)
 
 获取麦克风设备，示例代码：
 
-> 注：若站点未经过用户授权浏览器使用麦克风设备，会弹出提示要求用户进行授权
+> 注：若站点未经过用户授权浏览器使用麦克风设备，可能会弹出提示要求用户进行授权
 
 ```js
-client.getMicrophones(onSuccess, onFailure)
+client.getMicrophones(GetDevicesOptions, onSuccess, onFailure)
 ```
 
 #### 参数说明
+
+- GetDevicesOptions 参见 [GetDevicesOptions](#getdevicesoptions)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -857,13 +859,15 @@ Err 为错误信息
 
 获取摄像头设备，示例代码：
 
-> 注：若站点未经过用户授权浏览器使用摄像头设备，会弹出提示要求用户进行授权
+> 注：若站点未经过用户授权浏览器使用摄像头设备，可能会弹出提示要求用户进行授权
 
 ```js
-client.getCameras(onSuccess, onFailure)
+client.getCameras(GetDevicesOptions, onSuccess, onFailure)
 ```
 
 #### 参数说明
+
+- GetDevicesOptions 参见 [GetDevicesOptions](#getdevicesoptions)
 
 - onSuccess: function 类型，选传，方法调用成功时执行的回调函数，函数说明如下
 
@@ -887,8 +891,6 @@ Err 为错误信息
 ### 25. getLoudspeakers 方法
 
 获取音响/声音输出设备，示例代码：
-
-> 注：若站点未经过用户授权浏览器使用音频设备，会弹出提示要求用户进行授权
 
 ```js
 client.getLoudspeakers(onSuccess, onFailure)
@@ -2343,13 +2345,24 @@ client.enableAudioVolumeIndicator(interval)
 
 用于获取当前浏览器可访问的音视频设备的设备信息，包括麦克风、摄像头、音频输出设备
 
-> 注：若站点未经过用户授权浏览器使用麦克风、摄像头、音频输出设备，会弹出提示要求用户进行授权
-
 ```js
-UCloudRTC.getDevices(onSuccess, onFailure)
+UCloudRTC.getDevices(GetDevicesOptions, onSuccess, onFailure)
 ```
 
 #### 参数说明
+
+<a name="getdevicesoptions"></a>
+
+- GetDevicesOptions: object 类型，选传，类型说明如下
+
+```js
+{
+  microphone?: boolean; // 是否强制获取设备 ID 等详细的设备信息，默认为 true
+  camera?: boolean; // 是否强制获取设备 ID 等详细的设备信息，默认为 true
+}
+```
+> 注：关于 GetDevicesOptions 的说明，部分浏览器（如 Safari）在未经过用户授权时，仅能获取部分设备信息，如设备个数、类型等，并不能获取像设备 ID 等更详细的信息，开启强制获取设备详细信息，将提示用户授权。因为默认为开启强制获取设备详细信息，因此可能会弹出提示要求用户进行授权。
+
 
 - onSuccess: 必传，函数类型，方法调用成功时执行的回调函数。
 

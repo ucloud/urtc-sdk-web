@@ -7,9 +7,9 @@ declare module 'urtc-sdk' {
   import { getSupportProfileNames } from '__urtc-sdk/resolutions';
   import { version } from '__urtc-sdk/version';
   import { genToken } from '__urtc-sdk/token';
-  import { Codecs, DeviceDetectionOptions, DeviceDetectionResult } from '__urtc-sdk/types';
+  import { Codecs, DeviceDetectionOptions, DeviceDetectionResult, GetDevicesOptions } from '__urtc-sdk/types';
   export * from '__urtc-sdk/types';
-  function getDevices(onSuccess: (data: MediaDeviceInfo[]) => any, onFailure: (data?: any) => any): void;
+  function getDevices(opts: GetDevicesOptions, onSuccess: (data: MediaDeviceInfo[]) => any, onFailure: (data?: any) => any): void;
   const generateToken: typeof genToken;
   function getSupportedCodec(callback?: (data: Codecs) => any): void;
   function isSupportWebRTC(): boolean;
@@ -63,7 +63,7 @@ declare module '__urtc-sdk/logger' {
 }
 
 declare module '__urtc-sdk/client' {
-  import { UserRole, User, Stream, AudioStats, VideoStats, NetworkStats, LeaveRoomOptions, ClientOptions, DeviceOptions, DeviceDetectionOptions, DeviceDetectionResult, PublishOptions, AudioVolumeOptions, EventType, RecordOptions, Record, SwitchDeviceOptions, SwitchImageOptions, EffectOptions, EffectVolumeOptions, SnapshotOptions, ReplaceTrackOptions, MixOptions, StopMixOptions, MixResult, AddMixStreamsOptions, RemoveMixStreamsOptions, StartRecordOptions, RecordResult, UpdateMixStreamsOptions, StartRelayOptions, RelayResult, UpdateRelayPushURLOptions, UpdateRelayLayoutOptions, PlayOptions, PreviewStreamOptions, VideoProfileOptions, CustomVideoProfile } from '__urtc-sdk/types';
+  import { UserRole, User, Stream, AudioStats, VideoStats, NetworkStats, LeaveRoomOptions, ClientOptions, DeviceOptions, DeviceDetectionOptions, DeviceDetectionResult, PublishOptions, AudioVolumeOptions, EventType, RecordOptions, Record, SwitchDeviceOptions, SwitchImageOptions, EffectOptions, EffectVolumeOptions, SnapshotOptions, ReplaceTrackOptions, MixOptions, StopMixOptions, MixResult, AddMixStreamsOptions, RemoveMixStreamsOptions, StartRecordOptions, RecordResult, UpdateMixStreamsOptions, StartRelayOptions, RelayResult, UpdateRelayPushURLOptions, UpdateRelayLayoutOptions, PlayOptions, PreviewStreamOptions, VideoProfileOptions, CustomVideoProfile, GetDevicesOptions } from '__urtc-sdk/types';
   export default class Client {
     constructor(appId: string, token: string, options?: ClientOptions);
     setRole(role: UserRole): boolean;
@@ -95,8 +95,8 @@ declare module '__urtc-sdk/client' {
     resume(streamId: string, callback: (err?: Error) => void): void;
     pause(streamId: string, callback: (err?: Error) => void): void;
     stop(streamId: string, callback: (err?: Error) => void): void;
-    getMicrophones(onSuccess?: (data: MediaDeviceInfo[]) => void, onFailure?: (data?: any) => void): void;
-    getCameras(onSuccess?: (data: MediaDeviceInfo[]) => void, onFailure?: (data?: any) => void): void;
+    getMicrophones(opts?: GetDevicesOptions, onSuccess?: (data: MediaDeviceInfo[]) => void, onFailure?: (data?: any) => void): void;
+    getCameras(opts?: GetDevicesOptions, onSuccess?: (data: MediaDeviceInfo[]) => void, onFailure?: (data?: any) => void): void;
     getLoudspeakers(onSuccess?: (data: MediaDeviceInfo[]) => void, onFailure?: (data?: any) => void): void;
     setVideoProfile(options: string | CustomVideoProfile | VideoProfileOptions, onSuccess?: () => void, onFailure?: (data?: any) => void): void;
     switchDevice(options: SwitchDeviceOptions, onSuccess?: (data?: any) => void, onFailure?: (data?: any) => void): void;
@@ -298,7 +298,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.6.23";
+  export const version = "1.6.24";
 }
 
 declare module '__urtc-sdk/token' {
@@ -627,6 +627,10 @@ declare module '__urtc-sdk/types' {
     type: 'audio' | 'video';
     status: 'playing' | 'paused';
     stream: Stream;
+  }
+  export interface GetDevicesOptions {
+    microphone?: boolean;
+    camera?: boolean;
   }
 }
 
