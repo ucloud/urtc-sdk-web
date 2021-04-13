@@ -1609,7 +1609,7 @@ MixVideoOptions 类型，类型说明
   codec: MixVideoCodec    // 视频的编码格式，MixVideoCodec 为 'h264' | 'h265' 其中之一，默认为 'h264'
   quality?: H264Quality   // 视频质量，当 codec 为 h264 时，此项起作用，H264Quality 为 'B' | 'CB' | 'M' | 'E' | 'H' 其中之一，默认为 'CB'
   frameRate?: number      // 视频帧率，可选值 6 | 12 | 15 | 24 | 30 | 48 | 60，默认为 15
-  bitRate?: number        // 视频比特率，默认为 500
+  bitRate?: number        // 视频码率，默认为 500
 }
 ```
 
@@ -1871,8 +1871,8 @@ MixVideoOptions 类型，类型说明
 {
   codec: MixVideoCodec    // 视频的编码格式，MixVideoCodec 为 'h264' | 'h265' 其中之一，默认为 'h264'
   quality?: H264Quality   // 视频质量，当 codec 为 h264 时，此项起作用，H264Quality 为 'B' | 'CB' | 'M' | 'E' | 'H' 其中之一，默认为 'CB'
-  frameRate?: number      // 视频码率，可选值 6 | 12 | 15 | 24 | 30 | 48 | 60，默认为 15
-  bitRate?: number        // 视频比特率，默认为 500
+  frameRate?: number      // 视频帧率，可选值 6 | 12 | 15 | 24 | 30 | 48 | 60，默认为 15
+  bitRate?: number        // 视频码率，默认为 500
 }
 ```
 > 注：关于布局风格, 请参见详细的混流说明 [混流风格](https://github.com/UCloudDocs/urtc/blob/master/cloudRecord/RecordLaylout.md)

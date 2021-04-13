@@ -298,7 +298,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.6.24";
+  export const version = "1.6.25";
 }
 
 declare module '__urtc-sdk/token' {
@@ -545,11 +545,16 @@ declare module '__urtc-sdk/types' {
     bucket: string;
     region: string;
     layout?: MixLayoutOptions;
+    audio?: MixAudioOptions;
+    video?: MixVideoOptions;
     width?: number;
     height?: number;
     backgroundColor?: BackgroundColorOptions;
     waterMark?: WaterMarkOptions;
     streams?: MixStream[];
+    outputMode?: MixOutputMode;
+    streamAddMode?: MixStreamAddMode;
+    keyUser?: string;
   }
   export interface RecordResult {
     Id: string;
@@ -565,13 +570,14 @@ declare module '__urtc-sdk/types' {
     layout?: MixLayoutOptions;
     audio?: MixAudioOptions;
     video?: MixVideoOptions;
-    outputMode?: MixOutputMode;
     width?: number;
     height?: number;
     backgroundColor?: BackgroundColorOptions;
     waterMark?: WaterMarkOptions;
     streams?: MixStream[];
+    outputMode?: MixOutputMode;
     streamAddMode?: MixStreamAddMode;
+    keyUser?: string;
   }
   export interface RelayResult {
     Id: string;
