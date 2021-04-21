@@ -2218,6 +2218,7 @@ client.createStream(PreviewOptions, callback)
   mediaStream?: MediaStream  // 选填，允许用户发布自定义的媒体流。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   file?: File             // 选填，发布时指定使用图片文件生成视频源。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   filePath?: string       // 选填，发布时指定使用网络图片生成视频源。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  userId?: string         // 选填，joinRoom 之前创建的流将使用此值（或 'unknown' - 未填此字段时）指定为流的 uid，joinRoom 之后，将忽略此值，直接使用加入房间时指定的 userId 为流的 uid
 }
 ```
 

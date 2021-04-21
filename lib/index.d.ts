@@ -298,7 +298,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.6.25";
+  export const version = "1.6.26";
 }
 
 declare module '__urtc-sdk/token' {
@@ -350,6 +350,7 @@ declare module '__urtc-sdk/types' {
     previewId?: string;
   }
   export interface PreviewStreamOptions extends PublishOptions {
+    userId?: string;
     previewId: string;
   }
   export interface DeviceOptions {
