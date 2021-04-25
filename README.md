@@ -32,6 +32,7 @@
 * RtcEvent - URTC 事件，主要有以下几类
   *  [RtcUserEvent](https://ucloud.github.io/urtc-sdk-web/index.html#rtcuserevent)
   *  [RtcStreamEvent](https://ucloud.github.io/urtc-sdk-web/index.html#rtcstreamevent)
+  *  [RtcPlayerEvent](https://ucloud.github.io/urtc-sdk-web/index.html#rtcplayerevent)
   *  [RtcConnectionEvent](https://ucloud.github.io/urtc-sdk-web/index.html#rtcconnectionevent)
 
 ### URTC 全局属性或方法
@@ -46,6 +47,7 @@
 * [getMicrophones](https://ucloud.github.io/urtc-sdk-web/index.html#getmicrophones) - 获取麦克风设备列表
 * [isSupportScreenShare](https://ucloud.github.io/urtc-sdk-web/index.html#issupportscreenshare) - 检测浏览器是否支持屏幕共享
 * [isSupportWebRTC](https://ucloud.github.io/urtc-sdk-web/index.html#issupportwebrtc) - 检测浏览器是否完全（可访问本地音视频设备）支持 WebRTC
+* [getSupportedCodec](https://ucloud.github.io/urtc-sdk-web/index.html#getsupportedcodec) - 检测浏览器支持的WebRTC的音视频编解码格式
 * [reportLog](https://ucloud.github.io/urtc-sdk-web/index.html#reportlog) - 开启/关闭操作/错误/状态日志的上报
 * [setLogLevel](https://ucloud.github.io/urtc-sdk-web/index.html#setloglevel) - 设置日志打印级别，用于打印出更多日志来调试或定位问题
 * [setServers](https://ucloud.github.io/urtc-sdk-web/index.html#setservers) - 用于私有化部署时，指定部署的服务器地址
@@ -99,7 +101,7 @@ LocalStream 对象包含以下方法：
 * [muteAudio](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#muteaudio) - mute 当前流的音频
 * [muteVideo](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#mutevideo) - mute 当前流的视频
 * [off](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#off) - 取消监听流对象事件
-* [on](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#on) - 监听流对象事件
+* [on](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#on) - 监听流对象事件，可监听的事件类型有 [RtcStreamEventType](https://ucloud.github.io/urtc-sdk-web/index.html#rtcstreameventtype)、[RtcPlayerEventType](https://ucloud.github.io/urtc-sdk-web/index.html#rtcplayereventtype)
 * [play](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#play) - 播放当前流
 * [removeTrack](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#removetrack) - 从当前流中删除一条媒体轨道（音轨或视轨）
 * [replaceTrack](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#replacetrack) - 替换当前流中的媒体轨道
@@ -135,6 +137,8 @@ RemoteStream 对象包含以下方法：
 * [hasVideo](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#hasvideo) - 判断当前流是否有视频
 * [muteAudio](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#muteaudio) - mute 当前流的音频
 * [muteVideo](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#mutevideo) - mute 当前流的视频
+* [off](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#off) - 取消监听流对象事件
+* [on](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#on) - 监听流对象事件，可监听的事件类型有 [RtcStreamEventType](https://ucloud.github.io/urtc-sdk-web/index.html#rtcstreameventtype)、[RtcPlayerEventType](https://ucloud.github.io/urtc-sdk-web/index.html#rtcplayereventtype)
 * [play](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#play) - 播放当前流
 * [resume](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#resume) - 恢复播放流，一般由于浏览器限制无法自动播放时，可提示用户手动触发该方法进行恢复播放
 * [setAudioVolume](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#setaudiovolume) - 设置输出音量，默认为 100

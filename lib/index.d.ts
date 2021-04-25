@@ -10,6 +10,7 @@ declare module '@urtc/sdk-web' {
     * 创建客户端
     * @param appId - 应用 ID，可在控制台查看
     * @param opts - 定义客户端的属性
+    * @public
     * @example
     * ```js
     * const client = createClient('AppID');
@@ -28,12 +29,13 @@ declare module '@urtc/sdk-web' {
   /**
     * 创建本地流
     * @param opts - 必传，定义本地音视频流的属性
-    * > 注：
-    * > 1. video, screen 不可同时为 true
-    * > 2. audio, video, screen 不可同时为 false
-    * > 3. 若指定了 file，则 init 时将优先使用 file 来创建初始化本地流的视频
-    * > 4. screenAudio 在不同浏览器上表现不同，参见 {@link LocalStreamOptions}
+    * 注：
+    * 1. video, screen 不可同时为 true
+    * 2. audio, video, screen 不可同时为 false
+    * 3. 若指定了 file，则 init 时将优先使用 file 来创建初始化本地流的视频
+    * 4. screenAudio 在不同浏览器上表现不同，参见 {@link LocalStreamOptions}
     * @param id - 选传，指定本地流的 ID，请注意创建多条流时，不可传入重复值
+    * @public
     * @example
     * ```js
     * const localStream = createStream({ audio: true, video: true, screen: false });
@@ -54,6 +56,7 @@ declare module '@urtc/sdk-web' {
   /**
     * 设置日志打印级别，用于打印出更多日志来调试或定位问题
     * @param level - 日志级别，有 'debug', 'info', 'warn', 'error' 级别;
+    * @public
     * @example
     * ```js
     * setLogLevel('info');
@@ -63,6 +66,7 @@ declare module '@urtc/sdk-web' {
   /**
     * 开启/关闭操作/错误/状态日志的上报，未调用时，默认开启上报日志
     * @param enable - 是否开启上报
+    * @public
     * @example
     * ```js
     * reportLog(false); // 关闭日志上报，关闭后，在线上出现错误时，将无法根据日志进行排查
@@ -99,6 +103,7 @@ declare module '__@urtc/sdk-web/client' {
   import { ClientPlugin } from '__@urtc/sdk-web/plugin';
   /**
     * URTC 客户端，可进行加入、离开房间，发布、订阅流等操作。
+    * @public
     */
   export class Client {
       /**
@@ -284,6 +289,7 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
   import { StreamPlugin } from '__@urtc/sdk-web/plugin';
   /**
     * 创建本地流的参数
+    * @public
     */
   export interface LocalStreamOptions {
       /**
@@ -308,7 +314,7 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
       screen: boolean;
       /**
         * 是否读取屏幕共享的音频，默认: false
-        * > 注：仅部分浏览器支持，如 Chrome 74，且不同系统表现不同，如 windows 会读取桌面音频，macOS 只支持读取浏览器 tab 中的音频，
+        * 注：仅部分浏览器支持，如 Chrome 74，且不同系统表现不同，如 windows 会读取桌面音频，macOS 只支持读取浏览器 tab 中的音频，
         */
       screenAudio?: boolean;
       /**
@@ -322,6 +328,7 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
   }
   /**
     * 本地流，可用于本地预览，也可用 client 进行发布
+    * @public
     */
   export class LocalStream extends Stream {
       /**
@@ -348,8 +355,8 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
       init(): Promise<void>;
       /**
         * 添加一条媒体轨道（音轨或视轨）到当前流
-        * > 注：
-        * > 1. 若创建本地流时，audio 为 false，不可添加音轨，video 为 false 时，不可添加视轨
+        * 注：
+        * 1. 若创建本地流时，audio 为 false，不可添加音轨，video 为 false 时，不可添加视轨
         * @param track - 媒体轨道
         * @example
         * ```js
@@ -368,9 +375,9 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
       removeTrack(track: MediaStreamTrack): void;
       /**
         * 替换当前流中的媒体轨道
-        * > 注：
-        * > 1. 替换视频时，请使用与原轨道相同的分辨率的媒体轨道
-        * > 2. 返回值为当前流中相同类型的媒体轨道，此媒体轨道仍可用（占用音频设备或视频设备），请自行决定是否调用其 stop 方法释放设备
+        * 注：
+        * 1. 替换视频时，请使用与原轨道相同的分辨率的媒体轨道
+        * 2. 返回值为当前流中相同类型的媒体轨道，此媒体轨道仍可用（占用音频设备或视频设备），请自行决定是否调用其 stop 方法释放设备
         * @param track - 新媒体轨道
         * @example
         * ```js
@@ -400,14 +407,28 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         * @param profile - 视频 Profile
         * @example
         * ```js
-        * stream.setVideoProfile('720p');
+        * stream
+        *   .setVideoProfile('720p')
+        *   .then(() => {
+        *     console.log('set video profile success');
+        *   })
+        *   .catch((err) => {
+        *     console.log('set video profile failed ', err);
+        *   });
         * ```
         * 或
         * ```js
-        * stream.setVideoProfile({width: 640, height: 480, framerate: 15, bitrate: 500});
+        * stream
+        *   .setVideoProfile({width: 640, height: 480, framerate: 15, bitrate: 500});
+        *   .then(() => {
+        *     console.log('set video profile success');
+        *   })
+        *   .catch((err) => {
+        *     console.log('set video profile failed ', err);
+        *   });
         * ```
         */
-      setVideoProfile(profile: VideoProfile | CustomVideoProfile): void;
+      setVideoProfile(profile: VideoProfile | CustomVideoProfile): Promise<void>;
       /**
         * 设置当前流（屏幕共享时）视频的 Profile，默认 '1080p'
         * 注：请务必在调用 init 方法之前，设置屏幕共享流的 Profile，否则无法生效。
@@ -465,6 +486,7 @@ declare module '__@urtc/sdk-web/utils/token' {
     * @param appKey - 应用密钥，可在控制台查看
     * @param roomId - 房间 ID
     * @param userId - 用户 ID
+    * @public
     * @example
     * ```js
     * const token = generateToken('urtc-xxx', 'yyy', 'roomId', 'userId');
@@ -475,16 +497,26 @@ declare module '__@urtc/sdk-web/utils/token' {
 }
 
 declare module '__@urtc/sdk-web/types' {
-  import { VideoCodec } from '__@urtc/sdk-web/stream/types';
+  import { AudioCodec, VideoCodec } from '__@urtc/sdk-web/stream/types';
   /**
     * 视频播放时的显示模式
     * - cover 模式：优先保证视窗被填满。
     * - contain 模式：优先保证视频内容全部显示。
     * 播放摄像头视频流默认使用 cover 模式，屏幕共享视频流默认使用 contain 模式。
+    * @public
     */
   export type PlayerVideoFitType = 'cover' | 'contain';
   /**
+    * 视频播放时 audio / video 的控制面板的显示模式
+    * - show 模式：一直显示
+    * - hide 模式：一直隐藏
+    * - auto 模式：自动判断
+    * @public
+    */
+  export type PlayControlsType = 'show' | 'hide' | 'auto';
+  /**
     * 播放器播放属性
+    * @public
     */
   export interface PlayOptions {
       /**
@@ -499,18 +531,25 @@ declare module '__@urtc/sdk-web/types' {
         * 视频播放时的{@link PlayerVideoFitType | 显示模式}，默认 'cover'，屏幕共享时默认使用 'contain'
         */
       fit?: PlayerVideoFitType;
+      /**
+        * 视频播放时 audio / video 的控制面板的显示模式，默认自动判断（播放失败时显示，播放成功时隐藏）
+        */
+      controls?: PlayControlsType;
   }
   export { /*AudioProfile,*/ VideoProfile, ScreenProfile } from '__@urtc/sdk-web/stream/profile';
   /**
     * 房间类型
+    * @public
     */
-  export type RoomType = 'rtc' | 'live';
+  export type RoomType = 'conference' | 'live';
   /**
     * 用户角色
+    * @public
     */
   export type RoleType = 'pull' | 'push' | 'push-and-pull';
   /**
     * 定义客户端的属性
+    * @public
     */
   export interface ClientOptions {
       /**
@@ -520,16 +559,31 @@ declare module '__@urtc/sdk-web/types' {
   }
   /**
     * 加入房间的属性
+    * @public
     */
   export interface JoinOptions {
       /**
-        * 加入房间的{@link RoomType | 房间类型}，默认 'rtc'
+        * 加入房间的{@link RoomType | 房间类型}，默认 'conference'
         */
       type?: RoomType;
       /**
         * 加入房间的{@link RoleType | 角色}，默认 'push-and-pull'
         */
       role?: RoleType;
+  }
+  /**
+    * 支持的音频、视频编解码格式
+    * @public
+    */
+  export interface Codecs {
+      /**
+        * 音频编解码格式
+        */
+      audio: AudioCodec[];
+      /**
+        * 视频编解码格式
+        */
+      video: VideoCodec[];
   }
 }
 
@@ -541,8 +595,10 @@ declare module '__@urtc/sdk-web/logger' {
 }
 
 declare module '__@urtc/sdk-web/devices' {
+  import { Codecs } from '__@urtc/sdk-web/types';
   /**
     * 获取音视频输入/输出设备列表，点击 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 查看详情
+    * @public
     * @example
     * ```js
     * getDevices()
@@ -558,6 +614,7 @@ declare module '__@urtc/sdk-web/devices' {
   export function getDevices(): Promise<MediaDeviceInfo[]>;
   /**
     * 获取摄像头设备列表，点击 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 查看详情
+    * @public
     * @example
     * ```js
     * getCameras()
@@ -573,6 +630,7 @@ declare module '__@urtc/sdk-web/devices' {
   export function getCameras(): Promise<MediaDeviceInfo[]>;
   /**
     * 获取麦克风设备列表，点击 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 查看详情
+    * @public
     * @example
     * ```js
     * getMicrophones()
@@ -588,6 +646,7 @@ declare module '__@urtc/sdk-web/devices' {
   export function getMicrophones(): Promise<MediaDeviceInfo[]>;
   /**
     * 获取扬声器设备列表，点击 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 查看详情
+    * @public
     * @example
     * ```js
     * getLoudspeakers()
@@ -603,6 +662,7 @@ declare module '__@urtc/sdk-web/devices' {
   export function getLoudspeakers(): Promise<MediaDeviceInfo[]>;
   /**
     * 设备检测选项
+    * @public
     */
   export interface DeviceDetectionOptions {
       /**
@@ -625,6 +685,7 @@ declare module '__@urtc/sdk-web/devices' {
   /**
     * 设备可用性检测 - 创建包含麦克风音频或摄像头视频的本地流时，有可能因为麦克风或摄像头设备问题（如驱动问题，或未经授权等），导致无法正确创建。此方法可用于设备检测，根据检测结果，再决定创建本地流时启用麦克风或摄像头或麦克风和摄像头
     * @param options - 需指定设备时，请传入设备 ID
+    * @public
     * @example
     * ```js
     * deviceDetection({audio: true, video: true})
@@ -640,6 +701,7 @@ declare module '__@urtc/sdk-web/devices' {
   export function deviceDetection(options: DeviceDetectionOptions): Promise<void>;
   /**
     * 检测浏览器是否完全（可访问本地音视频设备）支持 WebRTC。
+    * @public
     * @example
     * ```js
     * if (!isSupportWebRTC()) {
@@ -650,6 +712,7 @@ declare module '__@urtc/sdk-web/devices' {
   export function isSupportWebRTC(): boolean;
   /**
     * 检测浏览器是否支持屏幕共享
+    * @public
     * @example
     * ```js
     * if (!isSupportScreenShare()) {
@@ -658,6 +721,21 @@ declare module '__@urtc/sdk-web/devices' {
     * ```
     */
   export function isSupportScreenShare(): boolean;
+  /**
+    * 检测浏览器支持的音视频编解码格式
+    * @public
+    * @example
+    * ```js
+    * getSupportedCodec()
+    *  .then((codecs) => {
+    *    console.log(`浏览器支持的音频编解码格式有 ${codecs.audio}，视频编解码格式有 ${codecs.video}`);
+    *  })
+    *  .catch((err) => {
+    *    console.log(`浏览器获取音视频编解码格式失败，${err}`);
+    *  });
+    * ```
+    */
+  export function getSupportedCodec(): Promise<Codecs>;
 }
 
 declare module '__@urtc/sdk-web/event' {
@@ -667,16 +745,13 @@ declare module '__@urtc/sdk-web/event' {
   import { LocalStream } from '__@urtc/sdk-web/';
   import { RemoteStream } from '__@urtc/sdk-web/stream/remote-stream';
   /**
-    * @private
-    */
-  export const RtcEventTypes: readonly ["user-joined", "user-left", "stream-added", "stream-removed", "stream-subscribed", "stream-published", "mute-audio", "unmute-audio", "mute-video", "unmute-video", "connection-state-changed", "kick-off", "screenshare-stopped", "first-key-frame", "network-quality", "logoff"];
-  /**
     * Rtc 用户事件类型：
     *
     * {@link RtcUserEvent 用户事件}
     * - user-joined - 有用户加入房间
     * - user-left - 有用户离开房间
     * - kick-off - 当前用户被踢出房间
+    * @public
     * @example
     * ```js
     * client.on('user-joined', (event) => {
@@ -687,6 +762,7 @@ declare module '__@urtc/sdk-web/event' {
   export type RtcUserEventType = 'user-joined' | 'user-left' | 'kick-off';
   /**
     * Rtc 流事件类型：
+    * @public
     *
     * {@link RtcStreamEvent 流事件}
     * - stream-added - 有远端流加入，此时事件中的 data 为 {@link RemoteStream} 远端流
@@ -697,7 +773,6 @@ declare module '__@urtc/sdk-web/event' {
     * - unmute-audio - 流的音频被取消 mute
     * - mute-video - 流的视频被 mute
     * - unmute-video - 流的视频被取消 mute
-    * - first-key-frame - 接收到远端流的首帧
     * @example
     * ```js
     * client.on('stream-add', (event) => {
@@ -707,20 +782,65 @@ declare module '__@urtc/sdk-web/event' {
     *
     * **特别地，以下事件需在单条流上进行监听**
     * - screenshare-stopped - 屏幕共享流被中止，此时事件中的 data 为 {@link LocalStream} 本地流
+    * - first-key-frame - 接收到远端流的首帧
     * @example
     * ```js
     * localStream.on('screenshare-stopped', (event) => {
+    *   // 此事件只针对本地流有效，若本地流已发布，监听到此事件后，可以决定要不要取消发布
     *   client.unpublish(event.data);
     *   event.data.destroy();
+    * });
+    * ```
+    * @example
+    * ```js
+    * stream.on('first-key-frame', (event) => {
+    *   console.log(`stream ${event.data} got first key frame`);
     * });
     * ```
     */
   export type RtcStreamEventType = 'stream-added' | 'stream-removed' | 'stream-subscribed' | 'stream-published' | 'mute-audio' | 'unmute-audio' | 'mute-video' | 'unmute-video' | 'first-key-frame' | 'screenshare-stopped';
   /**
+    * Rtc 播放器事件类型：
+    * @public
+    *
+    * {@link RtcPlayerEvent 播放器事件}
+    * - player-status-change - 流播放器状态改变
+    * **注，此事件需在单条流上进行监听**
+    * @public
+    * @example
+    * ```js
+    * stream.on('player-status-change', (event) => {
+    *   const { data } = event;
+    *   const { type, status } = data;
+    *   console.log(`stream's ${type} status changed to ${status}`);
+    * });
+    * ```
+    */
+  export type RtcPlayerEventType = 'player-status-change';
+  /**
+    * 播放状态改变事件对应数据
+    * @public
+    */
+  interface PlayerEventData {
+      /**
+        * 类型，音频/视频
+        */
+      type: 'audio' | 'video';
+      /**
+        * 状态
+        */
+      status: 'playing' | 'paused';
+      /**
+        * 对应的流
+        */
+      stream: Stream;
+  }
+  /**
     * Rtc 客户端连接事件类型：
     *
     * {@link RtcConnectionEvent 连接事件}
     * - connection-state-changed - 连接状态改变
+    * @public
     * @example
     * ```js
     * client.on('connection-state-changed', (event) => {
@@ -731,14 +851,16 @@ declare module '__@urtc/sdk-web/event' {
   export type RtcConnectionEventType = 'connection-state-changed';
   /**
     * Rtc 事件类型
+    * @public
     */
-  export type RtcEventType = RtcUserEventType | RtcStreamEventType | RtcConnectionEventType;
+  export type RtcEventType = RtcUserEventType | RtcStreamEventType | RtcConnectionEventType | RtcPlayerEventType;
   /**
     * Rtc 事件
     *
     * 当 type - T 为 {@link RtcUserEventType} 事件时，data - S 为 {@link User} 类型
     * 当 type - T 为 {@link RtcStreamEventType} 事件时，data - S 为 {@link LocalStream} | {@link RemoteStream} 类型
     * 当 type - T 为 {@link RtcConnectionEventType } 事件时，data - S 为 {@link ConnectionStates } 类型
+    * @public
     */
   export interface RtcEvent<T, S> {
       type: T;
@@ -746,22 +868,32 @@ declare module '__@urtc/sdk-web/event' {
   }
   /**
     * Rtc 用户事件，事件类型参见 {@link RtcUserEventType}
+    * @public
     */
   export type RtcUserEvent = RtcEvent<RtcUserEventType, User>;
   /**
     * Rtc 流事件，事件类型参见 {@link RtcStreamEventType}
+    * @public
     */
   export type RtcStreamEvent = RtcEvent<RtcStreamEventType, Stream | LocalStream | RemoteStream>;
   /**
     * Rtc 连接事件，事件类型参见 {@link RtcConnectionEventType}
+    * @public
     */
   export type RtcConnectionEvent = RtcEvent<RtcConnectionEventType, ConnectionStates>;
+  /**
+    * Rtc 连接事件，事件类型参见 {@link RtcPlayerEventType}
+    * @public
+    */
+  export type RtcPlayerEvent = RtcEvent<RtcPlayerEventType, PlayerEventData>;
+  export {};
 }
 
 declare module '__@urtc/sdk-web/error' {
   /**
     * URTC 错误信息
     * 错误代码参见 {@link ErrorCode}
+    * @public
     */
   export class RtcError extends Error {
       constructor(code: ErrorCode, message: string);
@@ -956,6 +1088,7 @@ declare module '__@urtc/sdk-web/error' {
     * - 3017 - 流正在取消订阅
     * - 3018 - 流已经订阅
     * - 3019 - 自动播放被禁止错误
+    * @public
     */
   export type ErrorCode = typeof RtcError[Exclude<keyof typeof RtcError, 'prototype' | 'getCode' | 'stackTraceLimit' | 'prepareStackTrace' | 'captureStackTrace'>];
 }
@@ -963,6 +1096,7 @@ declare module '__@urtc/sdk-web/error' {
 declare module '__@urtc/sdk-web/user/user' {
   /**
     * 用户信息
+    * @public
     */
   export class User {
       /**
@@ -975,10 +1109,12 @@ declare module '__@urtc/sdk-web/user/user' {
 declare module '__@urtc/sdk-web/stream/types' {
   /**
     * 音频编解码格式
+    * @public
     */
   export type AudioCodec = 'opus';
   /**
     * 视频编解码格式
+    * @public
     */
   export type VideoCodec = 'vp8' | 'h264';
   /**
@@ -1005,6 +1141,7 @@ declare module '__@urtc/sdk-web/stream/types' {
   }
   /**
     * 流的视频的统计数据
+    * @public
     */
   export interface VideoStats {
       /**
@@ -1034,6 +1171,7 @@ declare module '__@urtc/sdk-web/stream/types' {
   }
   /**
     * 流的网络连接统计数据
+    * @public
     */
   export interface NetworkStats {
       /**
@@ -1043,6 +1181,7 @@ declare module '__@urtc/sdk-web/stream/types' {
   }
   /**
     * 已发布/已订阅流的统计数据
+    * @public
     */
   export interface StreamStats {
       /**
@@ -1059,11 +1198,13 @@ declare module '__@urtc/sdk-web/stream/types' {
       network?: NetworkStats;
   }
   /**
-    * 流的媒体类型, main - 主视频流，auxiliary - 辅助视频流，通常是一个屏幕分享流
+    * 流的媒体类型, main - 主视频流，screen - 辅助视频流，通常是一个屏幕分享流
+    * @public
     */
-  export type MediaType = 'main' | 'auxiliary';
+  export type MediaType = 'camera' | 'screen';
   /**
     * 切换设备的类型
+    * @public
     */
   export type SwitchDeviceType = 'audio' | 'video';
 }
@@ -1074,6 +1215,7 @@ declare module '__@urtc/sdk-web/stream/stream' {
   import { MediaType, StreamStats } from '__@urtc/sdk-web/stream/types';
   /**
     * LocalStream 和 RemoteStream 的基类
+    * @public
     */
   export class Stream extends EventEmitter {
       /**
@@ -1215,7 +1357,7 @@ declare module '__@urtc/sdk-web/stream/stream' {
       getAudioLevel(): number;
       /**
         * 销毁当前流，一般在本地流不再被使用时，可调用此方法销毁，解除摄像头或麦克风设备的占用。
-        * > 注：远端流，不需要手动调用此方法
+        * 注：远端流，不需要手动调用此方法
         * @example
         * ```js
         * stream.destroy();
@@ -1242,6 +1384,7 @@ declare module '__@urtc/sdk-web/stream/remote-stream' {
   import { StreamPlugin } from '__@urtc/sdk-web/plugin';
   /**
     * 远端流，房间内其他用户发布的流，可通过 client 进行订阅
+    * @public
     */
   export class RemoteStream extends Stream {
       /**
@@ -1278,9 +1421,10 @@ declare module '__@urtc/sdk-web/stream/remote-stream' {
 declare module '__@urtc/sdk-web/server' {
   /**
     * 服务器配置，可设置置网关（gateway）、信令（signal）、日志（log）服务器地址
-    * > 注：
-    * > 1. gateway 和 signal 须二选一进行设置
-    * > 2. 没有日志服务器时，log 可不设
+    * @public
+    * 注：
+    * 1. gateway 和 signal 须二选一进行设置
+    * 2. 没有日志服务器时，log 可不设
     */
   export interface ServerConfig {
       /**
@@ -1299,6 +1443,7 @@ declare module '__@urtc/sdk-web/server' {
   /**
     * 用于私有化部署时，指定部署的服务器地址
     * @param conf - 服务器配置，具体描述参见 ServerConfig 的说明
+    * @public
     * @example
     * ```js
     * setServers({
@@ -1339,18 +1484,19 @@ declare module '__@urtc/sdk-web/plugin' {
 declare module '__@urtc/sdk-web/version' {
   /**
     * 当前 sdk 的版本号
+    * @public
     */
   export const version: string;
 }
 
 declare module '__@urtc/sdk-web/event-emitter' {
-  import { RtcEventType, RtcUserEventType, RtcUserEvent, RtcStreamEvent, RtcConnectionEventType, RtcConnectionEvent, RtcStreamEventType } from '__@urtc/sdk-web/event';
+  import { RtcEventType, RtcUserEventType, RtcUserEvent, RtcStreamEvent, RtcConnectionEventType, RtcConnectionEvent, RtcStreamEventType, RtcPlayerEventType, RtcPlayerEvent } from '__@urtc/sdk-web/event';
   /**
     * 事件监听函数
     * 其中 T 为 RtcEvent 泛型
     * @private
     */
-  export type RtcEventInstance<T> = T extends RtcUserEventType ? RtcUserEvent : T extends RtcStreamEventType ? RtcStreamEvent : T extends RtcConnectionEventType ? RtcConnectionEvent : never;
+  export type RtcEventInstance<T> = T extends RtcUserEventType ? RtcUserEvent : T extends RtcStreamEventType ? RtcStreamEvent : T extends RtcConnectionEventType ? RtcConnectionEvent : T extends RtcPlayerEventType ? RtcPlayerEvent : never;
   /**
     * 事件监听函数
     * 其中 RtcEventInstance 为事件实例
@@ -1381,6 +1527,7 @@ declare module '__@urtc/sdk-web/event-emitter' {
 declare module '__@urtc/sdk-web/stream/profile' {
   /**
     * 预设的视频 Profile
+    * @public
     *
     * 名称 | 视频宽 | 视频高 | 帧率 (fps) | 码率 (kbps)
     * :-: | :-: | :-: | :-: | :-:
@@ -1400,6 +1547,7 @@ declare module '__@urtc/sdk-web/stream/profile' {
   export type VideoProfile = '180p' | '180p_2' | '240p' | '360p' | '360p_2' | '480p' | '720p' | '720p_2' | '720p_3' | '1080p' | '1080p_2' | '1080p_3';
   /**
     * 预设的屏幕共享视频 Profile
+    * @public
     *
     * 名称 | 视频宽 | 视频高 | 帧率 (fps) | 码率 (kbps)
     * :-: | :-: | :-: | :-: | :-:
@@ -1413,6 +1561,7 @@ declare module '__@urtc/sdk-web/stream/profile' {
   export type ScreenProfile = '480p' | '480p_2' | '720p' | '720p_2' | '1080p' | '1080p_2';
   /**
     * 自定义视频 Profile，请根据实际使用场景及网络环境，合理的设置
+    * @public
     * @example
     * ```js
     * { width: 640, height: 480, framerate: 15, bitrate: 500 }
@@ -1446,10 +1595,12 @@ declare module '__@urtc/sdk-web/connection/types' {
     * - CLOSING - 断开中
     * - RECONNECTING - 重连中
     * - CLOSED - 已断开
+    * @public
     */
   export type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
   /**
     * 客户端（Client）与服务器之间的{@link ConnectionState 连接状态}
+    * @public
     */
   export interface ConnectionStates {
       current: ConnectionState;
@@ -1467,6 +1618,7 @@ declare module '__@urtc/sdk-web/' {
     * 创建客户端
     * @param appId - 应用 ID，可在控制台查看
     * @param opts - 定义客户端的属性
+    * @public
     * @example
     * ```js
     * const client = createClient('AppID');
@@ -1485,12 +1637,13 @@ declare module '__@urtc/sdk-web/' {
   /**
     * 创建本地流
     * @param opts - 必传，定义本地音视频流的属性
-    * > 注：
-    * > 1. video, screen 不可同时为 true
-    * > 2. audio, video, screen 不可同时为 false
-    * > 3. 若指定了 file，则 init 时将优先使用 file 来创建初始化本地流的视频
-    * > 4. screenAudio 在不同浏览器上表现不同，参见 {@link LocalStreamOptions}
+    * 注：
+    * 1. video, screen 不可同时为 true
+    * 2. audio, video, screen 不可同时为 false
+    * 3. 若指定了 file，则 init 时将优先使用 file 来创建初始化本地流的视频
+    * 4. screenAudio 在不同浏览器上表现不同，参见 {@link LocalStreamOptions}
     * @param id - 选传，指定本地流的 ID，请注意创建多条流时，不可传入重复值
+    * @public
     * @example
     * ```js
     * const localStream = createStream({ audio: true, video: true, screen: false });
@@ -1511,6 +1664,7 @@ declare module '__@urtc/sdk-web/' {
   /**
     * 设置日志打印级别，用于打印出更多日志来调试或定位问题
     * @param level - 日志级别，有 'debug', 'info', 'warn', 'error' 级别;
+    * @public
     * @example
     * ```js
     * setLogLevel('info');
@@ -1520,6 +1674,7 @@ declare module '__@urtc/sdk-web/' {
   /**
     * 开启/关闭操作/错误/状态日志的上报，未调用时，默认开启上报日志
     * @param enable - 是否开启上报
+    * @public
     * @example
     * ```js
     * reportLog(false); // 关闭日志上报，关闭后，在线上出现错误时，将无法根据日志进行排查

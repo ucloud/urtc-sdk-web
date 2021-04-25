@@ -198,13 +198,11 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>添加一条媒体轨道（音轨或视轨）到当前流</p>
-									<blockquote>
-										<p>注：</p>
-										<ol>
-											<li>若创建本地流时，audio 为 false，不可添加音轨，video 为 false 时，不可添加视轨</li>
-										</ol>
-									</blockquote>
+									<p>添加一条媒体轨道（音轨或视轨）到当前流
+									注：</p>
+									<ol>
+										<li>若创建本地流时，audio 为 false，不可添加音轨，video 为 false 时，不可添加视轨</li>
+									</ol>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
@@ -238,10 +236,8 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>销毁当前流，一般在本地流不再被使用时，可调用此方法销毁，解除摄像头或麦克风设备的占用。</p>
-									<blockquote>
-										<p>注：远端流，不需要手动调用此方法</p>
-									</blockquote>
+									<p>销毁当前流，一般在本地流不再被使用时，可调用此方法销毁，解除摄像头或麦克风设备的占用。
+									注：远端流，不需要手动调用此方法</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
@@ -656,14 +652,12 @@ stream
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>替换当前流中的媒体轨道</p>
-									<blockquote>
-										<p>注：</p>
-										<ol>
-											<li>替换视频时，请使用与原轨道相同的分辨率的媒体轨道</li>
-											<li>返回值为当前流中相同类型的媒体轨道，此媒体轨道仍可用（占用音频设备或视频设备），请自行决定是否调用其 stop 方法释放设备</li>
-										</ol>
-									</blockquote>
+									<p>替换当前流中的媒体轨道
+									注：</p>
+									<ol>
+										<li>替换视频时，请使用与原轨道相同的分辨率的媒体轨道</li>
+										<li>返回值为当前流中相同类型的媒体轨道，此媒体轨道仍可用（占用音频设备或视频设备），请自行决定是否调用其 stop 方法释放设备</li>
+									</ol>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
@@ -755,7 +749,7 @@ stream.init().catch(<span class="hljs-function">(<span class="hljs-params">err</
 					<a name="setvideoprofile" class="tsd-anchor"></a>
 					<h3>set<wbr>Video<wbr>Profile</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Video<wbr>Profile<span class="tsd-signature-symbol">(</span>profile<span class="tsd-signature-symbol">: </span><a href="../index.html#videoprofile" class="tsd-signature-type">VideoProfile</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/customvideoprofile.html" class="tsd-signature-type">CustomVideoProfile</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Video<wbr>Profile<span class="tsd-signature-symbol">(</span>profile<span class="tsd-signature-symbol">: </span><a href="../index.html#videoprofile" class="tsd-signature-type">VideoProfile</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/customvideoprofile.html" class="tsd-signature-type">CustomVideoProfile</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -767,9 +761,23 @@ stream.init().catch(<span class="hljs-function">(<span class="hljs-params">err</
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><pre><code class="language-js">stream.setVideoProfile(<span class="hljs-string">&#x27;720p&#x27;</span>);</code></pre>
+									<dd><pre><code class="language-js">stream
+  .setVideoProfile(<span class="hljs-string">&#x27;720p&#x27;</span>)
+  .then(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;set video profile success&#x27;</span>);
+  })
+  .catch(<span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;set video profile failed &#x27;</span>, err);
+  });</code></pre>
 										<p>或</p>
-										<pre><code class="language-js">stream.setVideoProfile({<span class="hljs-attr">width</span>: <span class="hljs-number">640</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">480</span>, <span class="hljs-attr">framerate</span>: <span class="hljs-number">15</span>, <span class="hljs-attr">bitrate</span>: <span class="hljs-number">500</span>});</code></pre>
+										<pre><code class="language-js">stream
+  .setVideoProfile({<span class="hljs-attr">width</span>: <span class="hljs-number">640</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">480</span>, <span class="hljs-attr">framerate</span>: <span class="hljs-number">15</span>, <span class="hljs-attr">bitrate</span>: <span class="hljs-number">500</span>});
+  .then(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;set video profile success&#x27;</span>);
+  })
+  .catch(<span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;set video profile failed &#x27;</span>, err);
+  });</code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -782,7 +790,7 @@ stream.init().catch(<span class="hljs-function">(<span class="hljs-params">err</
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>

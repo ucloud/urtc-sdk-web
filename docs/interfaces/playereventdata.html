@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ServerConfig | @urtc/sdk-web</title>
+	<title>PlayerEventData | @urtc/sdk-web</title>
 	<meta name="description" content="Documentation for @urtc/sdk-web">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="serverconfig.html">ServerConfig</a>
+					<a href="playereventdata.html">PlayerEventData</a>
 				</li>
 			</ul>
-			<h1>Interface ServerConfig</h1>
+			<h1>Interface PlayerEventData</h1>
 		</div>
 	</div>
 </header>
@@ -67,7 +67,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>服务器配置，可设置置网关（gateway）、信令（signal）、日志（log）服务器地址</p>
+						<p>播放状态改变事件对应数据</p>
 					</div>
 				</div>
 			</section>
@@ -75,7 +75,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ServerConfig</span>
+						<span class="target">PlayerEventData</span>
 					</li>
 				</ul>
 			</section>
@@ -86,9 +86,9 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="serverconfig.html#gateway" class="tsd-kind-icon">gateway</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="serverconfig.html#log" class="tsd-kind-icon">log</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="serverconfig.html#signal" class="tsd-kind-icon">signal</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="playereventdata.html#status" class="tsd-kind-icon">status</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="playereventdata.html#stream" class="tsd-kind-icon">stream</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="playereventdata.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -97,38 +97,38 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="gateway" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> gateway</h3>
-					<div class="tsd-signature tsd-kind-icon">gateway<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="status" class="tsd-anchor"></a>
+					<h3>status</h3>
+					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"playing"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"paused"</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>网关地址，如 &#39;<a href="https://urtc.com.cn&#39;">https://urtc.com.cn&#39;</a></p>
+							<p>状态</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="log" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> log</h3>
-					<div class="tsd-signature tsd-kind-icon">log<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="stream" class="tsd-anchor"></a>
+					<h3>stream</h3>
+					<div class="tsd-signature tsd-kind-icon">stream<span class="tsd-signature-symbol">:</span> <a href="../classes/stream.html" class="tsd-signature-type">Stream</a></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>日志服务器地址，如 &#39;<a href="https://log.urtc.com.cn&#39;">https://log.urtc.com.cn&#39;</a></p>
+							<p>对应的流</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="signal" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> signal</h3>
-					<div class="tsd-signature tsd-kind-icon">signal<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="type" class="tsd-anchor"></a>
+					<h3>type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"audio"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"video"</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>信令服务器地址，如 &#39;wss://urtc.com.cn:5005&#39;</p>
+							<p>类型，音频/视频</p>
 						</div>
 					</div>
 				</section>
@@ -147,16 +147,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-is-external">
-						<a href="serverconfig.html" class="tsd-kind-icon">Server<wbr>Config</a>
+						<a href="playereventdata.html" class="tsd-kind-icon">Player<wbr>Event<wbr>Data</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="serverconfig.html#gateway" class="tsd-kind-icon">gateway</a>
+								<a href="playereventdata.html#status" class="tsd-kind-icon">status</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="serverconfig.html#log" class="tsd-kind-icon">log</a>
+								<a href="playereventdata.html#stream" class="tsd-kind-icon">stream</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="serverconfig.html#signal" class="tsd-kind-icon">signal</a>
+								<a href="playereventdata.html#type" class="tsd-kind-icon">type</a>
 							</li>
 						</ul>
 					</li>
