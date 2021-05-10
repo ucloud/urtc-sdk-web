@@ -149,7 +149,7 @@ function onSuccess(Users, Streams) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -174,7 +174,7 @@ function onSuccess() {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -217,7 +217,7 @@ client.publish(PublishOptions, onFailure)
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Error) {}
+function onFailure(Error) {}
 ```
 [Error](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Error) 为错误信息
 
@@ -256,7 +256,7 @@ function onSuccess(Stream) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -278,7 +278,7 @@ client.subscribe(StreamId, onFailure)
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -308,7 +308,7 @@ function onSuccess(Stream) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -637,7 +637,7 @@ function onSuccess(Record) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -663,7 +663,7 @@ function onSuccess() {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -745,7 +745,7 @@ Stream:
   sourceVideoMuted?: boolean      // 视频源是否已 mute，只针对远端流有效（本地流无此属性），代表远端流的视频源是否已 mute（不推数据）
   mediaType?: 'camera' | 'screen' // 流的媒体类型，目前存在两种媒体类型 'camera' 及 'screen'，同一用户可发布的各类型的流只能存在一个，以此来区分不同媒体类型的发布/订阅流
   mediaStream?: MediaStream       // 使用的媒体流，可用 HTMLMediaElement 进行播放，此属性的值可能为空，当流被正常发布或订阅流，此值有效
-  previewId?: string              // 通过 createStream 方法创建的流将包含此字段，且未发布状态时会与 sid 相同，当流被发布之后 sid 将被替换为服务器生成的流 ID，而 previewId 仍为用户自定义的 ID
+  previewId?: string              // 通过 createStream 方法创建的流将包含此字段，且未发布状态时会与 sid 相同，当流被发布之后 sid 将被替换为服务器生成的流 ID，而 previewId 仍为用户自定义的 streamId
 }
 ```
 
@@ -848,7 +848,7 @@ function onSuccess(MediaDeviceInfos) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -881,7 +881,7 @@ function onSuccess(MediaDeviceInfos) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -910,7 +910,7 @@ function onSuccess(MediaDeviceInfos) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -967,7 +967,7 @@ function onSuccess() {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -1002,7 +1002,7 @@ function onSuccess() {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -1031,7 +1031,7 @@ function onSuccess() {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -1070,7 +1070,7 @@ function onSuccess() {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -1152,7 +1152,7 @@ function onSuccess(AudioStats) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -1192,7 +1192,7 @@ function onSuccess(VideoStats) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -1227,7 +1227,7 @@ function onSuccess(NetworkStats) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -1451,7 +1451,7 @@ ImgString: string 类型，是图片转化的 base64 编码的 [Data URLs](https
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 
@@ -1490,7 +1490,7 @@ function onSuccess(result) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 
 Err 为错误信息
@@ -2197,16 +2197,15 @@ Result 为返回值，[RelayResult 类型](#relayresult)，执行失败时，此
 创建一条本地流，可用于进行预览，也可将其直接发布（publishStream），示例代码：
 
 ```js
-client.createStream(PreviewOptions, callback)
+client.createStream(CreateStreamOptions, callback)
 ```
 
 #### 参数说明
 
-- PreviewOptions: object 类型，选传，类型说明如下
+- CreateStreamOptions: object 类型，选传，类型说明如下
 
 ```js
 {
-  previewId: string       // 必填，指定该本地流的预览 ID（后续可通过该 ID 将其直接发布），该 ID 可由用户自定义，非重复、非空的字符串即可
   audio: boolean          // 必填，指定是否使用麦克风设备。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   video: boolean          // 必填，指定是否使用摄像头设备。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   facingMode?: FacingMode // 选填，在移动设备上，可以设置该参数选择使用前置或后置摄像头。具体参数说明可参考 publish 方法 PublishOptions （见注1）的对应项
@@ -2218,6 +2217,7 @@ client.createStream(PreviewOptions, callback)
   mediaStream?: MediaStream  // 选填，允许用户发布自定义的媒体流。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   file?: File             // 选填，发布时指定使用图片文件生成视频源。具体参数说明可参考 publish 方法 PublishOptions 的对应项
   filePath?: string       // 选填，发布时指定使用网络图片生成视频源。具体参数说明可参考 publish 方法 PublishOptions 的对应项
+  streamId?: string       // 选填，指定该本地流的预览 ID（后续可通过该 ID 将其直接发布），该 ID 可由用户自定义，非重复、非空的字符串即可，不传时，将使用随机生成值
   userId?: string         // 选填，joinRoom 之前创建的流将使用此值（或 'unknown' - 未填此字段时）指定为流的 uid，joinRoom 之后，将忽略此值，直接使用加入房间时指定的 userId 为流的 uid
 }
 ```
@@ -2233,8 +2233,8 @@ Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空�
 
 > 注:
 > 1. [PublishOptions](#publishoptions)
-> 2. 传入的 previewId 不可重复
-> 3. 创建成功后，流的 sid 将和 previewId 相同，可使用 play 方法传入该值进行播放
+> 2. 传入的 streamId 不可重复
+> 3. 创建成功后，流的 sid 将和 streamId 相同，可使用 play 方法传入该值进行播放
 
 
 <a name="client-publishstream"></a>
@@ -2244,12 +2244,12 @@ Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空�
 发布一条本地（预览）流，示例代码：
 
 ```js
-client.publishStream(previewId, callback)
+client.publishStream(streamId, callback)
 ```
 
 #### 参数说明
 
-- previewId: string 类型，必传，为调用 createStream 时传的 previewId
+- streamId: string 类型，必传，为调用 createStream 时传的 streamId
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
@@ -2273,12 +2273,12 @@ Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空�
 取消发布一条本地（预览）流（须为使用 createStream 方法创建并为发布状态的本地流），示例代码：
 
 ```js
-client.unpublishStream(previewId, callback)
+client.unpublishStream(streamId, callback)
 ```
 
 #### 参数说明
 
-- previewId: string 类型，必传，为调用 createStream 时传的 previewId
+- streamId: string 类型，必传，为调用 createStream 时传的 streamId
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
@@ -2302,12 +2302,12 @@ Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空�
 销毁一条本地（预览）流（须为非发布状态的本地流），示例代码：
 
 ```js
-client.destroyStream(previewId, callback)
+client.destroyStream(streamId, callback)
 ```
 
 #### 参数说明
 
-- previewId: string 类型，必传，为调用 createStream 时传的 previewId
+- streamId: string 类型，必传，为调用 createStream 时传的 streamId
 
 - callback: function 类型，选传，方法的回调函数，函数说明如下
 
@@ -2368,7 +2368,7 @@ UCloudRTC.getDevices(GetDevicesOptions, onSuccess, onFailure)
 - onSuccess: 必传，函数类型，方法调用成功时执行的回调函数。
 
 ```js
-function(MediaDeviceInfos) {}
+function onSuccess(MediaDeviceInfos) {}
 ```
 
 函数参数 MediaDeviceInfos 为返回值，MediaDeviceInfo 类型的数组，为一组输入、输出设备的描述信息，点击
@@ -2377,7 +2377,7 @@ function(MediaDeviceInfos) {}
 - onFailure: 选传，函数类型，方法调用失败时执行的回调函数。
 
 ```js
-function(Err) {}
+function onFailure(Err) {}
 ```
 Err 为错误信息
 

@@ -63,7 +63,7 @@ declare module '__urtc-sdk/logger' {
 }
 
 declare module '__urtc-sdk/client' {
-  import { UserRole, User, Stream, AudioStats, VideoStats, NetworkStats, LeaveRoomOptions, ClientOptions, DeviceOptions, DeviceDetectionOptions, DeviceDetectionResult, PublishOptions, AudioVolumeOptions, EventType, RecordOptions, Record, SwitchDeviceOptions, SwitchImageOptions, EffectOptions, EffectVolumeOptions, SnapshotOptions, ReplaceTrackOptions, MixOptions, StopMixOptions, MixResult, AddMixStreamsOptions, RemoveMixStreamsOptions, StartRecordOptions, RecordResult, UpdateMixStreamsOptions, StartRelayOptions, RelayResult, UpdateRelayPushURLOptions, UpdateRelayLayoutOptions, PlayOptions, PreviewStreamOptions, VideoProfileOptions, CustomVideoProfile, GetDevicesOptions } from '__urtc-sdk/types';
+  import { UserRole, User, Stream, AudioStats, VideoStats, NetworkStats, LeaveRoomOptions, ClientOptions, DeviceOptions, DeviceDetectionOptions, DeviceDetectionResult, PublishOptions, AudioVolumeOptions, EventType, RecordOptions, Record, SwitchDeviceOptions, SwitchImageOptions, EffectOptions, EffectVolumeOptions, SnapshotOptions, ReplaceTrackOptions, MixOptions, StopMixOptions, MixResult, AddMixStreamsOptions, RemoveMixStreamsOptions, StartRecordOptions, RecordResult, UpdateMixStreamsOptions, StartRelayOptions, RelayResult, UpdateRelayPushURLOptions, UpdateRelayLayoutOptions, PlayOptions, VideoProfileOptions, CustomVideoProfile, GetDevicesOptions, CreateStreamOptions } from '__urtc-sdk/types';
   export default class Client {
     constructor(appId: string, token: string, options?: ClientOptions);
     setRole(role: UserRole): boolean;
@@ -132,7 +132,7 @@ declare module '__urtc-sdk/client' {
     updateRelayStreams(options: UpdateMixStreamsOptions, callback?: (err?: Error, data?: RelayResult) => void): void;
     updateRelayPushURL(options: UpdateRelayPushURLOptions, callback?: (err?: Error, data?: RelayResult) => void): void;
     updateRelayLayout(options: UpdateRelayLayoutOptions, callback?: (err?: Error, data?: RelayResult) => void): void;
-    createStream(options: PreviewStreamOptions, callback: (err?: Error, stream?: Stream) => void): void;
+    createStream(options: CreateStreamOptions, callback: (err?: Error, stream?: Stream) => void): void;
     publishStream(previewId: string, callback: (err?: Error, stream?: Stream) => void): void;
     unpublishStream(previewId: string, callback: (err?: Error, stream?: Stream) => void): void;
     removeStream(previewId: string, callback: (err?: Error) => void): void;
@@ -298,7 +298,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.6.26";
+  export const version = "1.6.27";
 }
 
 declare module '__urtc-sdk/token' {
@@ -347,11 +347,10 @@ declare module '__urtc-sdk/types' {
     mediaStream?: MediaStream;
     file?: File;
     filePath?: string;
-    previewId?: string;
   }
-  export interface PreviewStreamOptions extends PublishOptions {
+  export interface CreateStreamOptions extends PublishOptions {
     userId?: string;
-    previewId: string;
+    streamId?: string;
   }
   export interface DeviceOptions {
     audio: boolean;
@@ -376,7 +375,6 @@ declare module '__urtc-sdk/types' {
     uid: string;
   }
   export interface Stream {
-    previewId?: string;
     sid: string;
     uid: string;
     type: 'publish' | 'subscribe' | 'preview';
@@ -390,6 +388,7 @@ declare module '__urtc-sdk/types' {
     sourceVideoMuted?: boolean;
     audioMuted: boolean;
     videoMuted: boolean;
+    previewId?: string;
   }
   export interface LeaveRoomOptions {
     keepRecording: boolean;
