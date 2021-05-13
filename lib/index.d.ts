@@ -34,7 +34,6 @@ declare module '@urtc/sdk-web' {
     * 2. audio, video, screen 不可同时为 false
     * 3. 若指定了 file，则 init 时将优先使用 file 来创建初始化本地流的视频
     * 4. screenAudio 在不同浏览器上表现不同，参见 {@link LocalStreamOptions}
-    * @param id - 选传，指定本地流的 ID，请注意创建多条流时，不可传入重复值
     * @public
     * @example
     * ```js
@@ -52,9 +51,9 @@ declare module '@urtc/sdk-web' {
     * ```
     * @throws {@link RtcError}
     */
-  export function createStream(opts: LocalStreamOptions, id?: string): LocalStream;
+  export function createStream(opts: LocalStreamOptions): LocalStream;
   /**
-    * 设置日志打印级别，用于打印出更多日志来调试或定位问题
+    * 设置日志打印级别，用于打印出更多日志来调试或定位问题，默认 warn 级别
     * @param level - 日志级别，有 'debug', 'info', 'warn', 'error' 级别;
     * @public
     * @example
@@ -64,15 +63,24 @@ declare module '@urtc/sdk-web' {
     */
   export function setLogLevel(level: LogLevel): void;
   /**
-    * 开启/关闭操作/错误/状态日志的上报，未调用时，默认开启上报日志
-    * @param enable - 是否开启上报
+    * 开启日志（操作/错误/状态）的上报，默认开启
     * @public
     * @example
     * ```js
-    * reportLog(false); // 关闭日志上报，关闭后，在线上出现错误时，将无法根据日志进行排查
+    * enableUploadLog();
     * ```
     */
-  export function reportLog(enable: boolean): void;
+  export function enableUploadLog(): void;
+  /**
+    * 关闭日志（操作/错误/状态）的上报
+    * 注：若无特殊原因，不建议关闭日志上报，关闭后，在线上出现错误时，将无法根据日志定位问题
+    * @public
+    * @example
+    * ```js
+    * disableUploadLog();
+    * ```
+    */
+  export function disableUploadLog(): void;
   export { generateToken };
   export * from '__@urtc/sdk-web/devices';
   export * from '__@urtc/sdk-web/client';
@@ -102,7 +110,7 @@ declare module '__@urtc/sdk-web/client' {
   import { JoinOptions, RoleType } from '__@urtc/sdk-web/types';
   import { ClientPlugin } from '__@urtc/sdk-web/plugin';
   /**
-    * URTC 客户端，可进行加入、离开房间，发布、订阅流等操作。
+    * RTC 客户端，可进行加入、离开房间，发布、订阅流等操作。
     * @public
     */
   export class Client {
@@ -146,7 +154,7 @@ declare module '__@urtc/sdk-web/client' {
         * ```js
         * const remoteStreams = client.getRemoteStreams();
         * client
-        *   .join('roomId', 'userId', 'token-xxx')
+        *   .join('roomIdxxx', 'userIdxxx', 'tokenxxx')
         *   .then(() => {
         *     console.log(`加入房间成功`);
         *     // client.publish(localStream);
@@ -190,7 +198,7 @@ declare module '__@urtc/sdk-web/client' {
         * ```
         * @throws {@link RtcError}
         */
-      on<T extends RtcEventType>(type: T, listener: Listener<T>): void;
+      on<T extends RtcEventType>(type: T, listener: Listener<T>): Client;
       /**
         * 取消监听 Client 对象的事件
         * @param type - 事件类型，特别的，可以使用 * 来一次性取消对所有事件的监听
@@ -207,7 +215,7 @@ declare module '__@urtc/sdk-web/client' {
         * ```
         * @throws {@link RtcError}
         */
-      off<T extends RtcEventType | '*'>(type: T, listener?: Listener<T>): void;
+      off<T extends RtcEventType | '*'>(type: T, listener?: Listener<T>): Client;
       /**
         * 发布一条本地流
         * @param stream - 需要被发布的本地流
@@ -297,7 +305,7 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         */
       audio: boolean;
       /**
-        * 读取指定设备ID的麦克风
+        * 选传，读取指定设备ID的麦克风
         */
       microphoneId?: string;
       /**
@@ -305,7 +313,7 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         */
       video: boolean;
       /**
-        * 读取指定设备ID的摄像头
+        * 选传，读取指定设备ID的摄像头
         */
       cameraId?: string;
       /**
@@ -313,18 +321,26 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         */
       screen: boolean;
       /**
-        * 是否读取屏幕共享的音频，默认: false
+        * 选传，是否读取屏幕共享的音频，默认: false
         * 注：仅部分浏览器支持，如 Chrome 74，且不同系统表现不同，如 windows 会读取桌面音频，macOS 只支持读取浏览器 tab 中的音频，
         */
       screenAudio?: boolean;
       /**
-        * 在移动设备上，可以设置该参数选择使用前置或后置摄像头，其中，FacingMode 为 'user'（前置摄像头）或 'environment'（后置摄像头）
+        * 选传，在移动设备上，可以设置该参数选择使用前置或后置摄像头，其中，FacingMode 为 'user'（前置摄像头）或 'environment'（后置摄像头）
         */
       facingMode?: 'user' | 'environment';
       /**
-        * 使用图片初始化本地流的视频
+        * 选传，使用图片初始化本地流的视频
         */
       file?: string | File;
+      /**
+        * 选传，指定本地流的 ID，请注意创建多条流时，不可传入重复值
+        */
+      id?: string;
+      /**
+        * 选传，指定本地流的 userId
+        */
+      userId?: string;
   }
   /**
     * 本地流，可用于本地预览，也可用 client 进行发布
@@ -489,7 +505,7 @@ declare module '__@urtc/sdk-web/utils/token' {
     * @public
     * @example
     * ```js
-    * const token = generateToken('urtc-xxx', 'yyy', 'roomId', 'userId');
+    * const token = generateToken('appId', 'appKey', 'roomId', 'userId');
     * client.join('roomId', 'userId', token);
     * ```
     */
@@ -891,7 +907,7 @@ declare module '__@urtc/sdk-web/event' {
 
 declare module '__@urtc/sdk-web/error' {
   /**
-    * URTC 错误信息
+    * RTC 错误信息
     * 错误代码参见 {@link ErrorCode}
     * @public
     */
@@ -1045,7 +1061,7 @@ declare module '__@urtc/sdk-web/error' {
       static readonly PLAY_NOT_ALLOWED = "3019";
   }
   /**
-    * URTC 错误代码
+    * RTC 错误代码
     *
     * 通用错误及代码
     * - 1000 - 非法参数
@@ -1222,6 +1238,11 @@ declare module '__@urtc/sdk-web/stream/stream' {
         * 当前流ID
         */
       id: string;
+      /**
+        * 当前流所属用户的ID
+        * 注：若创建本地流时指定的 userId 与 join 时指定的 userId 不同，那么发布本条流时，流的 userId 将会自动被自动更新为 join 时指定的 userId
+        */
+      userId: string;
       /**
         * 当前流包含的媒体流，关于媒体流，请详见 [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream)。
         */
@@ -1402,10 +1423,6 @@ declare module '__@urtc/sdk-web/stream/remote-stream' {
         */
       sourceVideoMuted: boolean;
       /**
-        * 该流所属用户的ID
-        */
-      userId: string;
-      /**
         * 设置输出音量，默认为 100
         * @param volume - 音量大小, 可设范围[0-100]
         * @throws RtcError
@@ -1428,15 +1445,15 @@ declare module '__@urtc/sdk-web/server' {
     */
   export interface ServerConfig {
       /**
-        * 网关地址，如 'https://urtc.com.cn'
+        * 网关地址，如 'https://my-rtc.com.cn'
         */
       gateway?: string;
       /**
-        * 信令服务器地址，如 'wss://urtc.com.cn:5005'
+        * 信令服务器地址，如 'wss://my-rtc.com.cn:5005'
         */
       signal?: string;
       /**
-        * 日志服务器地址，如 'https://log.urtc.com.cn'
+        * 日志服务器地址，如 'https://log.my-rtc.com.cn'
         */
       log?: string;
   }
@@ -1447,16 +1464,16 @@ declare module '__@urtc/sdk-web/server' {
     * @example
     * ```js
     * setServers({
-    *  gateway: 'https://private-rtc.com', // 指定网关
-    *  log: 'https://log.private-rtc.com', // 指定日志服务器
+    *  gateway: 'https://my-rtc.com', // 指定网关
+    *  log: 'https://log.my-rtc.com', // 指定日志服务器
     * });
     * ```
     *
     * **特别地，单信令服务器时，不需要网关进行分配信令服务器，可以直接指定信令服务器**
     * ```js
     * setServers({
-    *  signal: 'wss://private-rtc.com:5005', // 直接指定信令服务器
-    *  log: 'https://log.private-rtc.com', // 指定日志服务器
+    *  signal: 'wss://my-rtc.com:5005', // 直接指定信令服务器
+    *  log: 'https://log.my-rtc.com', // 指定日志服务器
     * });
     * ```
     * @throws {@link RtcError}
@@ -1642,7 +1659,6 @@ declare module '__@urtc/sdk-web/' {
     * 2. audio, video, screen 不可同时为 false
     * 3. 若指定了 file，则 init 时将优先使用 file 来创建初始化本地流的视频
     * 4. screenAudio 在不同浏览器上表现不同，参见 {@link LocalStreamOptions}
-    * @param id - 选传，指定本地流的 ID，请注意创建多条流时，不可传入重复值
     * @public
     * @example
     * ```js
@@ -1660,9 +1676,9 @@ declare module '__@urtc/sdk-web/' {
     * ```
     * @throws {@link RtcError}
     */
-  export function createStream(opts: LocalStreamOptions, id?: string): LocalStream;
+  export function createStream(opts: LocalStreamOptions): LocalStream;
   /**
-    * 设置日志打印级别，用于打印出更多日志来调试或定位问题
+    * 设置日志打印级别，用于打印出更多日志来调试或定位问题，默认 warn 级别
     * @param level - 日志级别，有 'debug', 'info', 'warn', 'error' 级别;
     * @public
     * @example
@@ -1672,15 +1688,24 @@ declare module '__@urtc/sdk-web/' {
     */
   export function setLogLevel(level: LogLevel): void;
   /**
-    * 开启/关闭操作/错误/状态日志的上报，未调用时，默认开启上报日志
-    * @param enable - 是否开启上报
+    * 开启日志（操作/错误/状态）的上报，默认开启
     * @public
     * @example
     * ```js
-    * reportLog(false); // 关闭日志上报，关闭后，在线上出现错误时，将无法根据日志进行排查
+    * enableUploadLog();
     * ```
     */
-  export function reportLog(enable: boolean): void;
+  export function enableUploadLog(): void;
+  /**
+    * 关闭日志（操作/错误/状态）的上报
+    * 注：若无特殊原因，不建议关闭日志上报，关闭后，在线上出现错误时，将无法根据日志定位问题
+    * @public
+    * @example
+    * ```js
+    * disableUploadLog();
+    * ```
+    */
+  export function disableUploadLog(): void;
   export { generateToken };
   export * from '__@urtc/sdk-web/devices';
   export * from '__@urtc/sdk-web/client';

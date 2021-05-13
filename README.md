@@ -1,44 +1,28 @@
-# URTC Web SDK
+# Web SDK
 
-## 安装
-
-主要分两种项目类型：
-
-1. 直接通过 html 文件中使用 script 标签导入第三库的项目
-
-  ```html
-  <script type="text/javascript" src="index.js"></script>
-  ```
-
-2. 使用打包工具导入第三方库的项目
-
-  ```shell
-  npm install --save @urtc/sdk-web
-  ```
-
-针对上面两种项目的具体安装方法，可参考 **[使用说明](./Manual.md)**，并了解使用此 SDK 的简单步骤。
+可参考 **[使用说明](./Manual.md)**，并了解使用此 SDK 的简单步骤。
  
 ## API
 
 以下仅展示**基本的 API 说明**，更详细的 API 及类型说明，请参见 **[Docs](https://ucloud.github.io/urtc-sdk-web)**。
 
-### URTC 主要的类或接口
-* [Client](#client) - URTC 客户端，可进行加入、离开房间，发布、订阅流等操作
+### 主要的类或接口
+* [Client](#client) - RTC 客户端，可进行加入、离开房间，发布、订阅流等操作
 * [Stream](#stream) - 本地流与远端流的父类
 * [LocalStream](#localstream) - 本地流，可用于本地预览，也可用 client 进行发布
-* [RemoteStream](#remtoestream) - 远端流，房间内其他用户发布的流，可通过 client 进行订阅
+* [RemoteStream](#remotestream) - 远端流，房间内其他用户发布的流，可通过 client 进行订阅
 * [User](#user) - 用户信息
-* [RtcError](https://ucloud.github.io/urtc-sdk-web/classes/rtcerror.html) - URTC 错误信息
-* RtcEvent - URTC 事件，主要有以下几类
+* [RtcError](https://ucloud.github.io/urtc-sdk-web/classes/rtcerror.html) - 错误信息
+* RtcEvent - 事件，主要有以下几类
   *  [RtcUserEvent](https://ucloud.github.io/urtc-sdk-web/index.html#rtcuserevent)
   *  [RtcStreamEvent](https://ucloud.github.io/urtc-sdk-web/index.html#rtcstreamevent)
   *  [RtcPlayerEvent](https://ucloud.github.io/urtc-sdk-web/index.html#rtcplayerevent)
   *  [RtcConnectionEvent](https://ucloud.github.io/urtc-sdk-web/index.html#rtcconnectionevent)
 
-### URTC 全局属性或方法
+### 全局属性或方法
 * [version](https://ucloud.github.io/urtc-sdk-web/index.html#version) - 当前 sdk 的版本号
 * [createClient](https://ucloud.github.io/urtc-sdk-web/index.html#createclient) - 创建客户端
-* [createStream](https://ucloud.github.io/urtc-sdk-web/index.html#createclient) - 创建本地流
+* [createStream](https://ucloud.github.io/urtc-sdk-web/index.html#createstream) - 创建本地流
 * [deviceDetection](https://ucloud.github.io/urtc-sdk-web/index.html#devicedetection) - 设备可用性检测，创建包含麦克风音频或摄像头视频的本地流时，有可能因为麦克风或摄像头设备问题（如驱动问题，或未经授权等），导致无法正确创建。此方法可用于设备检测，根据检测结果，再决定创建本地流时启用麦克风或摄像头或麦克风和摄像头
 * [generateToken](https://ucloud.github.io/urtc-sdk-web/index.html#generatetoken) - 根据 AppId，AppKey，RoomId，UserId 生成 token，用于开发阶段临时快速的加入房间并验证功能，由于 AppKey 不可暴露于公网，因此生产环境中不建议使用此方法生成 token
 * [getCameras](https://ucloud.github.io/urtc-sdk-web/index.html#getcameras) - 获取摄像头设备列表
@@ -48,7 +32,8 @@
 * [isSupportScreenShare](https://ucloud.github.io/urtc-sdk-web/index.html#issupportscreenshare) - 检测浏览器是否支持屏幕共享
 * [isSupportWebRTC](https://ucloud.github.io/urtc-sdk-web/index.html#issupportwebrtc) - 检测浏览器是否完全（可访问本地音视频设备）支持 WebRTC
 * [getSupportedCodec](https://ucloud.github.io/urtc-sdk-web/index.html#getsupportedcodec) - 检测浏览器支持的WebRTC的音视频编解码格式
-* [reportLog](https://ucloud.github.io/urtc-sdk-web/index.html#reportlog) - 开启/关闭操作/错误/状态日志的上报
+* [enableUploadLog](https://ucloud.github.io/urtc-sdk-web/index.html#enableuploadlog) - 开启日志（操作/错误/状态）的上报
+* [disableUploadLog](https://ucloud.github.io/urtc-sdk-web/index.html#disableuploadlog) - 关闭日志（操作/错误/状态）的上报
 * [setLogLevel](https://ucloud.github.io/urtc-sdk-web/index.html#setloglevel) - 设置日志打印级别，用于打印出更多日志来调试或定位问题
 * [setServers](https://ucloud.github.io/urtc-sdk-web/index.html#setservers) - 用于私有化部署时，指定部署的服务器地址
 
@@ -75,7 +60,7 @@ Client 对象包含以下方法：
 
 ### Stream
 
-Stream 为 LocalStream 及 RemoteStream 的父类，其提供 use 方法，用于加载流插件，流插件请查看 - todo
+Stream 为 LocalStream 及 RemoteStream 的父类
 
 <a name="localstream"></a>
 

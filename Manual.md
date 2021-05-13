@@ -12,14 +12,13 @@
 <script type="text/javascript" src="index.js"></script>
 ```
 
-2）使用全局对象 UCloudRTC 创建 client
+2）使用全局对象 URTC 创建 client
 
 ```js
 const client = URTC.createClient(appId);
 ```
 
-
-- 使用 npm 安装，并将 sdk 使用 ES6 语法作为模块引入，具体步骤：
+- 使用 npm/yarn 安装，并将 sdk 使用 ES6 语法作为模块引入，具体步骤：
 
 1）使用 [npm](https://www.npmjs.com/) 或 [Yarn](https://yarnpkg.com/) 安装 sdk:
 
@@ -38,7 +37,7 @@ yarn add @urtc/sdk-web
 ```js
 import { createClient, createStream } from '@urtc/sdk-web';
 
-const client = createClient(appId); // 默认为连麦模式（小班课），若为直播模式（大班课）时，需要传入第三个参数 { type: 'live' }，更多配置见 sdk API 说明
+const client = createClient(appId);
 ```
 
 > 注：创建 client 时传的 token 需要使用 AppId 和 AppKey 等数据生成，测试阶段，可临时使用 sdk 提供的 generateToken 方法生成，但为保证 AppKey 不暴露于公网，在生产环境中强烈建议自建服务，由服务器按规则生成 token 供 sdk 使用。
@@ -88,7 +87,7 @@ localStream.init().then(() => {
 ## 4. 加入房间，并发布本地流
 
 ```js
-client.join('roomId', 'userId', 'token').then(() => {
+client.join('roomId', 'userId', 'token').then(() => { // 默认为会议模式（小班课 - conference），若为直播模式（大班课 - live）时，需要传入第四个参数 { type: 'live' }，更多配置见 sdk API 说明
   client.publish(localStream).catch((err) => {
     console.log(`发布失败 ${err}`);
   });

@@ -52,7 +52,7 @@ unmuteBtn.onclick = function() {
 
 3. 提前检测浏览器是否能自动播放
 
-在用 URTC 创建 client 前，可使用 [can-autoplay](https://www.npmjs.com/package/can-autoplay) 第三方库进行检测，若不支持，可引导用户点击页面上的某个位置（譬如模态框上的确定按钮）来触发用户与页面的交互（即解锁 `the user didn’t interact with the document first`），然后再用 URTC 创建 client 并加入房间。示例代码：
+在创建 client 前，可使用 [can-autoplay](https://www.npmjs.com/package/can-autoplay) 第三方库进行检测，若不支持，可引导用户点击页面上的某个位置（譬如模态框上的确定按钮）来触发用户与页面的交互（即解锁 `the user didn’t interact with the document first`），然后再创建 client 并加入房间。示例代码：
 
 ```js
 canAutoplay.video().then(res => {
@@ -68,5 +68,5 @@ FAQ
 Q: 为什么有时可以播放，有时不行？
 A: 1. 部分浏览器会有自动播放的限制（如 Chrome 70 及以上和 Safari 浏览器）。2.因为页面不是 100% 被 Autoplay 限制，随着用户使用这个页面的次数增加，部分浏览器会把这个页面加入自己的 Autoplay 白名单列表中。3. 在推+拉流时，若客户端先推流（读取麦克风设备），再拉流，可以绕开 autoplay 的限制。
 
-Q: 为什么别的产品可以自动播放，URTC 却不可以？
+Q: 为什么别的产品可以自动播放，本产品却不可以？
 A: 排查问题时可先确定客户端是不是先推流再拉流（参考上面的问题）。如果是仅拉流，由于这是浏览器级别的限制，所有同类产品都会受到这个 autoplay 限制的影响，解决办法无外乎上面几种。
