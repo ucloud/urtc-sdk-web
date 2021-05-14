@@ -778,7 +778,6 @@ declare module '__@urtc/sdk-web/event' {
   export type RtcUserEventType = 'user-joined' | 'user-left' | 'kick-off';
   /**
     * Rtc 流事件类型：
-    * @public
     *
     * {@link RtcStreamEvent 流事件}
     * - stream-added - 有远端流加入，此时事件中的 data 为 {@link RemoteStream} 远端流
@@ -789,6 +788,7 @@ declare module '__@urtc/sdk-web/event' {
     * - unmute-audio - 流的音频被取消 mute
     * - mute-video - 流的视频被 mute
     * - unmute-video - 流的视频被取消 mute
+    * @public
     * @example
     * ```js
     * client.on('stream-add', (event) => {
@@ -817,7 +817,6 @@ declare module '__@urtc/sdk-web/event' {
   export type RtcStreamEventType = 'stream-added' | 'stream-removed' | 'stream-subscribed' | 'stream-published' | 'mute-audio' | 'unmute-audio' | 'mute-video' | 'unmute-video' | 'first-key-frame' | 'screenshare-stopped';
   /**
     * Rtc 播放器事件类型：
-    * @public
     *
     * {@link RtcPlayerEvent 播放器事件}
     * - player-status-change - 流播放器状态改变
@@ -1438,10 +1437,10 @@ declare module '__@urtc/sdk-web/stream/remote-stream' {
 declare module '__@urtc/sdk-web/server' {
   /**
     * 服务器配置，可设置置网关（gateway）、信令（signal）、日志（log）服务器地址
-    * @public
     * 注：
     * 1. gateway 和 signal 须二选一进行设置
     * 2. 没有日志服务器时，log 可不设
+    * @public
     */
   export interface ServerConfig {
       /**
@@ -1544,7 +1543,6 @@ declare module '__@urtc/sdk-web/event-emitter' {
 declare module '__@urtc/sdk-web/stream/profile' {
   /**
     * 预设的视频 Profile
-    * @public
     *
     * 名称 | 视频宽 | 视频高 | 帧率 (fps) | 码率 (kbps)
     * :-: | :-: | :-: | :-: | :-:
@@ -1564,7 +1562,6 @@ declare module '__@urtc/sdk-web/stream/profile' {
   export type VideoProfile = '180p' | '180p_2' | '240p' | '360p' | '360p_2' | '480p' | '720p' | '720p_2' | '720p_3' | '1080p' | '1080p_2' | '1080p_3';
   /**
     * 预设的屏幕共享视频 Profile
-    * @public
     *
     * 名称 | 视频宽 | 视频高 | 帧率 (fps) | 码率 (kbps)
     * :-: | :-: | :-: | :-: | :-:

@@ -356,6 +356,11 @@
 						<div class="lead">
 							<p>Rtc 播放器事件类型：</p>
 						</div>
+						<p><a href="index.html#rtcplayerevent">播放器事件</a></p>
+						<ul>
+							<li>player-status-change - 流播放器状态改变</li>
+						</ul>
+						<p><strong>注，此事件需在单条流上进行监听</strong></p>
 						<dl class="tsd-comment-tags">
 							<dt>example</dt>
 							<dd><pre><code class="language-js"><span style="color: #001080">stream</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;player-status-change&#039;</span><span style="color: #000000">, (</span><span style="color: #001080">event</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
@@ -390,6 +395,17 @@
 						<div class="lead">
 							<p>Rtc 流事件类型：</p>
 						</div>
+						<p><a href="index.html#rtcstreamevent">流事件</a></p>
+						<ul>
+							<li>stream-added - 有远端流加入，此时事件中的 data 为 <a href="classes/remotestream.html">RemoteStream</a> 远端流</li>
+							<li>stream-removed - 有远端流移除，此时事件中的 data 为 <a href="classes/remotestream.html">RemoteStream</a> 远端流</li>
+							<li>stream-subscribed - 远端流订阅完成，此时事件中的 data 为 <a href="classes/remotestream.html">RemoteStream</a> 远端流</li>
+							<li>stream-published - 本地流发布完成，此时事件中的 data 为 <a href="classes/localstream.html">LocalStream</a> 本地流</li>
+							<li>mute-audio - 流的音频被 mute</li>
+							<li>unmute-audio - 流的音频被取消 mute</li>
+							<li>mute-video - 流的视频被 mute</li>
+							<li>unmute-video - 流的视频被取消 mute</li>
+						</ul>
 						<dl class="tsd-comment-tags">
 							<dt>example</dt>
 							<dd><pre><code class="language-js"><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;stream-add&#039;</span><span style="color: #000000">, (</span><span style="color: #001080">event</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
@@ -467,6 +483,59 @@
 						<div class="lead">
 							<p>预设的屏幕共享视频 Profile</p>
 						</div>
+						<table>
+							<thead>
+								<tr>
+									<th align="center">名称</th>
+									<th align="center">视频宽</th>
+									<th align="center">视频高</th>
+									<th align="center">帧率 (fps)</th>
+									<th align="center">码率 (kbps)</th>
+								</tr>
+							</thead>
+							<tbody><tr>
+									<td align="center">480p</td>
+									<td align="center">640</td>
+									<td align="center">480</td>
+									<td align="center">5</td>
+									<td align="center">600</td>
+								</tr>
+								<tr>
+									<td align="center">480p_2</td>
+									<td align="center">640</td>
+									<td align="center">480</td>
+									<td align="center">30</td>
+									<td align="center">1000</td>
+								</tr>
+								<tr>
+									<td align="center">720p</td>
+									<td align="center">1280</td>
+									<td align="center">720</td>
+									<td align="center">5</td>
+									<td align="center">1000</td>
+								</tr>
+								<tr>
+									<td align="center">720p_2</td>
+									<td align="center">1280</td>
+									<td align="center">720</td>
+									<td align="center">30</td>
+									<td align="center">2000</td>
+								</tr>
+								<tr>
+									<td align="center">1080p</td>
+									<td align="center">1920</td>
+									<td align="center">1080</td>
+									<td align="center">5</td>
+									<td align="center">1500</td>
+								</tr>
+								<tr>
+									<td align="center">1080p_2</td>
+									<td align="center">1920</td>
+									<td align="center">1080</td>
+									<td align="center">30</td>
+									<td align="center">2500</td>
+								</tr>
+						</tbody></table>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
@@ -503,6 +572,101 @@
 						<div class="lead">
 							<p>预设的视频 Profile</p>
 						</div>
+						<table>
+							<thead>
+								<tr>
+									<th align="center">名称</th>
+									<th align="center">视频宽</th>
+									<th align="center">视频高</th>
+									<th align="center">帧率 (fps)</th>
+									<th align="center">码率 (kbps)</th>
+								</tr>
+							</thead>
+							<tbody><tr>
+									<td align="center">180p</td>
+									<td align="center">240</td>
+									<td align="center">180</td>
+									<td align="center">15</td>
+									<td align="center">200</td>
+								</tr>
+								<tr>
+									<td align="center">180p_2</td>
+									<td align="center">320</td>
+									<td align="center">180</td>
+									<td align="center">15</td>
+									<td align="center">300</td>
+								</tr>
+								<tr>
+									<td align="center">240p</td>
+									<td align="center">320</td>
+									<td align="center">240</td>
+									<td align="center">15</td>
+									<td align="center">400</td>
+								</tr>
+								<tr>
+									<td align="center">360p</td>
+									<td align="center">480</td>
+									<td align="center">360</td>
+									<td align="center">15</td>
+									<td align="center">400</td>
+								</tr>
+								<tr>
+									<td align="center">360p_2</td>
+									<td align="center">640</td>
+									<td align="center">360</td>
+									<td align="center">15</td>
+									<td align="center">500</td>
+								</tr>
+								<tr>
+									<td align="center">480p</td>
+									<td align="center">640</td>
+									<td align="center">480</td>
+									<td align="center">15</td>
+									<td align="center">600</td>
+								</tr>
+								<tr>
+									<td align="center">720p</td>
+									<td align="center">1280</td>
+									<td align="center">720</td>
+									<td align="center">15</td>
+									<td align="center">1000</td>
+								</tr>
+								<tr>
+									<td align="center">720p_2</td>
+									<td align="center">1280</td>
+									<td align="center">720</td>
+									<td align="center">15</td>
+									<td align="center">1500</td>
+								</tr>
+								<tr>
+									<td align="center">720p_3</td>
+									<td align="center">1280</td>
+									<td align="center">720</td>
+									<td align="center">30</td>
+									<td align="center">2000</td>
+								</tr>
+								<tr>
+									<td align="center">1080p</td>
+									<td align="center">1920</td>
+									<td align="center">1080</td>
+									<td align="center">15</td>
+									<td align="center">1500</td>
+								</tr>
+								<tr>
+									<td align="center">1080p_2</td>
+									<td align="center">1920</td>
+									<td align="center">1080</td>
+									<td align="center">15</td>
+									<td align="center">2000</td>
+								</tr>
+								<tr>
+									<td align="center">1080p_3</td>
+									<td align="center">1920</td>
+									<td align="center">1080</td>
+									<td align="center">30</td>
+									<td align="center">2500</td>
+								</tr>
+						</tbody></table>
 					</div>
 				</section>
 			</section>
