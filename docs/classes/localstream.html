@@ -120,6 +120,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="localstream.html#resume" class="tsd-kind-icon">resume</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localstream.html#setscreenprofile" class="tsd-kind-icon">set<wbr>Screen<wbr>Profile</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localstream.html#setvideoprofile" class="tsd-kind-icon">set<wbr>Video<wbr>Profile</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="localstream.html#snapshot" class="tsd-kind-icon">snapshot</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="localstream.html#stop" class="tsd-kind-icon">stop</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localstream.html#switchdevice" class="tsd-kind-icon">switch<wbr>Device</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localstream.html#switchimage" class="tsd-kind-icon">switch<wbr>Image</a></li>
@@ -828,6 +829,47 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="snapshot" class="tsd-anchor"></a>
+					<h3>snapshot</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">snapshot<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">?: </span><a href="../interfaces/snapshotoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">SnapshotOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="stream.html">Stream</a>.<a href="stream.html#snapshot">snapshot</a></p>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>对当前流进行截屏，可用于页面展示或下载保存</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-js"><span style="color: #001080">stream</span><span style="color: #000000">.</span><span style="color: #795E26">snapshot</span><span style="color: #000000">({</span><span style="color: #001080">filename:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;xxx.jpg&#039;</span><span style="color: #000000">})</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">pic</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;截屏图像&#039;</span><span style="color: #000000">, </span><span style="color: #001080">pic</span><span style="color: #000000">);</span>
+<span style="color: #000000">  })</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">catch</span><span style="color: #000000">((</span><span style="color: #001080">err</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;截屏失败&#039;</span><span style="color: #000000">, </span><span style="color: #001080">err</span><span style="color: #000000">);</span>
+<span style="color: #000000">  });</span>
+</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> opts: <a href="../interfaces/snapshotoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">SnapshotOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>截屏参数，选传，参见<a href="../interfaces/snapshotoptions.html">SnapshotOptions</a></p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="stop" class="tsd-anchor"></a>
 					<h3>stop</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -1129,6 +1171,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="localstream.html#setvideoprofile" class="tsd-kind-icon">set<wbr>Video<wbr>Profile</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="localstream.html#snapshot" class="tsd-kind-icon">snapshot</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="localstream.html#stop" class="tsd-kind-icon">stop</a>

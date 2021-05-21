@@ -601,6 +601,22 @@ declare module '__@urtc/sdk-web/types' {
         */
       video: VideoCodec[];
   }
+  /**
+    * 截屏参数
+    * @public
+    */
+  export interface SnapshotOptions {
+      /**
+        * 选填，是否将截屏保存为图片并下载，默认 false
+        */
+      download?: boolean;
+      /**
+        * 选填，将截屏保存为图片时指定的文件名
+        * 当传入文件名时，将按指定的文件名保存图片，否则文件名将自动生成
+        * 特别地，当传入文件名时，即使 download 指定为 false，也将按指定的文件名保存图片并下载
+        */
+      filename?: string;
+  }
 }
 
 declare module '__@urtc/sdk-web/logger' {
@@ -1058,6 +1074,14 @@ declare module '__@urtc/sdk-web/error' {
         * 3019 - 自动播放被禁止错误
         */
       static readonly PLAY_NOT_ALLOWED = "3019";
+      /**
+        * 3020 - 视频数据异常，未成功播放
+        */
+      static readonly PLAY_PENDING = "3020";
+      /**
+        * 3021 - 因未曾调用或调用 play 方法失败，故不可恢复播放
+        */
+      static readonly RESUME_NOT_ALLOWED = "3021";
   }
   /**
     * RTC 错误代码
@@ -1103,6 +1127,8 @@ declare module '__@urtc/sdk-web/error' {
     * - 3017 - 流正在取消订阅
     * - 3018 - 流已经订阅
     * - 3019 - 自动播放被禁止错误
+    * - 3020 - 视频数据异常，未成功播放
+    * - 3021 - 因未曾调用或调用 play 方法失败，故不可恢复播放
     * @public
     */
   export type ErrorCode = typeof RtcError[Exclude<keyof typeof RtcError, 'prototype' | 'getCode' | 'stackTraceLimit' | 'prepareStackTrace' | 'captureStackTrace'>];
@@ -1226,7 +1252,7 @@ declare module '__@urtc/sdk-web/stream/types' {
 
 declare module '__@urtc/sdk-web/stream/stream' {
   import { EventEmitter } from '__@urtc/sdk-web/event-emitter';
-  import { PlayOptions } from '__@urtc/sdk-web/types';
+  import { PlayOptions, SnapshotOptions } from '__@urtc/sdk-web/types';
   import { MediaType, StreamStats } from '__@urtc/sdk-web/stream/types';
   /**
     * LocalStream 和 RemoteStream 的基类
@@ -1396,6 +1422,21 @@ declare module '__@urtc/sdk-web/stream/stream' {
         * ```
         */
       getStats(): Promise<StreamStats>;
+      /**
+        * 对当前流进行截屏，可用于页面展示或下载保存
+        * @param opts - 截屏参数，选传，参见{@link SnapshotOptions}
+        * @example
+        * ```js
+        * stream.snapshot({filename: 'xxx.jpg'})
+        *   .then((pic) => {
+        *     console.log('截屏图像', pic);
+        *   })
+        *   .catch((err) => {
+        *     console.log('截屏失败', err);
+        *   });
+        * ```
+        */
+      snapshot(opts?: SnapshotOptions): Promise<string>;
   }
 }
 
