@@ -107,9 +107,9 @@ declare module '__urtc-sdk/client' {
     getAudioStats(streamId?: string, onSuccess?: (data: AudioStats) => void, onFailure?: (data?: any) => void): void;
     getVideoStats(streamId?: string, onSuccess?: (data: VideoStats) => void, onFailure?: (data?: any) => void): void;
     getNetworkStats(streamId?: string, onSuccess?: (data: NetworkStats) => void, onFailure?: (data?: any) => void): void;
-    preloadEffect(effectId: number, filePath: string, callback?: (data?: any) => void): void;
+    preloadEffect(effectId: number, filePath: string, callback?: (err?: Error) => void): void;
     unloadEffect(effectId: number): void;
-    playEffect(options: EffectOptions, callback?: (data?: any) => void): void;
+    playEffect(options: EffectOptions, callback?: (err?: Error) => void): void;
     pauseEffect(options: EffectOptions, callback?: (data?: any) => void): void;
     resumeEffect(options: EffectOptions, callback?: (data?: any) => void): void;
     stopEffect(options: EffectOptions, callback?: (data?: any) => void): void;
@@ -133,10 +133,10 @@ declare module '__urtc-sdk/client' {
     updateRelayPushURL(options: UpdateRelayPushURLOptions, callback?: (err?: Error, data?: RelayResult) => void): void;
     updateRelayLayout(options: UpdateRelayLayoutOptions, callback?: (err?: Error, data?: RelayResult) => void): void;
     createStream(options: CreateStreamOptions, callback: (err?: Error, stream?: Stream) => void): void;
-    publishStream(previewId: string, callback: (err?: Error, stream?: Stream) => void): void;
-    unpublishStream(previewId: string, callback: (err?: Error, stream?: Stream) => void): void;
-    removeStream(previewId: string, callback: (err?: Error) => void): void;
-    destroyStream(previewId: string, callback: (err?: Error) => void): void;
+    publishStream(streamId: string, callback: (err?: Error, stream?: Stream) => void): void;
+    unpublishStream(streamId: string, callback: (err?: Error, stream?: Stream) => void): void;
+    removeStream(streamId: string, callback: (err?: Error) => void): void;
+    destroyStream(streamId: string, callback: (err?: Error) => void): void;
     enableAudioVolumeIndicator(interval?: number): void;
     logoff(action: 'quit' | 'reconnect' | 'switch' | 'refresh', users: string[], callback: (err?: Error) => void): void;
   }
@@ -298,7 +298,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.6.27";
+  export const version = "1.6.28";
 }
 
 declare module '__urtc-sdk/token' {
@@ -433,6 +433,7 @@ declare module '__urtc-sdk/types' {
     loop?: boolean;
     playTime?: number;
     replace?: boolean;
+    onEnd?: () => void;
   }
   export interface EffectVolumeOptions {
     streamId?: string;
@@ -526,7 +527,7 @@ declare module '__urtc-sdk/types' {
     pushURL?: string[];
   }
   export interface MixResult {
-    MixId: string;
+    MixId?: string;
     FileName?: string;
     Type?: MixType;
     PushURL?: string[];
@@ -557,7 +558,7 @@ declare module '__urtc-sdk/types' {
     keyUser?: string;
   }
   export interface RecordResult {
-    Id: string;
+    Id?: string;
     FileName?: string;
   }
   export type UpdateMixStreamsType = 'add' | 'remove' | 'replace';
@@ -580,7 +581,7 @@ declare module '__urtc-sdk/types' {
     keyUser?: string;
   }
   export interface RelayResult {
-    Id: string;
+    Id?: string;
     PushURL?: string[];
   }
   export type UpdateRelayPushURLType = 'add' | 'remove' | 'replace';

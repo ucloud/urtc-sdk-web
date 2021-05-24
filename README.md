@@ -977,7 +977,8 @@ Err 为错误信息
 ### 27. switchDevice 方法
 
 当发布（本地麦克风、摄像头）流已经发布，可通过此方法在不中断当前发布的情况下，用指定的音视频设备采集的音视频流代替正在发布的音视频流，示例代码：
-
+> 注：
+> 1、在部分华为手机的微信浏览器中，播放音效时不支持切换麦克风
 ```js
 client.switchDevice(SwitchDeviceOptions, onSuccess, onFailure)
 ```
@@ -1080,6 +1081,8 @@ Err 为错误信息
 ### 30. getAudioVolume 方法
 
 获取音频的音量，返回值范围 [0,100]，示例代码：
+> 注：
+> 1、在部分华为手机的微信浏览器中，不支持该方法
 
 ```js
 client.getAudioVolume(StreamId)
@@ -1094,6 +1097,8 @@ client.getAudioVolume(StreamId)
 ### 31. setAudioVolume 方法
 
 设置音频的音量，可设置的音量范围 [0,100]，示例代码：
+> 注：
+> 1、在部分华为手机的微信浏览器中，不支持该方法
 
 ```js
 client.setAudioVolume(AudioVolumeOptions, callback)
@@ -1273,6 +1278,8 @@ client.unloadEffect(EffectId)
 ### 37. playEffect 方法
 
 播放音效，示例代码：
+> 注：
+> 1、在部分华为手机的微信浏览器中，播放音效时会替换麦克风声音，不能同时发送2类声音。
 
 ```js
 client.playEffect(EffectOptions, callback)
@@ -1307,6 +1314,8 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 ### 38. pauseEffect 方法
 
 暂停播放音效，示例代码：
+> 注：
+> 1、在部分华为手机的微信浏览器中，不支持该方法。
 
 ```js
 client.pauseEffect(EffectOptions, callback)
@@ -1335,6 +1344,8 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 ### 39. resumeEffect 方法
 
 恢复播放音效，示例代码：
+> 注：
+> 1、在部分华为手机的微信浏览器中，不支持该方法。
 
 ```js
 client.resumeEffect(EffectOptions, callback)
@@ -1364,6 +1375,8 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 ### 40. stopEffect 方法
 
 停止播放音效，示例代码：
+> 注：
+> 1、在部分华为手机的微信浏览器中，停止音效时会切换回麦克风声音。
 
 ```js
 client.stopEffect(EffectOptions, callback)
@@ -1392,6 +1405,8 @@ Err 为返回值，为空时，说明已执行成功，否则执行失败，值�
 ### 41. setEffectVolume 方法
 
 设置正在播放的音效的音量大小，示例代码：
+> 注：
+> 1、在部分华为手机的微信浏览器中，不支持该方法
 
 ```js
 client.setEffectVolume(EffectVolumeOptions, callback)
@@ -1660,7 +1675,7 @@ MixResult: object 类型，类型说明如下
   MixId?: string        // 混流 ID
   FileName?: string     // 混流文件名
   Type?: MixType        // 混流类型，MixType 为 'relay' | 'record' | 'relay-and-record'，注：queryMix 操作时会返回此项
-  PushURL?: string[]    // 转推的 URL 列表，注：stopMix 操作时会返回此项
+  PushURL?: string[]    // 转推的 URL 列表
 }
 ```
 
@@ -2292,7 +2307,7 @@ Stream 为返回值，[Stream 类型](#stream)，执行失败时，此值为空�
 > 注:
 > 1. 取消发布的流必须为使用通过 createStream 方法创建并为发布状态的本地流。
 > 2. 通过 publish 方法直接发布时生成的本地流，请使用 unpublish 方法进行取消发布。
-> 3. 取消发布后，流的数据将更新，sid 也将被替换为其 previewId 的值，若之前该流已经被播放（通过调用 play 方法进行播放），取消发布后将被自动停止，请使用更新后的流的数据进行重新播放。
+> 3. 若之前该流已经被播放（通过调用 play 方法进行播放），取消发布后将被自动停止，请使用更新后的流的数据进行重新播放。
 
 
 <a name="client-destroystream"></a>
@@ -2317,7 +2332,7 @@ function callback(Error) {}
 Error 为返回值，为空时，说明已执行成功，否则执行失败，值为执行失败的错误
 
 > 注:
-> 1. 被销毁的流必须为未发布状态的本地（预览）流，要么为通过 createStream 方法创建但并未发布的本地流，要么为使用 unpublishStream 方法取消发布了的本地流。
+> 1. 被销毁的流必须为未发布状态的本地（预览）流，如通过 createStream 方法创建但并未发布的本地流，或使用 unpublishStream 方法取消发布了的本地流。
 > 2. 当一条本地（预览）流已经被播放（通过调用 play 方法进行播放），此销毁操作将自动停止该流的播放，无须额外调用 stop 方法。
 
 <a name="client-enableaudiovolumeindicator"></a>
