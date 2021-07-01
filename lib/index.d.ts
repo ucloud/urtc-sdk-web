@@ -330,7 +330,8 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         */
       facingMode?: 'user' | 'environment';
       /**
-        * 选传，使用图片初始化本地流的视频
+        * 选传，使用图片初始化本地流的视频。
+        * 注：若指定，将直接采用图片生成的视频作为本地流的视频源，不再按 video 设置的读取摄像头作为视频源，或 screen 设置的读取屏幕共享的画面作为视频源。
         */
       file?: string | File;
       /**
@@ -341,6 +342,16 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         * 选传，指定本地流的 userId
         */
       userId?: string;
+      /**
+        * 选传，音频轨道，参见 {@link https://developer.mozilla.org/zh-CN/docs/Web/API/MediaStreamTrack | MediaStreamTrack}，指定本地流的音频源。
+        * 注：若指定，将直接采用该音频轨道作为本地流的音频源，不再按 audio 设置的读取麦克风作为音频源，或 screenAudio 设置的读取屏幕共享的音频作为音频源。
+        */
+      audioSource?: MediaStreamTrack;
+      /**
+        * 选传，视频轨道，参见 {@link https://developer.mozilla.org/zh-CN/docs/Web/API/MediaStreamTrack | MediaStreamTrack}，指定本地流的视频源。
+        * 注：若指定，将直接采用该视频轨道作为本地流的视频源，不再按 video 设置的读取摄像头作为视频源，或 screen 设置的读取屏幕共享的画面作为视频源，或 file 设置的使用图片生成视频源。
+        */
+      videoSource?: MediaStreamTrack;
   }
   /**
     * 本地流，可用于本地预览，也可用 client 进行发布
@@ -1156,8 +1167,9 @@ declare module '__@urtc/sdk-web/stream/types' {
   /**
     * 视频编解码格式
     * @public
+    * @note 'h265' 目前仅部分浏览器在开启试验性功能时才支持，如 Safari 开启 `WebRTC H265 codec`
     */
-  export type VideoCodec = 'vp8' | 'h264';
+  export type VideoCodec = 'vp8' | 'h264' | 'h265';
   /**
     * 流的音频的统计数据
     * @public

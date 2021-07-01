@@ -88,6 +88,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="localstreamoptions.html#audio" class="tsd-kind-icon">audio</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="localstreamoptions.html#audiosource" class="tsd-kind-icon">audio<wbr>Source</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="localstreamoptions.html#cameraid" class="tsd-kind-icon">camera<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="localstreamoptions.html#facingmode" class="tsd-kind-icon">facing<wbr>Mode</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="localstreamoptions.html#file" class="tsd-kind-icon">file</a></li>
@@ -97,6 +98,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="localstreamoptions.html#screenaudio" class="tsd-kind-icon">screen<wbr>Audio</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="localstreamoptions.html#userid" class="tsd-kind-icon">user<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="localstreamoptions.html#video" class="tsd-kind-icon">video</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="localstreamoptions.html#videosource" class="tsd-kind-icon">video<wbr>Source</a></li>
 							</ul>
 						</section>
 					</div>
@@ -113,6 +115,19 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>是否读取麦克风设备来初始化本地流的音频</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="audiosource" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> audio<wbr>Source</h3>
+					<div class="tsd-signature tsd-kind-icon">audio<wbr>Source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MediaStreamTrack</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>选传，音频轨道，参见 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaStreamTrack" class="external">MediaStreamTrack</a>，指定本地流的音频源。
+							注：若指定，将直接采用该音频轨道作为本地流的音频源，不再按 audio 设置的读取麦克风作为音频源，或 screenAudio 设置的读取屏幕共享的音频作为音频源。</p>
 						</div>
 					</div>
 				</section>
@@ -148,7 +163,8 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>选传，使用图片初始化本地流的视频</p>
+							<p>选传，使用图片初始化本地流的视频。
+							注：若指定，将直接采用图片生成的视频作为本地流的视频源，不再按 video 设置的读取摄像头作为视频源，或 screen 设置的读取屏幕共享的画面作为视频源。</p>
 						</div>
 					</div>
 				</section>
@@ -225,6 +241,19 @@
 						</div>
 					</div>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="videosource" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> video<wbr>Source</h3>
+					<div class="tsd-signature tsd-kind-icon">video<wbr>Source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MediaStreamTrack</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>选传，视频轨道，参见 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaStreamTrack" class="external">MediaStreamTrack</a>，指定本地流的视频源。
+							注：若指定，将直接采用该视频轨道作为本地流的视频源，不再按 video 设置的读取摄像头作为视频源，或 screen 设置的读取屏幕共享的画面作为视频源，或 file 设置的使用图片生成视频源。</p>
+						</div>
+					</div>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -244,6 +273,9 @@
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="localstreamoptions.html#audio" class="tsd-kind-icon">audio</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="localstreamoptions.html#audiosource" class="tsd-kind-icon">audio<wbr>Source</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="localstreamoptions.html#cameraid" class="tsd-kind-icon">camera<wbr>Id</a>
@@ -271,6 +303,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="localstreamoptions.html#video" class="tsd-kind-icon">video</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="localstreamoptions.html#videosource" class="tsd-kind-icon">video<wbr>Source</a>
 							</li>
 						</ul>
 					</li>

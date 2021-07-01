@@ -93,6 +93,7 @@ LocalStream 对象包含以下方法：
 * [resume](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#resume) - 恢复播放流，一般由于浏览器限制无法自动播放时，可提示用户手动触发该方法进行恢复播放
 * [setScreenProfile](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#setscreenprofile) - 设置当前流（屏幕共享时）视频的 Profile，默认 '1080p'
 * [setVideoProfile](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#setvideoprofile) - 设置当前流视频的 Profile，默认 '480p'
+* [snapshot](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#snapshot) - 对当前流进行截屏
 * [stop](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#stop) - 停止播放当前流
 * [switchDevice](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#switchdevice) - 切换音视频设备
 * [switchImage](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#switchimage) - 切换图片 - 使用图片生成视频，并将当前流的视频使用其代替
@@ -122,11 +123,12 @@ RemoteStream 对象包含以下方法：
 * [hasVideo](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#hasvideo) - 判断当前流是否有视频
 * [muteAudio](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#muteaudio) - mute 当前流的音频
 * [muteVideo](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#mutevideo) - mute 当前流的视频
-* [off](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#off) - 取消监听流对象事件
-* [on](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#on) - 监听流对象事件，可监听的事件类型有 [RtcStreamEventType](https://ucloud.github.io/urtc-sdk-web/index.html#rtcstreameventtype)、[RtcPlayerEventType](https://ucloud.github.io/urtc-sdk-web/index.html#rtcplayereventtype)
+* [off](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#off) - 取消监听流对象事件
+* [on](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#on) - 监听流对象事件，可监听的事件类型有 [RtcStreamEventType](https://ucloud.github.io/urtc-sdk-web/index.html#rtcstreameventtype)、[RtcPlayerEventType](https://ucloud.github.io/urtc-sdk-web/index.html#rtcplayereventtype)
 * [play](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#play) - 播放当前流
 * [resume](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#resume) - 恢复播放流，一般由于浏览器限制无法自动播放时，可提示用户手动触发该方法进行恢复播放
 * [setAudioVolume](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#setaudiovolume) - 设置输出音量，默认为 100
+* [snapshot](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#snapshot) - 对当前流进行截屏
 * [stop](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#stop) - 停止播放当前流
 * [unmuteAudio](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#unmuteaudio) - unmute 当前流的音频
 * [unmuteVideo](https://ucloud.github.io/urtc-sdk-web/classes/remotestream.html#unmutevideo) - unmute 当前流的视频
