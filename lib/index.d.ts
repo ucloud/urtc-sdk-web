@@ -92,6 +92,7 @@ declare module '@urtc/sdk-web' {
   export * from '__@urtc/sdk-web/stream/stream';
   export * from '__@urtc/sdk-web/stream/local-stream';
   export * from '__@urtc/sdk-web/stream/remote-stream';
+  export * from '__@urtc/sdk-web/connection/types';
   export * from '__@urtc/sdk-web/server';
   export * from '__@urtc/sdk-web/plugin';
   export * from '__@urtc/sdk-web/version';
@@ -785,8 +786,9 @@ declare module '__@urtc/sdk-web/event' {
   import { User } from '__@urtc/sdk-web/user/user';
   import { Stream } from '__@urtc/sdk-web/stream/stream';
   import { ConnectionStates } from '__@urtc/sdk-web/connection/types';
-  import { LocalStream } from '__@urtc/sdk-web/';
+  import { LocalStream } from '__@urtc/sdk-web/stream/local-stream';
   import { RemoteStream } from '__@urtc/sdk-web/stream/remote-stream';
+  import { NetworkQualities } from '__@urtc/sdk-web/stream/types';
   /**
     * Rtc 用户事件类型：
     *
@@ -882,6 +884,7 @@ declare module '__@urtc/sdk-web/event' {
     *
     * {@link RtcConnectionEvent 连接事件}
     * - connection-state-changed - 连接状态改变
+    * - network-quality - 上/下行网络质量
     * @public
     * @example
     * ```js
@@ -889,8 +892,13 @@ declare module '__@urtc/sdk-web/event' {
     *   console.log(`连接状态：${event.data.previous} => ${event.data.current}`);
     * });
     * ```
+    * ```js
+    * client.on('network-quality', (event) => {
+    *   console.log(`上行 / 下行网络质量：${event.data.uplink} / ${event.data.downlink}`);
+    * });
+    * ```
     */
-  export type RtcConnectionEventType = 'connection-state-changed';
+  export type RtcConnectionEventType = 'connection-state-changed' | 'network-quality';
   /**
     * Rtc 事件类型
     * @public
@@ -922,7 +930,7 @@ declare module '__@urtc/sdk-web/event' {
     * Rtc 连接事件，事件类型参见 {@link RtcConnectionEventType}
     * @public
     */
-  export type RtcConnectionEvent = RtcEvent<RtcConnectionEventType, ConnectionStates>;
+  export type RtcConnectionEvent = RtcEvent<RtcConnectionEventType, ConnectionStates | NetworkQualities>;
   /**
     * Rtc 连接事件，事件类型参见 {@link RtcPlayerEventType}
     * @public
@@ -1260,6 +1268,32 @@ declare module '__@urtc/sdk-web/stream/types' {
     * @public
     */
   export type SwitchDeviceType = 'audio' | 'video';
+  /**
+    * 流的网络质量评分，有 '0' | '1' | '2' | '3' | '4' | '5' | '6'
+    * - '0': 网络质量未知
+    * - '1': 网络质量优秀
+    * - '2': 网络质量良好
+    * - '3': 网络质量一般
+    * - '4': 网络质量较差
+    * - '5': 网络质量糟糕
+    * - '6': 网络连接断开
+    * @public
+    */
+  export type NetworkQuality = '0' | '1' | '2' | '3' | '4' | '5' | '6';
+  /**
+    * 推（上行）/拉（下行）流的网络质量
+    * @public
+    */
+  export interface NetworkQualities {
+      /**
+        * 推（上行）流的网络质量
+        */
+      uplink: NetworkQuality;
+      /**
+        * 拉（下行）流的网络质量
+        */
+      downlink: NetworkQuality;
+  }
 }
 
 declare module '__@urtc/sdk-web/stream/stream' {
@@ -1487,6 +1521,33 @@ declare module '__@urtc/sdk-web/stream/remote-stream' {
   }
 }
 
+declare module '__@urtc/sdk-web/connection/types' {
+  /**
+    * 连接状态类型：
+    * - OPEN - 已连接
+    * - CONNECTING - 连接中
+    * - CLOSING - 断开中
+    * - RECONNECTING - 重连中
+    * - CLOSED - 已断开
+    * @public
+    */
+  export type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
+  /**
+    * 客户端（Client）与服务器之间的{@link ConnectionState 连接状态}
+    * @public
+    */
+  export interface ConnectionStates {
+      /**
+        * 当前连接状态
+        */
+      current: ConnectionState;
+      /**
+        * 之前连接状态
+        */
+      previous: ConnectionState;
+  }
+}
+
 declare module '__@urtc/sdk-web/server' {
   /**
     * 服务器配置，可设置置网关（gateway）、信令（signal）、日志（log）服务器地址
@@ -1652,127 +1713,5 @@ declare module '__@urtc/sdk-web/stream/profile' {
         */
       bitrate: number;
   }
-}
-
-declare module '__@urtc/sdk-web/connection/types' {
-  /**
-    * 连接状态类型：
-    * - OPEN - 已连接
-    * - CONNECTING - 连接中
-    * - CLOSING - 断开中
-    * - RECONNECTING - 重连中
-    * - CLOSED - 已断开
-    * @public
-    */
-  export type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
-  /**
-    * 客户端（Client）与服务器之间的{@link ConnectionState 连接状态}
-    * @public
-    */
-  export interface ConnectionStates {
-      current: ConnectionState;
-      previous: ConnectionState;
-  }
-}
-
-declare module '__@urtc/sdk-web/' {
-  import { Client } from '__@urtc/sdk-web/client';
-  import { LocalStream, LocalStreamOptions } from '__@urtc/sdk-web/stream/local-stream';
-  import { generateToken } from '__@urtc/sdk-web/utils/token';
-  import { ClientOptions } from '__@urtc/sdk-web/types';
-  import { LogLevel } from '__@urtc/sdk-web/logger';
-  /**
-    * 创建客户端
-    * @param appId - 应用 ID，可在控制台查看
-    * @param opts - 定义客户端的属性
-    * @public
-    * @example
-    * ```js
-    * const client = createClient('AppID');
-    * client
-    *   .join('roomId', 'userId', 'token')
-    *   .then(() => {
-    *     client.publish(localStream);
-    *   })
-    *   .catch((err) => {
-    *     console.log(`加入房间失败 ${err}`);
-    *   });
-    * ```
-    * @throws {@link RtcError}
-    */
-  export function createClient(appId: string, opts?: ClientOptions): Client;
-  /**
-    * 创建本地流
-    * @param opts - 必传，定义本地音视频流的属性
-    * 注：
-    * 1. video, screen 不可同时为 true
-    * 2. audio, video, screen 不可同时为 false
-    * 3. 若指定了 file，则 init 时将优先使用 file 来创建初始化本地流的视频
-    * 4. screenAudio 在不同浏览器上表现不同，参见 {@link LocalStreamOptions}
-    * @public
-    * @example
-    * ```js
-    * const localStream = createStream({ audio: true, video: true, screen: false });
-    * localStream
-    *   .init()
-    *   .then(() => {
-    *     localStream
-    *       .play(container)
-    *       .catch((err) => {console.log(`播放失败: ${err}`)});
-    *   })
-    *   .catch((err) => {
-    *     console.log(`本地流初始化失败 ${err}`);
-    *   });
-    * ```
-    * @throws {@link RtcError}
-    */
-  export function createStream(opts: LocalStreamOptions): LocalStream;
-  /**
-    * 设置日志打印级别，用于打印出更多日志来调试或定位问题，默认 warn 级别
-    * @param level - 日志级别，有 'debug', 'info', 'warn', 'error' 级别;
-    * @public
-    * @example
-    * ```js
-    * setLogLevel('info');
-    * ```
-    */
-  export function setLogLevel(level: LogLevel): void;
-  /**
-    * 开启日志（操作/错误/状态）的上报，默认开启
-    * @public
-    * @example
-    * ```js
-    * enableUploadLog();
-    * ```
-    */
-  export function enableUploadLog(): void;
-  /**
-    * 关闭日志（操作/错误/状态）的上报
-    * 注：若无特殊原因，不建议关闭日志上报，关闭后，在线上出现错误时，将无法根据日志定位问题
-    * @public
-    * @example
-    * ```js
-    * disableUploadLog();
-    * ```
-    */
-  export function disableUploadLog(): void;
-  export { generateToken };
-  export * from '__@urtc/sdk-web/devices';
-  export * from '__@urtc/sdk-web/client';
-  export * from '__@urtc/sdk-web/types';
-  export * from '__@urtc/sdk-web/event';
-  export * from '__@urtc/sdk-web/error';
-  export * from '__@urtc/sdk-web/user/user';
-  export * from '__@urtc/sdk-web/stream/types';
-  export * from '__@urtc/sdk-web/stream/stream';
-  export * from '__@urtc/sdk-web/stream/local-stream';
-  export * from '__@urtc/sdk-web/stream/remote-stream';
-  export * from '__@urtc/sdk-web/server';
-  export * from '__@urtc/sdk-web/plugin';
-  export * from '__@urtc/sdk-web/version';
-  /************** 4 plugin ****************/
-  export { Client };
-  export { LocalStream };
-  export { RemoteStream } from '__@urtc/sdk-web/stream/remote-stream';
 }
 

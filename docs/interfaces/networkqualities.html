@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>RtcEvent | @urtc/sdk-web</title>
+	<title>NetworkQualities | @urtc/sdk-web</title>
 	<meta name="description" content="Documentation for @urtc/sdk-web">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../index.html">@urtc/sdk-web</a>
 				</li>
 				<li>
-					<a href="rtcevent.html">RtcEvent</a>
+					<a href="networkqualities.html">NetworkQualities</a>
 				</li>
 			</ul>
-			<h1>Interface RtcEvent&lt;T, S&gt;</h1>
+			<h1>Interface NetworkQualities</h1>
 		</div>
 	</div>
 </header>
@@ -68,29 +68,15 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Rtc 事件</p>
+						<p>推（上行）/拉（下行）流的网络质量</p>
 					</div>
-					<p>当 type - T 为 <a href="../index.html#rtcusereventtype">RtcUserEventType</a> 事件时，data - S 为 <a href="../classes/user.html">User</a> 类型
-						当 type - T 为 <a href="../index.html#rtcstreameventtype">RtcStreamEventType</a> 事件时，data - S 为 <a href="../classes/localstream.html">LocalStream</a> | <a href="../classes/remotestream.html">RemoteStream</a> 类型
-					当 type - T 为 <a href="../index.html#rtcconnectioneventtype"></a> 事件时，data - S 为 <a href="connectionstates.html"></a> 类型</p>
 				</div>
-			</section>
-			<section class="tsd-panel tsd-type-parameters">
-				<h3>Type parameters</h3>
-				<ul class="tsd-type-parameters">
-					<li>
-						<h4>T</h4>
-					</li>
-					<li>
-						<h4>S</h4>
-					</li>
-				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">RtcEvent</span>
+						<span class="target">NetworkQualities</span>
 					</li>
 				</ul>
 			</section>
@@ -101,8 +87,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="rtcevent.html#data" class="tsd-kind-icon">data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="rtcevent.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="networkqualities.html#downlink" class="tsd-kind-icon">downlink</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="networkqualities.html#uplink" class="tsd-kind-icon">uplink</a></li>
 							</ul>
 						</section>
 					</div>
@@ -111,18 +97,28 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="data" class="tsd-anchor"></a>
-					<h3>data</h3>
-					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">S</span></div>
+					<a name="downlink" class="tsd-anchor"></a>
+					<h3>downlink</h3>
+					<div class="tsd-signature tsd-kind-icon">downlink<span class="tsd-signature-symbol">:</span> <a href="../index.html#networkquality" class="tsd-signature-type" data-tsd-kind="Type alias">NetworkQuality</a></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>拉（下行）流的网络质量</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span></div>
+					<a name="uplink" class="tsd-anchor"></a>
+					<h3>uplink</h3>
+					<div class="tsd-signature tsd-kind-icon">uplink<span class="tsd-signature-symbol">:</span> <a href="../index.html#networkquality" class="tsd-signature-type" data-tsd-kind="Type alias">NetworkQuality</a></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>推（上行）流的网络质量</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -138,14 +134,14 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-has-type-parameter">
-						<a href="rtcevent.html" class="tsd-kind-icon">Rtc<wbr>Event</a>
+					<li class="current tsd-kind-interface">
+						<a href="networkqualities.html" class="tsd-kind-icon">Network<wbr>Qualities</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="rtcevent.html#data" class="tsd-kind-icon">data</a>
+								<a href="networkqualities.html#downlink" class="tsd-kind-icon">downlink</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="rtcevent.html#type" class="tsd-kind-icon">type</a>
+								<a href="networkqualities.html#uplink" class="tsd-kind-icon">uplink</a>
 							</li>
 						</ul>
 					</li>
