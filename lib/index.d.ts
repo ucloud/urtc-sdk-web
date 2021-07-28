@@ -88,11 +88,9 @@ declare module '@urtc/sdk-web' {
   export * from '__@urtc/sdk-web/event';
   export * from '__@urtc/sdk-web/error';
   export * from '__@urtc/sdk-web/user/user';
-  export * from '__@urtc/sdk-web/stream/types';
   export * from '__@urtc/sdk-web/stream/stream';
   export * from '__@urtc/sdk-web/stream/local-stream';
   export * from '__@urtc/sdk-web/stream/remote-stream';
-  export * from '__@urtc/sdk-web/connection/types';
   export * from '__@urtc/sdk-web/server';
   export * from '__@urtc/sdk-web/plugin';
   export * from '__@urtc/sdk-web/version';
@@ -292,13 +290,15 @@ declare module '__@urtc/sdk-web/client' {
 
 declare module '__@urtc/sdk-web/stream/local-stream' {
   import { Stream } from '__@urtc/sdk-web/stream/stream';
-  import { PlayOptions } from '__@urtc/sdk-web/types';
   import { SwitchDeviceType } from '__@urtc/sdk-web/stream/types';
   import { VideoProfile, ScreenProfile, CustomVideoProfile } from '__@urtc/sdk-web/stream/profile';
   import { StreamPlugin } from '__@urtc/sdk-web/plugin';
   /**
+    * 指定使用前置或后置摄像头，'user'（前置摄像头）或 'environment'（后置摄像头）
+    */
+  export type FacingMode = 'user' | 'environment';
+  /**
     * 创建本地流的参数
-    * @public
     */
   export interface LocalStreamOptions {
       /**
@@ -323,13 +323,13 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
       screen: boolean;
       /**
         * 选传，是否读取屏幕共享的音频，默认: false
-        * 注：仅部分浏览器支持，如 Chrome 74，且不同系统表现不同，如 windows 会读取桌面音频，macOS 只支持读取浏览器 tab 中的音频，
+        * > 注：仅部分浏览器支持，如 Chrome 74，且不同系统表现不同，如 windows 会读取桌面音频，macOS 只支持读取浏览器 tab 中的音频。
         */
       screenAudio?: boolean;
       /**
         * 选传，在移动设备上，可以设置该参数选择使用前置或后置摄像头，其中，FacingMode 为 'user'（前置摄像头）或 'environment'（后置摄像头）
         */
-      facingMode?: 'user' | 'environment';
+      facingMode?: FacingMode;
       /**
         * 选传，使用图片初始化本地流的视频。
         * 注：若指定，将直接采用图片生成的视频作为本地流的视频源，不再按 video 设置的读取摄像头作为视频源，或 screen 设置的读取屏幕共享的画面作为视频源。
@@ -356,7 +356,6 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
   }
   /**
     * 本地流，可用于本地预览，也可用 client 进行发布
-    * @public
     */
   export class LocalStream extends Stream {
       /**
@@ -365,6 +364,22 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         * @param options - 插件初始化参数
         */
       static use(plugin: StreamPlugin, options?: any): void;
+      /**
+        * 判断当前流是否有音频
+        * @example
+        * ```js
+        * const result = stream.hasAudio();
+        * ```
+        */
+      hasAudio(): boolean;
+      /**
+        * 判断当前流是否有视频
+        * @example
+        * ```js
+        * const result = stream.hasVideo();
+        * ```
+        */
+      hasVideo(): boolean;
       /**
         * 初始化本地流对象，将读取麦克风、摄像头、屏幕共享等来初始化媒体流
         * @example
@@ -383,8 +398,8 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
       init(): Promise<void>;
       /**
         * 添加一条媒体轨道（音轨或视轨）到当前流
-        * 注：
-        * 1. 若创建本地流时，audio 为 false，不可添加音轨，video 为 false 时，不可添加视轨
+        * > 注：
+        * > 1. 若创建本地流时，audio 为 false，不可添加音轨，video 为 false 时，不可添加视轨
         * @param track - 媒体轨道
         * @example
         * ```js
@@ -403,9 +418,9 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
       removeTrack(track: MediaStreamTrack): void;
       /**
         * 替换当前流中的媒体轨道
-        * 注：
-        * 1. 替换视频时，请使用与原轨道相同的分辨率的媒体轨道
-        * 2. 返回值为当前流中相同类型的媒体轨道，此媒体轨道仍可用（占用音频设备或视频设备），请自行决定是否调用其 stop 方法释放设备
+        * > 注：
+        * > 1. 替换视频时，请使用与原轨道相同的分辨率的媒体轨道
+        * > 2. 返回值为当前流中相同类型的媒体轨道，此媒体轨道仍可用（占用音频设备或视频设备），请自行决定是否调用其 stop 方法释放设备
         * @param track - 新媒体轨道
         * @example
         * ```js
@@ -415,21 +430,10 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         */
       replaceTrack(track: MediaStreamTrack): MediaStreamTrack | undefined;
       /**
-        * 播放当前流
-        * @param container - 播放音视频时，包裹 video 标签所用的容器元素或容器元素的 ID
-        * @param opts - 其他播放参数，参见{@link PlayOptions}
-        * @example
-        * ```js
-        * const container = 'xxx'; // 比如 id 为 xxx 的 div 元素
-        * stream
-        *   .play(container)
-        *   .catch((err) => {
-        *     console.log(`播放失败: ${err}`); // 一般由于浏览器对自动播放的限制导致播放失败
-        *   });
-        * ```
-        * @reject {@link RtcError}
+        * 设置音频能量大小，默认 100
+        * @param level - 能量大小，取值范围 [0-300]
         */
-      play(container: HTMLElement | string, opts?: PlayOptions): Promise<void>;
+      setAudioLevel(level: number): void;
       /**
         * 设置当前流视频的 Profile，默认 '480p'
         * @param profile - 视频 Profile
@@ -504,6 +508,14 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         * @reject {@link RtcError}
         */
       switchImage(file: string | File): Promise<void>;
+      /**
+        * 销毁当前流，一般在本地流不再被使用时，可调用此方法销毁，解除摄像头或麦克风设备的占用。
+        * @example
+        * ```js
+        * stream.destroy();
+        * ```
+        */
+      destroy(): void;
   }
 }
 
@@ -566,15 +578,17 @@ declare module '__@urtc/sdk-web/types' {
   }
   export { /*AudioProfile,*/ VideoProfile, ScreenProfile } from '__@urtc/sdk-web/stream/profile';
   /**
-    * 房间类型
-    * @public
+    * 房间类型：'conference' | 'live'，分别对应会议模式 | 直播模式。
+    * 注：
+    * 会议模式：房间内用户数较少，各用户均会推流，并拉其他用户的流。
+    * 直播模式：房间内用户数较多，个别用户会推流，大部分用户只拉流观看。
     */
   export type RoomType = 'conference' | 'live';
   /**
-    * 用户角色
+    * 用户角色，'audience' | 'speaker' 分别为观众，主讲。
     * @public
     */
-  export type RoleType = 'pull' | 'push' | 'push-and-pull';
+  export type RoleType = 'audience' | 'speaker';
   /**
     * 定义客户端的属性
     * @public
@@ -595,7 +609,7 @@ declare module '__@urtc/sdk-web/types' {
         */
       type?: RoomType;
       /**
-        * 加入房间的{@link RoleType | 角色}，默认 'push-and-pull'
+        * 加入房间的{@link RoleType | 角色}，默认 'speaker'
         */
       role?: RoleType;
   }
@@ -629,6 +643,8 @@ declare module '__@urtc/sdk-web/types' {
         */
       filename?: string;
   }
+  export * from '__@urtc/sdk-web/stream/types';
+  export * from '__@urtc/sdk-web/connection/types';
 }
 
 declare module '__@urtc/sdk-web/logger' {
@@ -813,6 +829,8 @@ declare module '__@urtc/sdk-web/event' {
     * - stream-removed - 有远端流移除，此时事件中的 data 为 {@link RemoteStream} 远端流
     * - stream-subscribed - 远端流订阅完成，此时事件中的 data 为 {@link RemoteStream} 远端流
     * - stream-published - 本地流发布完成，此时事件中的 data 为 {@link LocalStream} 本地流
+    * - stream-reconnecting - 流正在重连（本地流重新发布/远端流重新订阅），此时事件中的 data 为 {@link LocalStream} 本地流或 {@link RemoteStream} 远端流
+    * - stream-reconnected - 流已重连（本地流已重新发布/远端流已重新订阅），此时事件中的 data 为 {@link LocalStream} 本地流或 {@link RemoteStream} 远端流
     * - mute-audio - 流的音频被 mute
     * - unmute-audio - 流的音频被取消 mute
     * - mute-video - 流的视频被 mute
@@ -826,11 +844,11 @@ declare module '__@urtc/sdk-web/event' {
     * ```
     *
     * **特别地，以下事件需在单条流上进行监听**
-    * - screenshare-stopped - 屏幕共享流被中止，此时事件中的 data 为 {@link LocalStream} 本地流
+    * - screen-sharing-stopped - 屏幕共享流被中止，此时事件中的 data 为 {@link LocalStream} 本地流
     * - first-key-frame - 接收到远端流的首帧
     * @example
     * ```js
-    * localStream.on('screenshare-stopped', (event) => {
+    * localStream.on('screen-sharing-stopped', (event) => {
     *   // 此事件只针对本地流有效，若本地流已发布，监听到此事件后，可以决定要不要取消发布
     *   client.unpublish(event.data);
     *   event.data.destroy();
@@ -843,7 +861,7 @@ declare module '__@urtc/sdk-web/event' {
     * });
     * ```
     */
-  export type RtcStreamEventType = 'stream-added' | 'stream-removed' | 'stream-subscribed' | 'stream-published' | 'mute-audio' | 'unmute-audio' | 'mute-video' | 'unmute-video' | 'first-key-frame' | 'screenshare-stopped';
+  export type RtcStreamEventType = 'stream-added' | 'stream-removed' | 'stream-subscribed' | 'stream-published' | 'stream-reconnecting' | 'stream-reconnected' | 'mute-audio' | 'unmute-audio' | 'mute-video' | 'unmute-video' | 'first-key-frame' | 'screen-sharing-stopped';
   /**
     * Rtc 播放器事件类型：
     *
@@ -946,9 +964,10 @@ declare module '__@urtc/sdk-web/error' {
     * @public
     */
   export class RtcError extends Error {
-      constructor(code: ErrorCode, message: string);
+      /**
+        * 错误码，参见 {@link ErrorCode}
+        */
       code: ErrorCode;
-      toString(): string;
       /**
         * 1000 - 非法参数
         */
@@ -1166,136 +1185,6 @@ declare module '__@urtc/sdk-web/user/user' {
   }
 }
 
-declare module '__@urtc/sdk-web/stream/types' {
-  /**
-    * 音频编解码格式
-    * @public
-    */
-  export type AudioCodec = 'opus';
-  /**
-    * 视频编解码格式
-    * @public
-    * @note 'h265' 目前仅部分浏览器在开启试验性功能时才支持，如 Safari 开启 `WebRTC H265 codec`
-    */
-  export type VideoCodec = 'vp8' | 'h264' | 'h265';
-  /**
-    * 流的音频的统计数据
-    * @public
-    */
-  export interface AudioStats {
-      /**
-        * 音频码率
-        */
-      bitrate: number;
-      /**
-        * 音频丢包率
-        */
-      packetLossRate: number;
-      /**
-        * 音频音量
-        */
-      volume: number;
-      /**
-        * 音频编码格式
-        */
-      codec: AudioCodec;
-  }
-  /**
-    * 流的视频的统计数据
-    * @public
-    */
-  export interface VideoStats {
-      /**
-        * 视频码率
-        */
-      bitrate: number;
-      /**
-        * 视频丢包率
-        */
-      packetLossRate: number;
-      /**
-        * 视频帧率
-        */
-      framerate: number;
-      /**
-        * 视频宽
-        */
-      width: number;
-      /**
-        * 视频高
-        */
-      height: number;
-      /**
-        * 视频编码格式
-        */
-      codec: VideoCodec;
-  }
-  /**
-    * 流的网络连接统计数据
-    * @public
-    */
-  export interface NetworkStats {
-      /**
-        * 网络往返时间
-        */
-      rtt: number;
-  }
-  /**
-    * 已发布/已订阅流的统计数据
-    * @public
-    */
-  export interface StreamStats {
-      /**
-        * 流包含音频时，音频统计数据
-        */
-      audio?: AudioStats;
-      /**
-        * 流包含视频时，视频统计数据
-        */
-      video?: VideoStats;
-      /**
-        * 流的网络连接统计数据
-        */
-      network?: NetworkStats;
-  }
-  /**
-    * 流的媒体类型, main - 主视频流，screen - 辅助视频流，通常是一个屏幕分享流
-    * @public
-    */
-  export type MediaType = 'camera' | 'screen';
-  /**
-    * 切换设备的类型
-    * @public
-    */
-  export type SwitchDeviceType = 'audio' | 'video';
-  /**
-    * 流的网络质量评分，有 '0' | '1' | '2' | '3' | '4' | '5' | '6'
-    * - '0': 网络质量未知
-    * - '1': 网络质量优秀
-    * - '2': 网络质量良好
-    * - '3': 网络质量一般
-    * - '4': 网络质量较差
-    * - '5': 网络质量糟糕
-    * - '6': 网络连接断开
-    * @public
-    */
-  export type NetworkQuality = '0' | '1' | '2' | '3' | '4' | '5' | '6';
-  /**
-    * 推（上行）/拉（下行）流的网络质量
-    * @public
-    */
-  export interface NetworkQualities {
-      /**
-        * 推（上行）流的网络质量
-        */
-      uplink: NetworkQuality;
-      /**
-        * 拉（下行）流的网络质量
-        */
-      downlink: NetworkQuality;
-  }
-}
-
 declare module '__@urtc/sdk-web/stream/stream' {
   import { EventEmitter } from '__@urtc/sdk-web/event-emitter';
   import { PlayOptions, SnapshotOptions } from '__@urtc/sdk-web/types';
@@ -1357,7 +1246,7 @@ declare module '__@urtc/sdk-web/stream/stream' {
         * @example
         * ```js
         * const result = stream.muteAudio();
-        * console.log(`stream'audio is muted ${stream.audioMuted}`);
+        * console.log(`stream's audio is muted ${stream.audioMuted}`);
         * ```
         * @returns 操作是否成功
         */
@@ -1448,15 +1337,6 @@ declare module '__@urtc/sdk-web/stream/stream' {
         */
       getAudioLevel(): number;
       /**
-        * 销毁当前流，一般在本地流不再被使用时，可调用此方法销毁，解除摄像头或麦克风设备的占用。
-        * 注：远端流，不需要手动调用此方法
-        * @example
-        * ```js
-        * stream.destroy();
-        * ```
-        */
-      destroy(): void;
-      /**
         * 获取流发布或订阅后的统计数据
         * @example
         * ```js
@@ -1491,7 +1371,6 @@ declare module '__@urtc/sdk-web/stream/remote-stream' {
   import { StreamPlugin } from '__@urtc/sdk-web/plugin';
   /**
     * 远端流，房间内其他用户发布的流，可通过 client 进行订阅
-    * @public
     */
   export class RemoteStream extends Stream {
       /**
@@ -1518,33 +1397,6 @@ declare module '__@urtc/sdk-web/stream/remote-stream' {
         * ```
         */
       setAudioVolume(volume: number): void;
-  }
-}
-
-declare module '__@urtc/sdk-web/connection/types' {
-  /**
-    * 连接状态类型：
-    * - OPEN - 已连接
-    * - CONNECTING - 连接中
-    * - CLOSING - 断开中
-    * - RECONNECTING - 重连中
-    * - CLOSED - 已断开
-    * @public
-    */
-  export type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
-  /**
-    * 客户端（Client）与服务器之间的{@link ConnectionState 连接状态}
-    * @public
-    */
-  export interface ConnectionStates {
-      /**
-        * 当前连接状态
-        */
-      current: ConnectionState;
-      /**
-        * 之前连接状态
-        */
-      previous: ConnectionState;
   }
 }
 
@@ -1654,6 +1506,126 @@ declare module '__@urtc/sdk-web/event-emitter' {
   }
 }
 
+declare module '__@urtc/sdk-web/stream/types' {
+  /**
+    * 音频编解码格式
+    */
+  export type AudioCodec = 'opus';
+  /**
+    * 视频编解码格式
+    * @note 'h265' 目前仅部分浏览器在开启试验性功能时才支持，如 Safari 开启 `WebRTC H265 codec`
+    */
+  export type VideoCodec = 'vp8' | 'h264' | 'h265';
+  /**
+    * 流的音频的统计数据
+    */
+  export interface AudioStats {
+      /**
+        * 音频码率
+        */
+      bitrate: number;
+      /**
+        * 音频丢包率
+        */
+      packetLossRate: number;
+      /**
+        * 音频音量
+        */
+      volume: number;
+      /**
+        * 音频编码格式
+        */
+      codec: AudioCodec;
+  }
+  /**
+    * 流的视频的统计数据
+    */
+  export interface VideoStats {
+      /**
+        * 视频码率
+        */
+      bitrate: number;
+      /**
+        * 视频丢包率
+        */
+      packetLossRate: number;
+      /**
+        * 视频帧率
+        */
+      framerate: number;
+      /**
+        * 视频宽
+        */
+      width: number;
+      /**
+        * 视频高
+        */
+      height: number;
+      /**
+        * 视频编码格式
+        */
+      codec: VideoCodec;
+  }
+  /**
+    * 流的网络连接统计数据
+    */
+  export interface NetworkStats {
+      /**
+        * 网络往返时间
+        */
+      rtt: number;
+  }
+  /**
+    * 已发布/已订阅流的统计数据
+    */
+  export interface StreamStats {
+      /**
+        * 流包含音频时，音频统计数据
+        */
+      audio?: AudioStats;
+      /**
+        * 流包含视频时，视频统计数据
+        */
+      video?: VideoStats;
+      /**
+        * 流的网络连接统计数据
+        */
+      network?: NetworkStats;
+  }
+  /**
+    * 流的媒体类型, camera - 主视频流，screen - 辅助视频流，通常是一个屏幕分享流
+    */
+  export type MediaType = 'camera' | 'screen';
+  /**
+    * 切换设备的类型
+    */
+  export type SwitchDeviceType = 'audio' | 'video';
+  /**
+    * 流的网络质量评分，有 '0' | '1' | '2' | '3' | '4' | '5' | '6'
+    * - '0': 网络质量未知
+    * - '1': 网络质量优秀
+    * - '2': 网络质量良好
+    * - '3': 网络质量一般
+    * - '4': 网络质量较差
+    * - '5': 网络质量糟糕
+    * - '6': 网络连接断开
+    */
+  export type NetworkQuality = '0' | '1' | '2' | '3' | '4' | '5' | '6';
+  /**
+    * 推（上行）/拉（下行）流的网络质量
+    */
+  export interface NetworkQualities {
+      /**
+        * 推（上行）流的网络质量
+        */
+      uplink: NetworkQuality;
+      /**
+        * 拉（下行）流的网络质量
+        */
+      downlink: NetworkQuality;
+  }
+}
+
 declare module '__@urtc/sdk-web/stream/profile' {
   /**
     * 预设的视频 Profile
@@ -1689,7 +1661,6 @@ declare module '__@urtc/sdk-web/stream/profile' {
   export type ScreenProfile = '480p' | '480p_2' | '720p' | '720p_2' | '1080p' | '1080p_2';
   /**
     * 自定义视频 Profile，请根据实际使用场景及网络环境，合理的设置
-    * @public
     * @example
     * ```js
     * { width: 640, height: 480, framerate: 15, bitrate: 500 }
@@ -1712,6 +1683,33 @@ declare module '__@urtc/sdk-web/stream/profile' {
         * 码率 (kbps)，如：500
         */
       bitrate: number;
+  }
+}
+
+declare module '__@urtc/sdk-web/connection/types' {
+  /**
+    * 连接状态类型：
+    * - OPEN - 已连接
+    * - CONNECTING - 连接中
+    * - CLOSING - 断开中
+    * - RECONNECTING - 重连中
+    * - CLOSED - 已断开
+    * @public
+    */
+  export type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
+  /**
+    * 客户端（Client）与服务器之间的{@link ConnectionState 连接状态}
+    * @public
+    */
+  export interface ConnectionStates {
+      /**
+        * 当前连接状态
+        */
+      current: ConnectionState;
+      /**
+        * 之前连接状态
+        */
+      previous: ConnectionState;
   }
 }
 

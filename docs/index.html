@@ -100,6 +100,7 @@
 								<li class="tsd-kind-type-alias"><a href="index.html#audiocodec" class="tsd-kind-icon">Audio<wbr>Codec</a></li>
 								<li class="tsd-kind-type-alias"><a href="index.html#connectionstate" class="tsd-kind-icon">Connection<wbr>State</a></li>
 								<li class="tsd-kind-type-alias"><a href="index.html#errorcode" class="tsd-kind-icon">Error<wbr>Code</a></li>
+								<li class="tsd-kind-type-alias"><a href="index.html#facingmode" class="tsd-kind-icon">Facing<wbr>Mode</a></li>
 								<li class="tsd-kind-type-alias"><a href="index.html#mediatype" class="tsd-kind-icon">Media<wbr>Type</a></li>
 								<li class="tsd-kind-type-alias"><a href="index.html#networkquality" class="tsd-kind-icon">Network<wbr>Quality</a></li>
 								<li class="tsd-kind-type-alias"><a href="index.html#playcontrolstype" class="tsd-kind-icon">Play<wbr>Controls<wbr>Type</a></li>
@@ -243,6 +244,18 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="facingmode" class="tsd-anchor"></a>
+					<h3>Facing<wbr>Mode</h3>
+					<div class="tsd-signature tsd-kind-icon">Facing<wbr>Mode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;user&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;environment&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>指定使用前置或后置摄像头，&#39;user&#39;（前置摄像头）或 &#39;environment&#39;（后置摄像头）</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="mediatype" class="tsd-anchor"></a>
 					<h3>Media<wbr>Type</h3>
 					<div class="tsd-signature tsd-kind-icon">Media<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;camera&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;screen&quot;</span></div>
@@ -250,7 +263,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>流的媒体类型, main - 主视频流，screen - 辅助视频流，通常是一个屏幕分享流</p>
+							<p>流的媒体类型, camera - 主视频流，screen - 辅助视频流，通常是一个屏幕分享流</p>
 						</div>
 					</div>
 				</section>
@@ -312,12 +325,12 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="roletype" class="tsd-anchor"></a>
 					<h3>Role<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">Role<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;pull&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;push&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;push-and-pull&quot;</span></div>
+					<div class="tsd-signature tsd-kind-icon">Role<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;audience&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;speaker&quot;</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>用户角色</p>
+							<p>用户角色，&#39;audience&#39; | &#39;speaker&#39; 分别为观众，主讲。</p>
 						</div>
 					</div>
 				</section>
@@ -329,7 +342,10 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>房间类型</p>
+							<p>房间类型：&#39;conference&#39; | &#39;live&#39;，分别对应会议模式 | 直播模式。
+								注：
+								会议模式：房间内用户数较少，各用户均会推流，并拉其他用户的流。
+							直播模式：房间内用户数较多，个别用户会推流，大部分用户只拉流观看。</p>
 						</div>
 					</div>
 				</section>
@@ -440,7 +456,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="rtcstreameventtype" class="tsd-anchor"></a>
 					<h3>Rtc<wbr>Stream<wbr>Event<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">Rtc<wbr>Stream<wbr>Event<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;stream-added&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;stream-removed&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;stream-subscribed&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;stream-published&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;mute-audio&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;unmute-audio&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;mute-video&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;unmute-video&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;first-key-frame&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;screenshare-stopped&quot;</span></div>
+					<div class="tsd-signature tsd-kind-icon">Rtc<wbr>Stream<wbr>Event<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;stream-added&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;stream-removed&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;stream-subscribed&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;stream-published&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;stream-reconnecting&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;stream-reconnected&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;mute-audio&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;unmute-audio&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;mute-video&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;unmute-video&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;first-key-frame&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;screen-sharing-stopped&quot;</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -453,6 +469,8 @@
 							<li>stream-removed - 有远端流移除，此时事件中的 data 为 <a href="classes/remotestream.html">RemoteStream</a> 远端流</li>
 							<li>stream-subscribed - 远端流订阅完成，此时事件中的 data 为 <a href="classes/remotestream.html">RemoteStream</a> 远端流</li>
 							<li>stream-published - 本地流发布完成，此时事件中的 data 为 <a href="classes/localstream.html">LocalStream</a> 本地流</li>
+							<li>stream-reconnecting - 流正在重连（本地流重新发布/远端流重新订阅），此时事件中的 data 为 <a href="classes/localstream.html">LocalStream</a> 本地流或 <a href="classes/remotestream.html">RemoteStream</a> 远端流</li>
+							<li>stream-reconnected - 流已重连（本地流已重新发布/远端流已重新订阅），此时事件中的 data 为 <a href="classes/localstream.html">LocalStream</a> 本地流或 <a href="classes/remotestream.html">RemoteStream</a> 远端流</li>
 							<li>mute-audio - 流的音频被 mute</li>
 							<li>unmute-audio - 流的音频被取消 mute</li>
 							<li>mute-video - 流的视频被 mute</li>
@@ -466,12 +484,12 @@
 </code></pre>
 								<p><strong>特别地，以下事件需在单条流上进行监听</strong></p>
 								<ul>
-									<li>screenshare-stopped - 屏幕共享流被中止，此时事件中的 data 为 <a href="classes/localstream.html">LocalStream</a> 本地流</li>
+									<li>screen-sharing-stopped - 屏幕共享流被中止，此时事件中的 data 为 <a href="classes/localstream.html">LocalStream</a> 本地流</li>
 									<li>first-key-frame - 接收到远端流的首帧</li>
 								</ul>
 							</dd>
 							<dt>example</dt>
-							<dd><pre><code class="language-js"><span style="color: #001080">localStream</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;screenshare-stopped&#039;</span><span style="color: #000000">, (</span><span style="color: #001080">event</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+							<dd><pre><code class="language-js"><span style="color: #001080">localStream</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;screen-sharing-stopped&#039;</span><span style="color: #000000">, (</span><span style="color: #001080">event</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
 <span style="color: #000000">  </span><span style="color: #008000">// 此事件只针对本地流有效，若本地流已发布，监听到此事件后，可以决定要不要取消发布</span>
 <span style="color: #000000">  </span><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #795E26">unpublish</span><span style="color: #000000">(</span><span style="color: #001080">event</span><span style="color: #000000">.</span><span style="color: #001080">data</span><span style="color: #000000">);</span>
 <span style="color: #000000">  </span><span style="color: #001080">event</span><span style="color: #000000">.</span><span style="color: #001080">data</span><span style="color: #000000">.</span><span style="color: #795E26">destroy</span><span style="color: #000000">();</span>
@@ -1388,6 +1406,9 @@
 						<a href="index.html#errorcode" class="tsd-kind-icon">Error<wbr>Code</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
+						<a href="index.html#facingmode" class="tsd-kind-icon">Facing<wbr>Mode</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
 						<a href="index.html#mediatype" class="tsd-kind-icon">Media<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
@@ -1502,7 +1523,6 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>

@@ -91,18 +91,11 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="rtcerror.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="rtcerror.html#code" class="tsd-kind-icon">code</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rtcerror.html#message" class="tsd-kind-icon">message</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rtcerror.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rtcerror.html#stack" class="tsd-kind-icon">stack</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="rtcerror.html#abort_error" class="tsd-kind-icon">ABORT_<wbr>ERROR</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="rtcerror.html#access_token_invalid" class="tsd-kind-icon">ACCESS_<wbr>TOKEN_<wbr>INVALID</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="rtcerror.html#audio_not_exists" class="tsd-kind-icon">AUDIO_<wbr>NOT_<wbr>EXISTS</a></li>
@@ -141,45 +134,9 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="rtcerror.html#stream_exists" class="tsd-kind-icon">STREAM_<wbr>EXISTS</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="rtcerror.html#stream_not_exists" class="tsd-kind-icon">STREAM_<wbr>NOT_<wbr>EXISTS</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="rtcerror.html#video_not_exists" class="tsd-kind-icon">VIDEO_<wbr>NOT_<wbr>EXISTS</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="rtcerror.html#preparestacktrace" class="tsd-kind-icon">prepare<wbr>Stack<wbr>Trace</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="rtcerror.html#stacktracelimit" class="tsd-kind-icon">stack<wbr>Trace<wbr>Limit</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rtcerror.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="rtcerror.html#capturestacktrace" class="tsd-kind-icon">capture<wbr>Stack<wbr>Trace</a></li>
 							</ul>
 						</section>
 					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Rtc<wbr>Error<span class="tsd-signature-symbol">(</span>code<span class="tsd-signature-symbol">: </span><a href="../index.html#errorcode" class="tsd-signature-type" data-tsd-kind="Type alias">ErrorCode</a>, message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rtcerror.html" class="tsd-signature-type" data-tsd-kind="Class">RtcError</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides Error.constructor</p>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>code: <a href="../index.html#errorcode" class="tsd-signature-type" data-tsd-kind="Type alias">ErrorCode</a></h5>
-								</li>
-								<li>
-									<h5>message: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="rtcerror.html" class="tsd-signature-type" data-tsd-kind="Class">RtcError</a></h4>
-						</li>
-					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -190,6 +147,11 @@
 					<div class="tsd-signature tsd-kind-icon">code<span class="tsd-signature-symbol">:</span> <a href="../index.html#errorcode" class="tsd-signature-type" data-tsd-kind="Type alias">ErrorCode</a></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>错误码，参见 <a href="../index.html#errorcode">ErrorCode</a></p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="message" class="tsd-anchor"></a>
@@ -205,14 +167,6 @@
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<p>Inherited from Error.name</p>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="stack" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> stack</h3>
-					<div class="tsd-signature tsd-kind-icon">stack<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from Error.stack</p>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
@@ -671,102 +625,6 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
-					<a name="preparestacktrace" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagOptional">Optional</span> prepare<wbr>Stack<wbr>Trace</h3>
-					<div class="tsd-signature tsd-kind-icon">prepare<wbr>Stack<wbr>Trace<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span>, stackTraces<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CallSite</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from Error.prepareStackTrace</p>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Optional override for formatting stack traces</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>see</dt>
-							<dd><p><a href="https://github.com/v8/v8/wiki/Stack%20Trace%20API#customizing-stack-traces">https://github.com/v8/v8/wiki/Stack%20Trace%20API#customizing-stack-traces</a></p>
-							</dd>
-						</dl>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-signature">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-class">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span>, stackTraces<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CallSite</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>err: <span class="tsd-signature-type">Error</span></h5>
-											</li>
-											<li>
-												<h5>stackTraces: <span class="tsd-signature-type">CallSite</span><span class="tsd-signature-symbol">[]</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
-					<a name="stacktracelimit" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> stack<wbr>Trace<wbr>Limit</h3>
-					<div class="tsd-signature tsd-kind-icon">stack<wbr>Trace<wbr>Limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from Error.stackTraceLimit</p>
-					</aside>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="tostring" class="tsd-anchor"></a>
-					<h3>to<wbr>String</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
-					<a name="capturestacktrace" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> capture<wbr>Stack<wbr>Trace</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">capture<wbr>Stack<wbr>Trace<span class="tsd-signature-symbol">(</span>targetObject<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object</span>, constructorOpt<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from Error.captureStackTrace</p>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Create .stack property on a target object</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>targetObject: <span class="tsd-signature-type">Object</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> constructorOpt: <span class="tsd-signature-type">Function</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -784,9 +642,6 @@
 					<li class="current tsd-kind-class">
 						<a href="rtcerror.html" class="tsd-kind-icon">Rtc<wbr>Error</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="rtcerror.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="rtcerror.html#code" class="tsd-kind-icon">code</a>
 							</li>
@@ -795,9 +650,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="rtcerror.html#name" class="tsd-kind-icon">name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="rtcerror.html#stack" class="tsd-kind-icon">stack</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="rtcerror.html#abort_error" class="tsd-kind-icon">ABORT_<wbr>ERROR</a>
@@ -913,18 +765,6 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="rtcerror.html#video_not_exists" class="tsd-kind-icon">VIDEO_<wbr>NOT_<wbr>EXISTS</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
-								<a href="rtcerror.html#preparestacktrace" class="tsd-kind-icon">prepare<wbr>Stack<wbr>Trace</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
-								<a href="rtcerror.html#stacktracelimit" class="tsd-kind-icon">stack<wbr>Trace<wbr>Limit</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="rtcerror.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
-								<a href="rtcerror.html#capturestacktrace" class="tsd-kind-icon">capture<wbr>Stack<wbr>Trace</a>
-							</li>
 						</ul>
 					</li>
 				</ul>
@@ -939,7 +779,6 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
