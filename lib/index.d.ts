@@ -298,7 +298,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.6.28";
+  export const version = "1.6.29";
 }
 
 declare module '__urtc-sdk/token' {
@@ -314,7 +314,7 @@ declare module '__urtc-sdk/token' {
 }
 
 declare module '__urtc-sdk/types' {
-  export type VideoCodec = 'vp8' | 'h264';
+  export type VideoCodec = 'vp8' | 'h264' | 'h265';
   export type AudioCodec = 'opus';
   export type RoomType = 'rtc' | 'live';
   export type UserRole = 'pull' | 'push' | 'push-and-pull';
