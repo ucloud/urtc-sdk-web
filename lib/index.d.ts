@@ -435,7 +435,7 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         */
       setAudioLevel(level: number): void;
       /**
-        * 设置当前流视频的 Profile，默认 '480p'
+        * 设置当前流视频的 Profile，默认 '360p_2'
         * @param profile - 视频 Profile
         * @example
         * ```js
@@ -1113,7 +1113,7 @@ declare module '__@urtc/sdk-web/error' {
         */
       static readonly PLAY_NOT_ALLOWED = "3019";
       /**
-        * 3020 - 视频数据异常，未成功播放
+        * 3020 - 音视频数据异常，未成功播放（一般为网络原因导致，拉流时音视频数据加载过慢）
         */
       static readonly PLAY_PENDING = "3020";
       /**
