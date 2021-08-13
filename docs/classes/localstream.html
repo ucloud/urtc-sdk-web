@@ -686,8 +686,9 @@
 									<blockquote>
 										<p>注：</p>
 										<ol>
-											<li>替换视频时，请使用与原轨道相同的分辨率的媒体轨道</li>
+											<li>替换视频时，建议使用与原轨道相同的分辨率的视频轨道，若不相同，请在替换后及时设置流的 profile 来调整到合适的码率等</li>
 											<li>返回值为当前流中相同类型的媒体轨道，此媒体轨道仍可用（占用音频设备或视频设备），请自行决定是否调用其 stop 方法释放设备</li>
+											<li>若是切换不同的摄像头或麦克风设备，建议使用 switchDevice 方法，若是切换静态图片为视频流，建立使用 switchImage 方法</li>
 										</ol>
 									</blockquote>
 								</div>
@@ -782,7 +783,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>设置当前流（屏幕共享时）视频的 Profile，默认 &#39;1080p&#39;
+									<p>设置当前流（屏幕共享流）视频的 Profile，默认 &#39;1080p&#39;
 									注：请务必在调用 init 方法之前，设置屏幕共享流的 Profile，否则无法生效。</p>
 								</div>
 								<dl class="tsd-comment-tags">

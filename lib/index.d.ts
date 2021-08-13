@@ -419,8 +419,9 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
       /**
         * 替换当前流中的媒体轨道
         * > 注：
-        * > 1. 替换视频时，请使用与原轨道相同的分辨率的媒体轨道
+        * > 1. 替换视频时，建议使用与原轨道相同的分辨率的视频轨道，若不相同，请在替换后及时设置流的 profile 来调整到合适的码率等
         * > 2. 返回值为当前流中相同类型的媒体轨道，此媒体轨道仍可用（占用音频设备或视频设备），请自行决定是否调用其 stop 方法释放设备
+        * > 3. 若是切换不同的摄像头或麦克风设备，建议使用 switchDevice 方法，若是切换静态图片为视频流，建立使用 switchImage 方法
         * @param track - 新媒体轨道
         * @example
         * ```js
@@ -462,7 +463,7 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         */
       setVideoProfile(profile: VideoProfile | CustomVideoProfile): Promise<void>;
       /**
-        * 设置当前流（屏幕共享时）视频的 Profile，默认 '1080p'
+        * 设置当前流（屏幕共享流）视频的 Profile，默认 '1080p'
         * 注：请务必在调用 init 方法之前，设置屏幕共享流的 Profile，否则无法生效。
         * @param profile - 视频 Profile
         * @example
@@ -1165,7 +1166,7 @@ declare module '__@urtc/sdk-web/error' {
     * - 3017 - 流正在取消订阅
     * - 3018 - 流已经订阅
     * - 3019 - 自动播放被禁止错误
-    * - 3020 - 视频数据异常，未成功播放
+    * - 3020 - 音视频数据异常，未成功播放（一般为网络原因导致，拉流时音视频数据加载过慢）
     * - 3021 - 因未曾调用或调用 play 方法失败，故不可恢复播放
     * @public
     */
