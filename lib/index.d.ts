@@ -899,11 +899,10 @@ declare module '__@urtc/sdk-web/event' {
       stream: Stream;
   }
   /**
-    * Rtc 客户端连接事件类型：
+    * Rtc 客户端连接状态事件类型：
     *
-    * {@link RtcConnectionEvent 连接事件}
+    * {@link RtcConnectionStateEvent 连接状态事件}
     * - connection-state-changed - 连接状态改变
-    * - network-quality - 上/下行网络质量
     * @public
     * @example
     * ```js
@@ -911,24 +910,35 @@ declare module '__@urtc/sdk-web/event' {
     *   console.log(`连接状态：${event.data.previous} => ${event.data.current}`);
     * });
     * ```
+    */
+  export type RtcConnectionStateEventType = 'connection-state-changed';
+  /**
+    * Rtc 网络连接质量类型：
+    *
+    * {@link RtcNetworkQualityEvent 网络连接质量事件}
+    * - network-quality - 上/下行网络质量
+    * @public
+    * @example
     * ```js
     * client.on('network-quality', (event) => {
     *   console.log(`上行 / 下行网络质量：${event.data.uplink} / ${event.data.downlink}`);
     * });
     * ```
     */
-  export type RtcConnectionEventType = 'connection-state-changed' | 'network-quality';
+  export type RtcNetworkQualityEventType = 'network-quality';
   /**
     * Rtc 事件类型
     * @public
     */
-  export type RtcEventType = RtcUserEventType | RtcStreamEventType | RtcConnectionEventType | RtcPlayerEventType;
+  export type RtcEventType = RtcUserEventType | RtcStreamEventType | RtcConnectionStateEventType | RtcNetworkQualityEventType | RtcPlayerEventType;
   /**
     * Rtc 事件
     *
     * 当 type - T 为 {@link RtcUserEventType} 事件时，data - S 为 {@link User} 类型
     * 当 type - T 为 {@link RtcStreamEventType} 事件时，data - S 为 {@link LocalStream} | {@link RemoteStream} 类型
-    * 当 type - T 为 {@link RtcConnectionEventType } 事件时，data - S 为 {@link ConnectionStates } 类型
+    * 当 type - T 为 {@link RtcConnectionStateEventType } 事件时，data - S 为 {@link ConnectionStates } 类型
+    * 当 type - T 为 {@link RtcNetworkQualityEventType } 事件时，data - S 为 {@link NetworkQualities } 类型
+    * 当 type - T 为 {@link RtcPlayerEventType } 事件时，data - S 为 {@link PlayerEventData } 类型
     * @public
     */
   export interface RtcEvent<T, S> {
@@ -946,12 +956,17 @@ declare module '__@urtc/sdk-web/event' {
     */
   export type RtcStreamEvent = RtcEvent<RtcStreamEventType, Stream | LocalStream | RemoteStream>;
   /**
-    * Rtc 连接事件，事件类型参见 {@link RtcConnectionEventType}
+    * Rtc 连接状态事件，事件类型参见 {@link RtcConnectionStateEventType}
     * @public
     */
-  export type RtcConnectionEvent = RtcEvent<RtcConnectionEventType, ConnectionStates | NetworkQualities>;
+  export type RtcConnectionStateEvent = RtcEvent<RtcConnectionStateEventType, ConnectionStates>;
   /**
-    * Rtc 连接事件，事件类型参见 {@link RtcPlayerEventType}
+    * Rtc 网络连接质量事件，事件类型参见 {@link RtcNetworkQualityEventType}
+    * @public
+    */
+  export type RtcNetworkQualityEvent = RtcEvent<RtcNetworkQualityEventType, NetworkQualities>;
+  /**
+    * Rtc 播放器事件，事件类型参见 {@link RtcPlayerEventType}
     * @public
     */
   export type RtcPlayerEvent = RtcEvent<RtcPlayerEventType, PlayerEventData>;
@@ -965,6 +980,7 @@ declare module '__@urtc/sdk-web/error' {
     * @public
     */
   export class RtcError extends Error {
+      constructor(code: ErrorCode, message: string);
       /**
         * 错误码，参见 {@link ErrorCode}
         */
@@ -1473,13 +1489,13 @@ declare module '__@urtc/sdk-web/version' {
 }
 
 declare module '__@urtc/sdk-web/event-emitter' {
-  import { RtcEventType, RtcUserEventType, RtcUserEvent, RtcStreamEvent, RtcConnectionEventType, RtcConnectionEvent, RtcStreamEventType, RtcPlayerEventType, RtcPlayerEvent } from '__@urtc/sdk-web/event';
+  import { RtcEventType, RtcUserEventType, RtcUserEvent, RtcStreamEvent, RtcConnectionStateEventType, RtcConnectionStateEvent, RtcNetworkQualityEventType, RtcNetworkQualityEvent, RtcStreamEventType, RtcPlayerEventType, RtcPlayerEvent } from '__@urtc/sdk-web/event';
   /**
     * 事件监听函数
     * 其中 T 为 RtcEvent 泛型
     * @private
     */
-  export type RtcEventInstance<T> = T extends RtcUserEventType ? RtcUserEvent : T extends RtcStreamEventType ? RtcStreamEvent : T extends RtcConnectionEventType ? RtcConnectionEvent : T extends RtcPlayerEventType ? RtcPlayerEvent : never;
+  export type RtcEventInstance<T> = T extends RtcUserEventType ? RtcUserEvent : T extends RtcStreamEventType ? RtcStreamEvent : T extends RtcConnectionStateEventType ? RtcConnectionStateEvent : T extends RtcNetworkQualityEventType ? RtcNetworkQualityEvent : T extends RtcPlayerEventType ? RtcPlayerEvent : never;
   /**
     * 事件监听函数
     * 其中 RtcEventInstance 为事件实例
@@ -1522,19 +1538,19 @@ declare module '__@urtc/sdk-web/stream/types' {
     */
   export interface AudioStats {
       /**
-        * 音频码率
+        * 音频码率，获取失败时为 -1
         */
       bitrate: number;
       /**
-        * 音频丢包率
+        * 音频丢包率，获取失败时为 -1
         */
       packetLossRate: number;
       /**
-        * 音频音量
+        * 音频音量，获取失败时为 -1
         */
       volume: number;
       /**
-        * 音频编码格式
+        * 音频编码格式，获取失败时为 ''
         */
       codec: AudioCodec;
   }
@@ -1543,27 +1559,27 @@ declare module '__@urtc/sdk-web/stream/types' {
     */
   export interface VideoStats {
       /**
-        * 视频码率
+        * 视频码率，获取失败时为 -1
         */
       bitrate: number;
       /**
-        * 视频丢包率
+        * 视频丢包率，获取失败时为 -1
         */
       packetLossRate: number;
       /**
-        * 视频帧率
+        * 视频帧率，获取失败时为 -1
         */
       framerate: number;
       /**
-        * 视频宽
+        * 视频宽，获取失败时为 -1
         */
       width: number;
       /**
-        * 视频高
+        * 视频高，获取失败时为 -1
         */
       height: number;
       /**
-        * 视频编码格式
+        * 视频编码格式，获取失败时为 ''
         */
       codec: VideoCodec;
   }
@@ -1572,7 +1588,7 @@ declare module '__@urtc/sdk-web/stream/types' {
     */
   export interface NetworkStats {
       /**
-        * 网络往返时间
+        * 网络往返时间，获取失败时为 -1
         */
       rtt: number;
   }
