@@ -80,12 +80,15 @@
 								<li class="tsd-kind-interface"><a href="interfaces/clientplugin.html" class="tsd-kind-icon">Client<wbr>Plugin</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/codecs.html" class="tsd-kind-icon">Codecs</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/connectionstates.html" class="tsd-kind-icon">Connection<wbr>States</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/devicechangedeventdata.html" class="tsd-kind-icon">Device<wbr>Changed<wbr>Event<wbr>Data</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/devicedetectionoptions.html" class="tsd-kind-icon">Device<wbr>Detection<wbr>Options</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/getdevicesoptions.html" class="tsd-kind-icon">Get<wbr>Devices<wbr>Options</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/joinoptions.html" class="tsd-kind-icon">Join<wbr>Options</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/localstreamoptions.html" class="tsd-kind-icon">Local<wbr>Stream<wbr>Options</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/networkqualities.html" class="tsd-kind-icon">Network<wbr>Qualities</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/networkstats.html" class="tsd-kind-icon">Network<wbr>Stats</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/playoptions.html" class="tsd-kind-icon">Play<wbr>Options</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/playereventdata.html" class="tsd-kind-icon">Player<wbr>Event<wbr>Data</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/rtcevent.html" class="tsd-kind-icon">Rtc<wbr>Event</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/serverconfig.html" class="tsd-kind-icon">Server<wbr>Config</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/snapshotoptions.html" class="tsd-kind-icon">Snapshot<wbr>Options</a></li>
@@ -109,6 +112,10 @@
 								<li class="tsd-kind-type-alias"><a href="index.html#roomtype" class="tsd-kind-icon">Room<wbr>Type</a></li>
 								<li class="tsd-kind-type-alias"><a href="index.html#rtcconnectionstateevent" class="tsd-kind-icon">Rtc<wbr>Connection<wbr>State<wbr>Event</a></li>
 								<li class="tsd-kind-type-alias"><a href="index.html#rtcconnectionstateeventtype" class="tsd-kind-icon">Rtc<wbr>Connection<wbr>State<wbr>Event<wbr>Type</a></li>
+								<li class="tsd-kind-type-alias"><a href="index.html#rtcdevicechangedevent" class="tsd-kind-icon">Rtc<wbr>Device<wbr>Changed<wbr>Event</a></li>
+								<li class="tsd-kind-type-alias"><a href="index.html#rtcdevicechangedeventtype" class="tsd-kind-icon">Rtc<wbr>Device<wbr>Changed<wbr>Event<wbr>Type</a></li>
+								<li class="tsd-kind-type-alias"><a href="index.html#rtcerrorevent" class="tsd-kind-icon">Rtc<wbr>Error<wbr>Event</a></li>
+								<li class="tsd-kind-type-alias"><a href="index.html#rtcerroreventtype" class="tsd-kind-icon">Rtc<wbr>Error<wbr>Event<wbr>Type</a></li>
 								<li class="tsd-kind-type-alias"><a href="index.html#rtceventtype" class="tsd-kind-icon">Rtc<wbr>Event<wbr>Type</a></li>
 								<li class="tsd-kind-type-alias"><a href="index.html#rtcnetworkqualityevent" class="tsd-kind-icon">Rtc<wbr>Network<wbr>Quality<wbr>Event</a></li>
 								<li class="tsd-kind-type-alias"><a href="index.html#rtcnetworkqualityeventtype" class="tsd-kind-icon">Rtc<wbr>Network<wbr>Quality<wbr>Event<wbr>Type</a></li>
@@ -242,6 +249,7 @@
 							<li>3019 - 自动播放被禁止错误</li>
 							<li>3020 - 音视频数据异常，未成功播放（一般为网络原因导致，拉流时音视频数据加载过慢）</li>
 							<li>3021 - 因未曾调用或调用 play 方法失败，故不可恢复播放</li>
+							<li>3024 - ICE 建连失败</li>
 						</ul>
 					</div>
 				</section>
@@ -388,9 +396,79 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="rtcdevicechangedevent" class="tsd-anchor"></a>
+					<h3>Rtc<wbr>Device<wbr>Changed<wbr>Event</h3>
+					<div class="tsd-signature tsd-kind-icon">Rtc<wbr>Device<wbr>Changed<wbr>Event<span class="tsd-signature-symbol">:</span> <a href="interfaces/rtcevent.html" class="tsd-signature-type" data-tsd-kind="Interface">RtcEvent</a><span class="tsd-signature-symbol">&lt;</span><a href="index.html#rtcdevicechangedeventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcDeviceChangedEventType</a><span class="tsd-signature-symbol">, </span><a href="interfaces/devicechangedeventdata.html" class="tsd-signature-type" data-tsd-kind="Interface">DeviceChangedEventData</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Rtc 设备列表变化事件，事件类型参见 {@link RtcDeviceChangeEventType}</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="rtcdevicechangedeventtype" class="tsd-anchor"></a>
+					<h3>Rtc<wbr>Device<wbr>Changed<wbr>Event<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">Rtc<wbr>Device<wbr>Changed<wbr>Event<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;device-changed&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>设备变化事件</p>
+							<ul>
+								<li>device-changed - 设备变化(新增或移除)</li>
+							</ul>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>example</dt>
+							<dd><pre><code class="language-js"><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;device-changed&#039;</span><span style="color: #000000">, (</span><span style="color: #001080">event</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`</span><span style="color: #0000FF">${</span><span style="color: #001080">event</span><span style="color: #000000FF">.</span><span style="color: #001080">data</span><span style="color: #000000FF">.</span><span style="color: #001080">type</span><span style="color: #0000FF">}</span><span style="color: #A31515"> 设备已 </span><span style="color: #0000FF">${</span><span style="color: #001080">event</span><span style="color: #000000FF">.</span><span style="color: #001080">data</span><span style="color: #000000FF">.</span><span style="color: #001080">status</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span><span style="color: #000000">);</span>
+<span style="color: #000000">});</span>
+</code></pre>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="rtcerrorevent" class="tsd-anchor"></a>
+					<h3>Rtc<wbr>Error<wbr>Event</h3>
+					<div class="tsd-signature tsd-kind-icon">Rtc<wbr>Error<wbr>Event<span class="tsd-signature-symbol">:</span> <a href="interfaces/rtcevent.html" class="tsd-signature-type" data-tsd-kind="Interface">RtcEvent</a><span class="tsd-signature-symbol">&lt;</span><a href="index.html#rtcerroreventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcErrorEventType</a><span class="tsd-signature-symbol">, </span><a href="classes/rtcerror.html" class="tsd-signature-type" data-tsd-kind="Class">RtcError</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Rtc 错误事件，事件类型参见 <a href="index.html#rtcerroreventtype">RtcErrorEventType</a></p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="rtcerroreventtype" class="tsd-anchor"></a>
+					<h3>Rtc<wbr>Error<wbr>Event<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">Rtc<wbr>Error<wbr>Event<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;error&quot;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>错误事件</p>
+							<ul>
+								<li>error - 错误事件，当出现不可恢复错误后，会抛出此事件</li>
+							</ul>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>example</dt>
+							<dd><pre><code class="language-js"><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">, (</span><span style="color: #001080">event</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`错误[</span><span style="color: #0000FF">${</span><span style="color: #001080">event</span><span style="color: #000000FF">.</span><span style="color: #001080">data</span><span style="color: #000000FF">.</span><span style="color: #001080">code</span><span style="color: #0000FF">}</span><span style="color: #A31515">] - </span><span style="color: #0000FF">${</span><span style="color: #001080">event</span><span style="color: #000000FF">.</span><span style="color: #001080">data</span><span style="color: #000000FF">.</span><span style="color: #001080">message</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span><span style="color: #000000">);</span>
+<span style="color: #000000">});</span>
+</code></pre>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="rtceventtype" class="tsd-anchor"></a>
 					<h3>Rtc<wbr>Event<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">Rtc<wbr>Event<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="index.html#rtcusereventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcUserEventType</a><span class="tsd-signature-symbol"> | </span><a href="index.html#rtcstreameventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcStreamEventType</a><span class="tsd-signature-symbol"> | </span><a href="index.html#rtcconnectionstateeventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcConnectionStateEventType</a><span class="tsd-signature-symbol"> | </span><a href="index.html#rtcnetworkqualityeventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcNetworkQualityEventType</a><span class="tsd-signature-symbol"> | </span><a href="index.html#rtcplayereventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcPlayerEventType</a></div>
+					<div class="tsd-signature tsd-kind-icon">Rtc<wbr>Event<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="index.html#rtcusereventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcUserEventType</a><span class="tsd-signature-symbol"> | </span><a href="index.html#rtcstreameventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcStreamEventType</a><span class="tsd-signature-symbol"> | </span><a href="index.html#rtcconnectionstateeventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcConnectionStateEventType</a><span class="tsd-signature-symbol"> | </span><a href="index.html#rtcnetworkqualityeventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcNetworkQualityEventType</a><span class="tsd-signature-symbol"> | </span><a href="index.html#rtcplayereventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcPlayerEventType</a><span class="tsd-signature-symbol"> | </span><a href="index.html#rtcdevicechangedeventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcDeviceChangedEventType</a><span class="tsd-signature-symbol"> | </span><a href="index.html#rtcerroreventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcErrorEventType</a></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -438,7 +516,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="rtcplayerevent" class="tsd-anchor"></a>
 					<h3>Rtc<wbr>Player<wbr>Event</h3>
-					<div class="tsd-signature tsd-kind-icon">Rtc<wbr>Player<wbr>Event<span class="tsd-signature-symbol">:</span> <a href="interfaces/rtcevent.html" class="tsd-signature-type" data-tsd-kind="Interface">RtcEvent</a><span class="tsd-signature-symbol">&lt;</span><a href="index.html#rtcplayereventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcPlayerEventType</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">PlayerEventData</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">Rtc<wbr>Player<wbr>Event<span class="tsd-signature-symbol">:</span> <a href="interfaces/rtcevent.html" class="tsd-signature-type" data-tsd-kind="Interface">RtcEvent</a><span class="tsd-signature-symbol">&lt;</span><a href="index.html#rtcplayereventtype" class="tsd-signature-type" data-tsd-kind="Type alias">RtcPlayerEventType</a><span class="tsd-signature-symbol">, </span><a href="interfaces/playereventdata.html" class="tsd-signature-type" data-tsd-kind="Interface">PlayerEventData</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1085,7 +1163,7 @@
 					<a name="getdevices" class="tsd-anchor"></a>
 					<h3>get<wbr>Devices</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Devices<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MediaDeviceInfo</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Devices<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">?: </span><a href="interfaces/getdevicesoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">GetDevicesOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MediaDeviceInfo</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1111,6 +1189,12 @@
 									</dd>
 								</dl>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> opts: <a href="interfaces/getdevicesoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">GetDevicesOptions</a></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MediaDeviceInfo</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -1394,7 +1478,13 @@
 						<a href="interfaces/connectionstates.html" class="tsd-kind-icon">Connection<wbr>States</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/devicechangedeventdata.html" class="tsd-kind-icon">Device<wbr>Changed<wbr>Event<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/devicedetectionoptions.html" class="tsd-kind-icon">Device<wbr>Detection<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/getdevicesoptions.html" class="tsd-kind-icon">Get<wbr>Devices<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/joinoptions.html" class="tsd-kind-icon">Join<wbr>Options</a>
@@ -1410,6 +1500,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/playoptions.html" class="tsd-kind-icon">Play<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/playereventdata.html" class="tsd-kind-icon">Player<wbr>Event<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/rtcevent.html" class="tsd-kind-icon">Rtc<wbr>Event</a>
@@ -1464,6 +1557,18 @@
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="index.html#rtcconnectionstateeventtype" class="tsd-kind-icon">Rtc<wbr>Connection<wbr>State<wbr>Event<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="index.html#rtcdevicechangedevent" class="tsd-kind-icon">Rtc<wbr>Device<wbr>Changed<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="index.html#rtcdevicechangedeventtype" class="tsd-kind-icon">Rtc<wbr>Device<wbr>Changed<wbr>Event<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="index.html#rtcerrorevent" class="tsd-kind-icon">Rtc<wbr>Error<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="index.html#rtcerroreventtype" class="tsd-kind-icon">Rtc<wbr>Error<wbr>Event<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="index.html#rtceventtype" class="tsd-kind-icon">Rtc<wbr>Event<wbr>Type</a>
@@ -1571,11 +1676,10 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 			</ul>
 		</div>
 	</div>

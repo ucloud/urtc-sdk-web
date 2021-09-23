@@ -3,6 +3,7 @@
 declare module '@urtc/sdk-web' {
   import { Client } from '__@urtc/sdk-web/client';
   import { LocalStream, LocalStreamOptions } from '__@urtc/sdk-web/stream/local-stream';
+  import { RemoteStream } from '__@urtc/sdk-web/stream/remote-stream';
   import { generateToken } from '__@urtc/sdk-web/utils/token';
   import { ClientOptions } from '__@urtc/sdk-web/types';
   import { LogLevel } from '__@urtc/sdk-web/logger';
@@ -87,7 +88,7 @@ declare module '@urtc/sdk-web' {
   export * from '__@urtc/sdk-web/types';
   export * from '__@urtc/sdk-web/event';
   export * from '__@urtc/sdk-web/error';
-  export * from '__@urtc/sdk-web/user/user';
+  export * from '__@urtc/sdk-web/user';
   export * from '__@urtc/sdk-web/stream/stream';
   export * from '__@urtc/sdk-web/stream/local-stream';
   export * from '__@urtc/sdk-web/stream/remote-stream';
@@ -97,7 +98,7 @@ declare module '@urtc/sdk-web' {
   /************** 4 plugin ****************/
   export { Client };
   export { LocalStream };
-  export { RemoteStream } from '__@urtc/sdk-web/stream/remote-stream';
+  export { RemoteStream };
 }
 
 declare module '__@urtc/sdk-web/client' {
@@ -105,20 +106,13 @@ declare module '__@urtc/sdk-web/client' {
   import { Listener } from '__@urtc/sdk-web/event-emitter';
   import { LocalStream } from '__@urtc/sdk-web/stream/local-stream';
   import { RemoteStream } from '__@urtc/sdk-web/stream/remote-stream';
-  import { User } from '__@urtc/sdk-web/user/user';
+  import { User } from '__@urtc/sdk-web/user';
   import { JoinOptions, RoleType } from '__@urtc/sdk-web/types';
-  import { ClientPlugin } from '__@urtc/sdk-web/plugin';
   /**
     * RTC 客户端，可进行加入、离开房间，发布、订阅流等操作。
     * @public
     */
   export class Client {
-      /**
-        * 加载 Client 插件，使用插件功能
-        * @param plugin - 插件
-        * @param options - 插件初始化参数
-        */
-      static use(plugin: ClientPlugin, options?: any): void;
       /**
         * 获取远端用户信息
         * @example
@@ -292,7 +286,6 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
   import { Stream } from '__@urtc/sdk-web/stream/stream';
   import { SwitchDeviceType } from '__@urtc/sdk-web/stream/types';
   import { VideoProfile, ScreenProfile, CustomVideoProfile } from '__@urtc/sdk-web/stream/profile';
-  import { StreamPlugin } from '__@urtc/sdk-web/plugin';
   /**
     * 指定使用前置或后置摄像头，'user'（前置摄像头）或 'environment'（后置摄像头）
     */
@@ -359,12 +352,6 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
     */
   export class LocalStream extends Stream {
       /**
-        * 加载流插件，使用插件功能
-        * @param plugin - 插件
-        * @param options - 插件初始化参数
-        */
-      static use(plugin: StreamPlugin, options?: any): void;
-      /**
         * 判断当前流是否有音频
         * @example
         * ```js
@@ -419,7 +406,7 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
       /**
         * 替换当前流中的媒体轨道
         * > 注：
-        * > 1. 替换视频时，建议使用与原轨道相同的分辨率的视频轨道，若不相同，请在替换后及时设置流的 profile 来调整到合适的码率等
+        * > 1. 替换视频时，建议使用与原轨道相同的分辨率的媒体轨道，若不相同，请在替换后及时设置流的 profile 来调整到合适的码率等
         * > 2. 返回值为当前流中相同类型的媒体轨道，此媒体轨道仍可用（占用音频设备或视频设备），请自行决定是否调用其 stop 方法释放设备
         * > 3. 若是切换不同的摄像头或麦克风设备，建议使用 switchDevice 方法，若是切换静态图片为视频流，建立使用 switchImage 方法
         * @param track - 新媒体轨道
@@ -517,6 +504,33 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         * ```
         */
       destroy(): void;
+  }
+}
+
+declare module '__@urtc/sdk-web/stream/remote-stream' {
+  import { Stream } from '__@urtc/sdk-web/stream/stream';
+  /**
+    * 远端流，房间内其他用户发布的流，可通过 client 进行订阅
+    */
+  export class RemoteStream extends Stream {
+      /**
+        * 音频源是否已 mute，当源端 mute/unmute 音频时，本端将收到 `mute-audio` 或 `unmute-audio` 事件的通知，同时此值将变为对应值
+        */
+      sourceAudioMuted: boolean;
+      /**
+        * 视频源是否已 mute，当源端 mute/unmute 视频时，本端将收到 `mute-video` 或 `unmute-video` 事件的通知，同时此值将变为对应值
+        */
+      sourceVideoMuted: boolean;
+      /**
+        * 设置输出音量，默认为 100
+        * @param volume - 音量大小, 可设范围[0-100]
+        * @throws RtcError
+        * @example
+        * ```js
+        * stream.setAudioVolume(50);
+        * ```
+        */
+      setAudioVolume(volume: number): void;
   }
 }
 
@@ -658,6 +672,19 @@ declare module '__@urtc/sdk-web/logger' {
 declare module '__@urtc/sdk-web/devices' {
   import { Codecs } from '__@urtc/sdk-web/types';
   /**
+    * 获取音视频输入/输出设备列表参数
+    */
+  export interface GetDevicesOptions {
+      /**
+        * 获取音频输入/输出设备列表
+        */
+      audio: boolean;
+      /**
+        * 获取视频输入设备列表
+        */
+      video: boolean;
+  }
+  /**
     * 获取音视频输入/输出设备列表，点击 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 查看详情
     * @public
     * @example
@@ -672,7 +699,7 @@ declare module '__@urtc/sdk-web/devices' {
     * ```
     * @reject {@link RtcError}
     */
-  export function getDevices(): Promise<MediaDeviceInfo[]>;
+  export function getDevices(opts?: GetDevicesOptions): Promise<MediaDeviceInfo[]>;
   /**
     * 获取摄像头设备列表，点击 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 查看详情
     * @public
@@ -800,12 +827,13 @@ declare module '__@urtc/sdk-web/devices' {
 }
 
 declare module '__@urtc/sdk-web/event' {
-  import { User } from '__@urtc/sdk-web/user/user';
+  import { User } from '__@urtc/sdk-web/user';
   import { Stream } from '__@urtc/sdk-web/stream/stream';
   import { ConnectionStates } from '__@urtc/sdk-web/connection/types';
   import { LocalStream } from '__@urtc/sdk-web/stream/local-stream';
   import { RemoteStream } from '__@urtc/sdk-web/stream/remote-stream';
   import { NetworkQualities } from '__@urtc/sdk-web/stream/types';
+  import { RtcError } from '__@urtc/sdk-web/error';
   /**
     * Rtc 用户事件类型：
     *
@@ -884,7 +912,7 @@ declare module '__@urtc/sdk-web/event' {
     * 播放状态改变事件对应数据
     * @public
     */
-  interface PlayerEventData {
+  export interface PlayerEventData {
       /**
         * 类型，音频/视频
         */
@@ -927,18 +955,62 @@ declare module '__@urtc/sdk-web/event' {
     */
   export type RtcNetworkQualityEventType = 'network-quality';
   /**
+    * 设备变化事件
+    * - device-changed - 设备变化(新增或移除)
+    * @public
+    * @example
+    * ```js
+    * client.on('device-changed', (event) => {
+    *   console.log(`${event.data.type} 设备已 ${event.data.status}`);
+    * });
+    * ```
+    */
+  export type RtcDeviceChangedEventType = 'device-changed';
+  /**
+    * 设备变化事件对应数据
+    * @public
+    */
+  export interface DeviceChangedEventData {
+      /**
+        * 设备类型，麦克风/摄像头/扬声器
+        */
+      type: 'microphone' | 'camera' | 'loudspeaker';
+      /**
+        * 状态
+        */
+      status: 'remove' | 'add';
+      /**
+        * 对应的设备信息
+        */
+      device: MediaDeviceInfo;
+  }
+  /**
+    * 错误事件
+    * - error - 错误事件，当出现不可恢复错误后，会抛出此事件
+    * @public
+    * @example
+    * ```js
+    * client.on('error', (event) => {
+    *   console.log(`错误[${event.data.code}] - ${event.data.message}`);
+    * });
+    * ```
+    */
+  export type RtcErrorEventType = 'error';
+  /**
     * Rtc 事件类型
     * @public
     */
-  export type RtcEventType = RtcUserEventType | RtcStreamEventType | RtcConnectionStateEventType | RtcNetworkQualityEventType | RtcPlayerEventType;
+  export type RtcEventType = RtcUserEventType | RtcStreamEventType | RtcConnectionStateEventType | RtcNetworkQualityEventType | RtcPlayerEventType | RtcDeviceChangedEventType | RtcErrorEventType;
   /**
     * Rtc 事件
     *
-    * 当 type - T 为 {@link RtcUserEventType} 事件时，data - S 为 {@link User} 类型
-    * 当 type - T 为 {@link RtcStreamEventType} 事件时，data - S 为 {@link LocalStream} | {@link RemoteStream} 类型
-    * 当 type - T 为 {@link RtcConnectionStateEventType } 事件时，data - S 为 {@link ConnectionStates } 类型
-    * 当 type - T 为 {@link RtcNetworkQualityEventType } 事件时，data - S 为 {@link NetworkQualities } 类型
-    * 当 type - T 为 {@link RtcPlayerEventType } 事件时，data - S 为 {@link PlayerEventData } 类型
+    * - 当 type - T 为 {@link RtcUserEventType} 事件时，data - S 为 {@link User} 类型
+    * - 当 type - T 为 {@link RtcStreamEventType} 事件时，data - S 为 {@link LocalStream} | {@link RemoteStream} 类型
+    * - 当 type - T 为 {@link RtcConnectionStateEventType } 事件时，data - S 为 {@link ConnectionStates } 类型
+    * - 当 type - T 为 {@link RtcNetworkQualityEventType } 事件时，data - S 为 {@link NetworkQualities } 类型
+    * - 当 type - T 为 {@link RtcPlayerEventType } 事件时，data - S 为 {@link PlayerEventData } 类型
+    * - 当 type - T 为 {@link RtcDeviceChangedEventType } 事件时，data - S 为 {@link RtcDeviceChangedEventData } 类型
+    * - 当 type - T 为 {@link RtcErrorEventType } 事件时，data - S 为 {@link RtcError } 类型
     * @public
     */
   export interface RtcEvent<T, S> {
@@ -970,7 +1042,16 @@ declare module '__@urtc/sdk-web/event' {
     * @public
     */
   export type RtcPlayerEvent = RtcEvent<RtcPlayerEventType, PlayerEventData>;
-  export {};
+  /**
+    * Rtc 设备列表变化事件，事件类型参见 {@link RtcDeviceChangeEventType}
+    * @public
+    */
+  export type RtcDeviceChangedEvent = RtcEvent<RtcDeviceChangedEventType, DeviceChangedEventData>;
+  /**
+    * Rtc 错误事件，事件类型参见 {@link RtcErrorEventType}
+    * @public
+    */
+  export type RtcErrorEvent = RtcEvent<RtcErrorEventType, RtcError>;
 }
 
 declare module '__@urtc/sdk-web/error' {
@@ -1137,6 +1218,10 @@ declare module '__@urtc/sdk-web/error' {
         * 3021 - 因未曾调用或调用 play 方法失败，故不可恢复播放
         */
       static readonly RESUME_NOT_ALLOWED = "3021";
+      /**
+        * 3024 - ICE 建连失败
+        */
+      static readonly ICE_FAILED = "3024";
   }
   /**
     * RTC 错误代码
@@ -1184,12 +1269,13 @@ declare module '__@urtc/sdk-web/error' {
     * - 3019 - 自动播放被禁止错误
     * - 3020 - 音视频数据异常，未成功播放（一般为网络原因导致，拉流时音视频数据加载过慢）
     * - 3021 - 因未曾调用或调用 play 方法失败，故不可恢复播放
+    * - 3024 - ICE 建连失败
     * @public
     */
   export type ErrorCode = typeof RtcError[Exclude<keyof typeof RtcError, 'prototype' | 'getCode' | 'stackTraceLimit' | 'prepareStackTrace' | 'captureStackTrace'>];
 }
 
-declare module '__@urtc/sdk-web/user/user' {
+declare module '__@urtc/sdk-web/user' {
   /**
     * 用户信息
     * @public
@@ -1220,6 +1306,10 @@ declare module '__@urtc/sdk-web/stream/stream' {
         * 注：若创建本地流时指定的 userId 与 join 时指定的 userId 不同，那么发布本条流时，流的 userId 将会自动被自动更新为 join 时指定的 userId
         */
       userId: string;
+      /**
+        * 是否为本地流
+        */
+      readonly isLocal: boolean;
       /**
         * 当前流包含的媒体流，关于媒体流，请详见 [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream)。
         */
@@ -1383,40 +1473,6 @@ declare module '__@urtc/sdk-web/stream/stream' {
   }
 }
 
-declare module '__@urtc/sdk-web/stream/remote-stream' {
-  import { Stream } from '__@urtc/sdk-web/stream/stream';
-  import { StreamPlugin } from '__@urtc/sdk-web/plugin';
-  /**
-    * 远端流，房间内其他用户发布的流，可通过 client 进行订阅
-    */
-  export class RemoteStream extends Stream {
-      /**
-        * 加载流插件，使用插件功能
-        * @param plugin - 插件
-        * @param options - 插件初始化参数
-        */
-      static use(plugin: StreamPlugin, options?: any): void;
-      /**
-        * 音频源是否已 mute，当源端 mute/unmute 音频时，本端将收到 `mute-audio` 或 `unmute-audio` 事件的通知，同时此值将变为对应值
-        */
-      sourceAudioMuted: boolean;
-      /**
-        * 视频源是否已 mute，当源端 mute/unmute 视频时，本端将收到 `mute-video` 或 `unmute-video` 事件的通知，同时此值将变为对应值
-        */
-      sourceVideoMuted: boolean;
-      /**
-        * 设置输出音量，默认为 100
-        * @param volume - 音量大小, 可设范围[0-100]
-        * @throws RtcError
-        * @example
-        * ```js
-        * stream.setAudioVolume(50);
-        * ```
-        */
-      setAudioVolume(volume: number): void;
-  }
-}
-
 declare module '__@urtc/sdk-web/server' {
   /**
     * 服务器配置，可设置置网关（gateway）、信令（signal）、日志（log）服务器地址
@@ -1489,13 +1545,13 @@ declare module '__@urtc/sdk-web/version' {
 }
 
 declare module '__@urtc/sdk-web/event-emitter' {
-  import { RtcEventType, RtcUserEventType, RtcUserEvent, RtcStreamEvent, RtcConnectionStateEventType, RtcConnectionStateEvent, RtcNetworkQualityEventType, RtcNetworkQualityEvent, RtcStreamEventType, RtcPlayerEventType, RtcPlayerEvent } from '__@urtc/sdk-web/event';
+  import { RtcEventType, RtcUserEventType, RtcUserEvent, RtcStreamEventType, RtcStreamEvent, RtcConnectionStateEventType, RtcConnectionStateEvent, RtcNetworkQualityEventType, RtcNetworkQualityEvent, RtcPlayerEventType, RtcPlayerEvent, RtcDeviceChangedEventType, RtcDeviceChangedEvent, RtcErrorEventType, RtcErrorEvent } from '__@urtc/sdk-web/event';
   /**
     * 事件监听函数
     * 其中 T 为 RtcEvent 泛型
     * @private
     */
-  export type RtcEventInstance<T> = T extends RtcUserEventType ? RtcUserEvent : T extends RtcStreamEventType ? RtcStreamEvent : T extends RtcConnectionStateEventType ? RtcConnectionStateEvent : T extends RtcNetworkQualityEventType ? RtcNetworkQualityEvent : T extends RtcPlayerEventType ? RtcPlayerEvent : never;
+  export type RtcEventInstance<T> = T extends RtcUserEventType ? RtcUserEvent : T extends RtcStreamEventType ? RtcStreamEvent : T extends RtcConnectionStateEventType ? RtcConnectionStateEvent : T extends RtcNetworkQualityEventType ? RtcNetworkQualityEvent : T extends RtcPlayerEventType ? RtcPlayerEvent : T extends RtcDeviceChangedEventType ? RtcDeviceChangedEvent : T extends RtcErrorEventType ? RtcErrorEvent : never;
   /**
     * 事件监听函数
     * 其中 RtcEventInstance 为事件实例
