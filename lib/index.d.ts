@@ -298,7 +298,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.7.0";
+  export const version = "1.7.1";
 }
 
 declare module '__urtc-sdk/token' {
@@ -319,7 +319,7 @@ declare module '__urtc-sdk/types' {
   export type RoomType = 'rtc' | 'live';
   export type UserRole = 'pull' | 'push' | 'push-and-pull';
   export type DeviceType = 'audio' | 'video';
-  export type EventType = 'user-added' | 'user-removed' | 'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' | 'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' | 'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' | 'record-notify' | 'relay-notify' | 'volume-indicator' | 'error-notify' | 'stream-playing' | 'stream-paused' | 'player-status-change';
+  export type EventType = 'user-added' | 'user-removed' | 'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' | 'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' | 'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' | 'record-notify' | 'relay-notify' | 'volume-indicator' | 'error-notify' | 'stream-playing' | 'stream-paused' | 'player-status-change' | 'first-key-frame';
   export type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
   export type WaterMarkPosition = 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom';
   export type WaterMarkType = 'time' | 'image' | 'text';
