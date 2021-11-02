@@ -1005,12 +1005,12 @@ declare module '__@urtc/sdk-web/event' {
     * Rtc 事件
     *
     * - 当 type - T 为 {@link RtcUserEventType} 事件时，data - S 为 {@link User} 类型
-    * - 当 type - T 为 {@link RtcStreamEventType} 事件时，data - S 为 {@link LocalStream} | {@link RemoteStream} 类型
-    * - 当 type - T 为 {@link RtcConnectionStateEventType } 事件时，data - S 为 {@link ConnectionStates } 类型
-    * - 当 type - T 为 {@link RtcNetworkQualityEventType } 事件时，data - S 为 {@link NetworkQualities } 类型
-    * - 当 type - T 为 {@link RtcPlayerEventType } 事件时，data - S 为 {@link PlayerEventData } 类型
-    * - 当 type - T 为 {@link RtcDeviceChangedEventType } 事件时，data - S 为 {@link RtcDeviceChangedEventData } 类型
-    * - 当 type - T 为 {@link RtcErrorEventType } 事件时，data - S 为 {@link RtcError } 类型
+    * - 当 type - T 为 {@link RtcStreamEventType} 事件时，data - S 为 {@link LocalStream} 或 {@link RemoteStream} 类型
+    * - 当 type - T 为 {@link RtcConnectionStateEventType} 事件时，data - S 为 {@link ConnectionStates} 类型
+    * - 当 type - T 为 {@link RtcNetworkQualityEventType} 事件时，data - S 为 {@link NetworkQualities} 类型
+    * - 当 type - T 为 {@link RtcPlayerEventType} 事件时，data - S 为 {@link PlayerEventData} 类型
+    * - 当 type - T 为 {@link RtcDeviceChangedEventType} 事件时，data - S 为 {@link DeviceChangedEventData} 类型
+    * - 当 type - T 为 {@link RtcErrorEventType} 事件时，data - S 为 {@link RtcError} 类型
     * @public
     */
   export interface RtcEvent<T, S> {
