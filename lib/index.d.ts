@@ -874,6 +874,7 @@ declare module '__@urtc/sdk-web/event' {
     *
     * **特别地，以下事件需在单条流上进行监听**
     * - screen-sharing-stopped - 屏幕共享流被中止，此时事件中的 data 为 {@link LocalStream} 本地流
+    * - audio-track-ended - 音频被中止，此时事件中的 data 为 {@link LocalStream} 本地流
     * - first-key-frame - 接收到远端流的首帧
     * @example
     * ```js
@@ -890,7 +891,7 @@ declare module '__@urtc/sdk-web/event' {
     * });
     * ```
     */
-  export type RtcStreamEventType = 'stream-added' | 'stream-removed' | 'stream-subscribed' | 'stream-published' | 'stream-reconnecting' | 'stream-reconnected' | 'mute-audio' | 'unmute-audio' | 'mute-video' | 'unmute-video' | 'first-key-frame' | 'screen-sharing-stopped';
+  export type RtcStreamEventType = 'stream-added' | 'stream-removed' | 'stream-subscribed' | 'stream-published' | 'stream-reconnecting' | 'stream-reconnected' | 'mute-audio' | 'unmute-audio' | 'mute-video' | 'unmute-video' | 'first-key-frame' | 'audio-track-ended' | 'screen-sharing-stopped';
   /**
     * Rtc 播放器事件类型：
     *
