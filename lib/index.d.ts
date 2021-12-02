@@ -56,7 +56,7 @@ declare module '__urtc-sdk/logger' {
     onLog({}: {}): void;
     onWarn({}: {}): void;
     onError({}: {}): void;
-    onReport({}: {}): void;
+    set onReport(cb: ((...args: any[]) => void) | undefined);
   }
   const _default: Logger;
   export default _default;
@@ -69,10 +69,10 @@ declare module '__urtc-sdk/client' {
     setRole(role: UserRole): boolean;
     joinRoom(roomId: string, userId: string, onSuccess?: (users: Array<User>, streams: Array<Stream>) => void, onFailure?: (data?: any) => void): void;
     leaveRoom(options?: LeaveRoomOptions, onSuccess?: () => void, onFailure?: (data?: any) => void): void;
-    publish(options?: PublishOptions, onFailure?: (data?: Error) => void): void;
-    unpublish(streamId?: string, onSuccess?: (stream: Stream) => void, onFailure?: (data?: any) => void): void;
+    publish(options?: PublishOptions, onFailure?: (err: Error) => void): void;
+    unpublish(streamId?: string, onSuccess?: (stream: Stream) => void, onFailure?: (err: Error) => void): void;
     subscribe(streamId: string, onFailure?: (Error?: any) => void): void;
-    unsubscribe(streamId: string, onSuccess?: (stream: Stream) => void, onFailure?: (data?: any) => void): void;
+    unsubscribe(streamId: string, onSuccess?: (stream: Stream) => void, onFailure?: (err: Error) => void): void;
     on(event: EventType, listener: (data?: any) => void): void;
     off(event: EventType, listener: (data?: any) => void): void;
     muteAudio(streamId?: string): boolean;
@@ -298,7 +298,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.7.2";
+  export const version = "1.8.0";
 }
 
 declare module '__urtc-sdk/token' {
@@ -319,7 +319,7 @@ declare module '__urtc-sdk/types' {
   export type RoomType = 'rtc' | 'live';
   export type UserRole = 'pull' | 'push' | 'push-and-pull';
   export type DeviceType = 'audio' | 'video';
-  export type EventType = 'user-added' | 'user-removed' | 'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' | 'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' | 'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' | 'record-notify' | 'relay-notify' | 'volume-indicator' | 'error-notify' | 'stream-playing' | 'stream-paused' | 'player-status-change' | 'first-key-frame';
+  export type EventType = 'user-added' | 'user-removed' | 'stream-added' | 'stream-removed' | 'stream-published' | 'stream-subscribed' | 'mute-video' | 'unmute-video' | 'mute-audio' | 'unmute-audio' | 'screenshare-stopped' | 'connection-state-change' | 'kick-off' | 'network-quality' | 'stream-reconnected' | 'record-notify' | 'relay-notify' | 'volume-indicator' | 'error-notify' | 'stream-playing' | 'stream-paused' | 'player-status-change' | 'first-key-frame' | 'audio-track-interrupted' | 'audio-track-ended';
   export type ConnectionState = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'RECONNECTING' | 'CLOSED';
   export type WaterMarkPosition = 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom';
   export type WaterMarkType = 'time' | 'image' | 'text';
@@ -348,9 +348,15 @@ declare module '__urtc-sdk/types' {
     file?: File;
     filePath?: string;
   }
+  export interface AudioProcessingOptions {
+    AEC?: boolean;
+    AGC?: boolean;
+    ANS?: boolean;
+  }
   export interface CreateStreamOptions extends PublishOptions {
     userId?: string;
     streamId?: string;
+    audioProcessing?: AudioProcessingOptions;
   }
   export interface DeviceOptions {
     audio: boolean;
