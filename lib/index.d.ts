@@ -408,7 +408,7 @@ declare module '__@urtc/sdk-web/stream/local-stream' {
         * > 注：
         * > 1. 替换视频时，建议使用与原轨道相同的分辨率的媒体轨道，若不相同，请在替换后及时设置流的 profile 来调整到合适的码率等
         * > 2. 返回值为当前流中相同类型的媒体轨道，此媒体轨道仍可用（占用音频设备或视频设备），请自行决定是否调用其 stop 方法释放设备
-        * > 3. 若是切换不同的摄像头或麦克风设备，建议使用 switchDevice 方法，若是切换静态图片为视频流，建立使用 switchImage 方法
+        * > 3. 若是切换不同的摄像头或麦克风设备，建议使用 switchDevice 方法，若是切换静态图片为视频流，建议使用 switchImage 方法
         * @param track - 新媒体轨道
         * @example
         * ```js
