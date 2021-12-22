@@ -591,7 +591,7 @@ declare module '__@urtc/sdk-web/types' {
         */
       controls?: PlayControlsType;
   }
-  export { /*AudioProfile,*/ VideoProfile, ScreenProfile } from '__@urtc/sdk-web/stream/profile';
+  export { /*AudioProfile,*/ VideoProfile, ScreenProfile, CustomVideoProfile } from '__@urtc/sdk-web/stream/profile';
   /**
     * 房间类型：'conference' | 'live'，分别对应会议模式 | 直播模式。
     * 注：

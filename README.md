@@ -92,7 +92,7 @@ LocalStream 对象包含以下方法：
 * [replaceTrack](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#replacetrack) - 替换当前流中的媒体轨道
 * [resume](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#resume) - 恢复播放流，一般由于浏览器限制无法自动播放时，可提示用户手动触发该方法进行恢复播放
 * [setScreenProfile](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#setscreenprofile) - 设置当前流（屏幕共享时）视频的 Profile，默认 '1080p'
-* [setVideoProfile](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#setvideoprofile) - 设置当前流视频的 Profile，默认 '480p'
+* [setVideoProfile](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#setvideoprofile) - 设置当前流视频的 Profile，默认 '360p_2'
 * [snapshot](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#snapshot) - 对当前流进行截屏
 * [stop](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#stop) - 停止播放当前流
 * [switchDevice](https://ucloud.github.io/urtc-sdk-web/classes/localstream.html#switchdevice) - 切换音视频设备
