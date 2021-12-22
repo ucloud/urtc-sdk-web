@@ -1,0 +1,102 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 2654142 */
+  src: url('./font_2654142_3yusi3ow1eg.woff2?t=1625553221109') format('woff2'),
+       url('./font_2654142_3yusi3ow1eg.woff?t=1625553221109') format('woff'),
+       url('./font_2654142_3yusi3ow1eg.ttf?t=1625553221109') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-phone-signal-full:before {
+  content: "\e957";
+}
+
+.icon-ic_signal_wifi_statusbar_not_connected_xpx:before {
+  content: "\e6b1";
+}
+
+.icon-stopscreenshare:before {
+  content: "\ed38";
+}
+
+.icon-screenpingmu:before {
+  content: "\e64b";
+}
+
+.icon-switch-camera-:before {
+  content: "\e71c";
+}
+
+.icon-share-screen:before {
+  content: "\e8e2";
+}
+
+.icon-live_fill:before {
+  content: "\e708";
+}
+
+.icon-live:before {
+  content: "\e709";
+}
+
+.icon-share:before {
+  content: "\e729";
+}
+
+.icon-shengyinkai:before {
+  content: "\eca7";
+}
+
+.icon-shengyinjingyin:before {
+  content: "\eca9";
+}
+
+.icon-fuzhi:before {
+  content: "\e600";
+}
+
+.icon-shexiangtou_guanbi:before {
+  content: "\eca5";
+}
+
+.icon-shexiangtou:before {
+  content: "\eca6";
+}
+
+.icon--wifi-:before {
+  content: "\e61d";
+}
+
+.icon--wifi-1:before {
+  content: "\e61e";
+}
+
+.icon--wifi-2:before {
+  content: "\e61f";
+}
+
+.icon--wifi-3:before {
+  content: "\e620";
+}
+
+.icon--wifi-4:before {
+  content: "\e621";
+}
+
+.icon--wifi-5:before {
+  content: "\e622";
+}
+
+.icon-maikefeng-audio:before {
+  content: "\e625";
+}
+
+.icon-audiostatic:before {
+  content: "\eb70";
+}
