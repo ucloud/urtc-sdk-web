@@ -298,7 +298,7 @@ declare module '__urtc-sdk/resolutions' {
 }
 
 declare module '__urtc-sdk/version' {
-  export const version = "1.8.6";
+  export const version = "1.8.7";
 }
 
 declare module '__urtc-sdk/token' {
